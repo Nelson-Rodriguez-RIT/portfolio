@@ -3,54 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+    <title>War Room</title>
 
+    <!--
+    CSS TODO:
+        > Change all px amounts to %
+    -->
+<style>
+    .navigation_bar {background-color: #ba2525;}
+    .navigation_bar a {color: white}
 
-    <style>
-        .project_list_header {color:white; text-align: center; border-bottom: 100px; padding: 5px; }
+    .project_list {display: inline-grid; padding: 5px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 
-        .project_list {text-align: center;}
-        .project_header {font-size: x-large;}
-        .project_element {color:white; display: inline-block; vertical-align: middle; border: 2px solid gray; padding: 2px; margin-block: 5px;}
-    </style>
+    .project_element {padding: 5px; margin-left: 5px; margin-bottom: 5px; text-align: center; border: solid #ba2525;}
+    .project_element p {color: white;}
+</style>
 </head>
 
-<body style="background-color:rgb(31, 31, 31);">
-    <h1 style="color:white">Site Under Construction!</h1>
-
-    <h2 class="project_list_header">Active Projects</h2>
-    
-    <div class="project_list">
-        <div class="project_element">
-            <a class="project_header" href="https://github.com/Nelson-Rodriguez-RIT/portfolio"><b>Portfolio</b></a>
-            <!--insert a ss from the game here-->
-            <p>This document right here! This is a living document,<br>with the idea that this is actively updated based on new projects,<br>and any other cools things I stuble upon.<br>&ensp;</p>
+<body style="background-color:#303030">
+    <!--Site Navigation-->
+    <header>
+        <div class="navigation_bar">
+            <a href="/index.html">Home</a>
+            <a href="/contact/index.html">Contact</a>
+            <a href="MAIN GITHUB LINK">Github</a>
         </div>
-    </div>
+    </header>
 
-    <br>
-
-    <h2 class="project_list_header">Past Projects</h2>
-    
-    <div class="project_list">
-        <div class="project_element">
-            <a class="project_header" href="https://github.com/Nelson-Rodriguez-RIT/gdaps2_2235_team_2"><b>Moonwalk</b></a>
-            <!--insert a ss from the game here-->
-            <p>A Roguelike/RPG mix with a focus on exploration and boss fights.<br>Project focused on the professional development cycle<br>such as i.e. code, documentation, and presentation<br>Made with C# and Monogame</p>
+    <!--Projects-->
+    <main>
+        <h2>Active Projects</h2>
+        <div class="project_list">
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">PROJECT TITLE</a></h3>
+                <img>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+            </div>
+            
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">DIFFERENT PROJECT TITLE</a></h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+                    exercitation ullamco laboris nisi.</p>
+            </div>
         </div>
 
-        <div class="project_element">
-            <a class="project_header" href="https://github.com/Nelson-Rodriguez-RIT/minecraft_prototype"><b>Minecraft Prototype</b></a>
-            <!--insert a ss from the game here-->
-            <p>A small sandbox containing the majority of Minecraft's basic features.<br>The focus of this project was to learn C++ and OpenGL.<br>&ensp;<br>&ensp;</p>
+        <h2>Past Projects</h2>
+        <div class="project_list">
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">PROJECT TITLE</a></h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+            </div>
+            
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">DIFFERENT PROJECT TITLE</a></h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+                    exercitation ullamco laboris nisi.</p>
+            </div>
         </div>
 
-        <div class="project_element">
-            <a class="project_header" href="https://github.com/Nelson-Rodriguez-RIT/console_snake"><b>Console Snake</b></a>
-            <!--insert a ss from the game here-->
-            <p>A real time implementation of classic snake game.<br>Project focused on learning C++ and the Windows API.<br>&ensp;<br>&ensp;</p>
-        </div>
-    </div>
-        
+    </main>
+
+    <!--Site Information/Links-->
+    <footer></footer>
 </body>
 </html>

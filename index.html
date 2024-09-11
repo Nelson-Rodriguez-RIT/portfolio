@@ -10,12 +10,15 @@
         > Change all px amounts to %
     -->
 <style>
-    .navigation_bar {background-color: #ba2525;}
-    .navigation_bar a {color: white}
+    header {display: flex; justify-content: space-between; padding: 10px; background-color: #ba2525; color: white; }
+    .navigation a {color: white; text-decoration: none;}
 
-    .project_list {display: inline-grid; padding: 5px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .project_list_header {text-align: center; color: white;}
+    .project_list_header hr {width: 50%; }
 
-    .project_element {padding: 5px; margin-left: 5px; margin-bottom: 5px; text-align: center; border: solid #ba2525;}
+    .project_list {display: inline-grid; padding: 5px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); grid-template-rows: repeat(auto-fit, minmax(300px, 1fr));}
+
+    .project_element {padding: 5px; margin-left: 5px; margin-bottom: 5px; text-align: center; border: solid #ba2525; background-color: #1f1f1f;}
     .project_element p {color: white;}
 </style>
 </head>
@@ -23,16 +26,20 @@
 <body style="background-color:#303030">
     <!--Site Navigation-->
     <header>
-        <div class="navigation_bar">
-            <a href="/index.html">Home</a>
-            <a href="/contact/index.html">Contact</a>
-            <a href="MAIN GITHUB LINK">Github</a>
+        <span><b>War Room</b></span>
+        <div class="navigation">
+            <a href="/index.html">Home | </a>
+            <a href="/contact/index.html">Contact | </a>
+            <a href="/about/index.html">About | </a>
+            <a href="MAIN GITHUB LINK">Github </a>
         </div>
+        
     </header>
 
     <!--Projects-->
     <main>
-        <h2>Active Projects</h2>
+        <h2 class="project_list_header">Active Projects</h2>
+        <hr style="width: 50%; border-bottom: 3px solid #1f1f1f;">
         <div class="project_list">
             <div class="project_element">
                 <h3><a href="INSERT GITHUB LINK">PROJECT TITLE</a></h3>
@@ -53,7 +60,7 @@
             </div>
         </div>
 
-        <h2>Past Projects</h2>
+        <h2 class="project_list_header">Past Projects</h2>
         <div class="project_list">
             <div class="project_element">
                 <h3><a href="INSERT GITHUB LINK">PROJECT TITLE</a></h3>

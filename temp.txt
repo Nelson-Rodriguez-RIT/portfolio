@@ -1,0 +1,113 @@
+<body>
+    <!--Site Navigation-->
+    <header>
+        <span><b>War Room</b></span>
+        <div class="navigation">
+            <a href="/index.html">Home | </a>
+            <a href="/contact/index.html">Contact | </a>
+            <a href="/about/index.html">About | </a>
+            <a href="MAIN GITHUB LINK">Github </a>
+        </div>
+    </header>
+
+    <!--Projects-->
+    <main>
+        <h2 class="project_list_header">Active Projects</h2>
+        <hr style="width: 50%; border-bottom: 3px solid #1f1f1f;">
+        <div class="project_list">
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">PROJECT TITLE</a></h3>
+                <img src="images/null.png" alt="demo">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+            </div>
+            
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">DIFFERENT PROJECT TITLE</a></h3>
+                <img src="images/null.png" alt="demo">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+                    exercitation ullamco laboris nisi.</p>
+            </div>
+
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">PROJECT TITLE</a></h3>
+                <img src="images/null.png" alt="demo">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+            </div>
+            
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">DIFFERENT PROJECT TITLE</a></h3>
+                <img src="images/null.png" alt="demo">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+                    exercitation ullamco laboris nisi. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+  
+        <h2 class="project_list_header">Past Projects</h2>
+        <hr style="width: 50%; border-bottom: 3px solid #1f1f1f;">
+        <div class="project_list">
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">PROJECT TITLE</a></h3>
+                <img src="images/null.png" alt="demo">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+            </div>
+            
+            <div class="project_element">
+                <h3><a href="INSERT GITHUB LINK">DIFFERENT PROJECT TITLE</a></h3>
+                <img src="images/null.png" alt="demo">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+                    exercitation ullamco laboris nisi.</p>
+            </div>
+        </div>
+    </main>
+
+    <!--Site Information/Links-->
+    <footer>
+        <span>Site Repo On <a href="INSERT GITHUB LINK">Github</a> | </span>
+        <span>Copyright 2024 (MIT License)</span>
+        <span> | Runs on Hopes and Dreams (Apache)</span>
+    </footer>
+</body>
+
+
+
+/* Old */
+header {display: flex; justify-content: space-between; padding: 10px; background-color: #ba2525; color: white; font-family: monospace; font-size: larger;}
+.navigation a {color: white; text-decoration: none;}
+
+
+body {background-color: #303030;}
+
+.project_list_header {text-align: center; color: white; font-family: monospace;}
+.project_list_header hr {width: 50%; }
+
+.project_list {display: inline-grid; padding-left: 10%; padding-right: 10%; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); grid-auto-rows: 1fr; margin: auto;}
+
+.project_element {padding: 5px; margin-left: 5px; margin-bottom: 5px; text-align: center; border: solid #ba2525; background-color: #1f1f1f;}
+.project_element h3 a {color:#d83737; font-family: monospace; font-size: x-large; text-decoration: none;}
+.project_element p {color: white; font-family: Georgia, 'Times New Roman', Times, serif;}
+
+footer {font-family: monospace; color: white; background-color: #ba2525; text-align: center; padding: 5px;}
+footer.span {margin: auto;}

@@ -12,7 +12,7 @@
 
 body {background-color: #212529;}
 a {text-decoration: none; color: #dee2e6;}
-img{max-width: 100%; height: auto;}
+img {max-width: 100% !important; height: auto !important;}
 
 header {
     display: flex; 

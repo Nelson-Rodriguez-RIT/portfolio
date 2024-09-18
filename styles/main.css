@@ -12,7 +12,7 @@
 
 body {background-color: #212529;}
 a {text-decoration: none; color: #dee2e6;}
-
+img{max-width: 100%; height: auto;}
 
 header {
     display: flex; 
@@ -35,7 +35,7 @@ main > h2 {
     margin-bottom: 15px;
     padding: 10px 0px;
     text-align: center; 
-    color: #ffb0b0;;
+    color: #ffb0b0;
     font-family: "Fira Sans", sans-serif; font-weight: 600; font-style: normal;
 }
 
@@ -74,6 +74,7 @@ main li p {
     color:#dee2e6;
     text-align: left;
 }
+
 
 
 footer {margin: 10px 25%; padding: 10px; color:#dee2e6; border-top: 2px solid #495057;}

@@ -20,6 +20,7 @@ body {
 a {text-decoration: none; color: #dee2e6;}
 
 header {
+    order: 0;
     display: flex; 
     justify-content: space-between; 
     margin: 20px 2.5%; 
@@ -34,7 +35,7 @@ header li {display: inline-block;}
 #page-navigation {font-size: large; color: #ffb0b0;} 
 
 
-main {margin: 20px 2.5%; padding: 10px; color:#dee2e6; flex: 1}
+main {margin: 20px 2.5%; padding: 10px; color:#dee2e6; flex: 1; order: 0;}
 main > h2, h1 {
     margin: 2.5%; 
     margin-bottom: 15px;
@@ -96,6 +97,7 @@ main li img {max-width: 90% !important; height: auto !important; padding: 5px}
 }
 
 footer {
+    order: 1;
     position: relative;
     margin: 10px 25%;
     margin-top: 1fr;

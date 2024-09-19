@@ -46,6 +46,10 @@ main > p {
     font-family: "Fira Sans", sans-serif; font-weight: 400; font-style: normal;
 }
 
+main > p b {
+    color: #97e8a9
+}
+
 main ul {
     display: inline-grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 

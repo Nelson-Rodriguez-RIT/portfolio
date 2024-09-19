@@ -10,7 +10,10 @@
     font-style: normal;
 }
 
-body {background-color: #212529;}
+body {
+    background-color: #212529;   
+    min-height: 100vh;
+}
 a {text-decoration: none; color: #dee2e6;}
 
 header {
@@ -29,7 +32,7 @@ header li {display: inline-block;}
 
 
 main {margin: 20px 2.5%; padding: 10px; color:#dee2e6;}
-main > h2 {
+main > h2, h1 {
     margin: 2.5%; 
     margin-bottom: 15px;
     padding: 10px 0px;
@@ -89,7 +92,11 @@ main li img {max-width: 90% !important; height: auto !important; padding: 5px}
     border: 1px  solid #495057;
 }
 
-footer {margin: 10px 25%; padding: 10px; color:#dee2e6; border-top: 2px solid #495057;}
+footer {
+    margin: 10px 25%;
+    padding: 10px;
+    color:#dee2e6; 
+    border-top: 2px solid #495057;}
 footer ul {padding: 0%; margin: 0%; text-align: center;}
 footer li {
     display: inline-block;

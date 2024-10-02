@@ -56,8 +56,13 @@ footer ul {
     main {
         display: grid;
         grid-template-columns: 2fr minmax(375px, 1fr);
+        max-height: 800px;
+    }
+    #about {
+        max-height: inherit;
     }
     #projects {
         max-width: 100%;
+        max-height: inherit;
     }
 }

@@ -26,9 +26,10 @@ main {
     flex-direction: column;
     overflow-y: scroll;
 
+    margin: 0px auto;
+    width: 85%;
     max-height: 800px;
 }
-
 #contact {
     margin: 2rem 0.5rem;
 }
@@ -41,9 +42,13 @@ footer ul {
 
 
 
+@media screen and (min-width: 750px) {
+    #projects {
+        max-width: 70%;
+    }
+}
 
-
-@media screen and (min-width: 950px) {
+@media screen and (min-width: 1110px) {
     body {
         margin: 1rem 10%;
     }
@@ -52,8 +57,7 @@ footer ul {
         display: grid;
         grid-template-columns: 2fr minmax(375px, 1fr);
     }
-
     #projects {
-        margin-left: 2.5%
+        max-width: 100%;
     }
 }

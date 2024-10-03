@@ -2,6 +2,9 @@
 li {list-style-type: none;}
 ul {padding: 0px; margin: 0px;}
 
+/*
+For mobile, implement keyframes for projects to present it in the style of a slide show
+*/
 
 body {
     margin: 0.5rem 1rem;

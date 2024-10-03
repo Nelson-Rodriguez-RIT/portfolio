@@ -23,13 +23,19 @@ main {
 }
 #projects {
     display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
 
     margin: 0px auto;
     width: 85%;
-    max-height: 800px;
+
+    max-height: min-content;
 }
+#projects li {
+    flex: 0 0 300px;
+}
+
 #contact {
     margin: 2rem 0.5rem;
 }
@@ -45,6 +51,9 @@ footer ul {
 @media screen and (min-width: 750px) {
     body {
         margin: 1rem 7.5%
+    }
+    #contact {
+        margin: 2rem 4rem;
     }
     #projects {
         max-width: 75%;
@@ -62,10 +71,19 @@ footer ul {
         max-height: 800px;
     }
     #about {
+        overflow-y: scroll;
         max-height: inherit;
     }
     #projects {
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
         max-width: 100%;
         max-height: inherit;
+    }
+    #contact {
+        margin: 2rem 6rem;
     }
 }

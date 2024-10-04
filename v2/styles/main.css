@@ -1,0 +1,137 @@
+* {border: 1px solid blue} /* Only here to show container outlines */
+li {list-style-type: none;}
+ul {padding: 0px; margin: 0px;}
+
+body {
+    min-height: 100vh; /* Ensures site is at least the height of the screen, keeps footer touching bottom */
+}
+
+
+header {
+    background-color: white;
+    position: fixed;
+
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+
+    width: 100%;
+    max-width: 100%;
+
+    padding: 0%;
+    margin: 0%;
+}
+
+header ul {     /* Site Logos */
+    display: flex;
+    justify-content: space-between;
+}
+
+header nav {    /* Site Navigation */
+    display: flex;
+    justify-content: right;
+}
+
+footer ul {     /* Extra Site Information */
+    display: flex;
+    justify-content: center;
+}
+
+
+@media screen and (max-width: 1100px) {            /* Small Desktops + Mobile */
+    .project-container {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        justify-content: center;
+    
+        height: 100%;
+        
+    }
+    
+    .project-slider {
+        position: relative;
+    
+        height: 400px;
+        width: 100%;
+        max-width: 600px;
+    
+        margin: 0px;
+    
+        overflow: hidden;
+    }
+    
+    .projects {
+        display: flex;
+        position: relative;
+    
+        overflow-x: scroll;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+    }
+    
+    .project {
+        position: relative;
+        flex-shrink: 0;
+    
+        height: 400px;
+        width: 100%;
+        max-width: 600px;
+        
+        text-align: center;
+        scroll-snap-align: center;
+        scroll-margin-top: 25vh;
+    }
+    
+    .project a {
+        background: none;
+        border: none;
+        text-decoration: none;
+    }
+    
+    a.project-prev, .project-slider::before {
+        transform: scale(3) rotate(-90deg);
+        left: 5%;
+    }
+    
+    .project-next, .project-slider::after {
+        transform: scale(3) rotate(90deg);
+        right: 5%;
+    }
+    
+    .project-slider::before, .project-slider::after,
+    .project-prev, .project-next {
+        position: absolute;
+    
+        top: 48%;
+        width: 35px;
+        height: 35px;
+    
+        padding: 3px;
+        box-sizing: border-box;
+    }
+    
+    @media screen and (max-width: 750px) {          /* Mobile */
+
+    }
+}
+
+
+                                                    /* Regular Desktops */
+
+#content-wrapper {
+    margin-top: 2rem;
+}
+
+#online-games-wrapper {
+
+}
+
+#contact-wrapper {
+    
+}
+
+#contact-socials-wrapper ul {
+    display: flex;
+    justify-content: center;
+}

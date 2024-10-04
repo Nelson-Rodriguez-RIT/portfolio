@@ -38,6 +38,11 @@ footer ul {     /* Extra Site Information */
 }                                                 
 
 
+#contact-wrapper ul {
+    display: flex;
+    justify-content: center;
+}
+
 
 @media screen and (min-width: 1100px) { /* Regular Desktops */
     #content-wrapper {
@@ -141,12 +146,6 @@ footer ul {     /* Extra Site Information */
         position: fixed;
         left: -9999px;
     }
-
-    
-    #contact-wrapper ul {
-        display: flex;
-        justify-content: center;
-    }
 }
 
 
@@ -165,9 +164,9 @@ footer ul {     /* Extra Site Information */
     .project-slider {
         position: relative;
     
-        height: 400px;
+        /*Note: Change project slider dimensions here (must match below project dimensions)*/
+        height: 100%;
         width: 100%;
-        max-width: 600px;
     
         margin: 0px;
     
@@ -187,9 +186,9 @@ footer ul {     /* Extra Site Information */
         position: relative;
         flex-shrink: 0;
     
-        height: 400px;
+        /*Note: Change project box dimensions here (must match above slider dimensions)*/
+        height: 100%;
         width: 100%;
-        max-width: 600px;
         
         text-align: center;
         scroll-snap-align: center;

@@ -1,0 +1,71 @@
+* { border: 1px solid black } /* For debuging purposes (Add a / to the * to toggle) */
+
+* { /* Quick and dirty CSS reset*/
+    padding: 0%;
+    margin: 0%;
+    box-sizing: border-box;
+
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+
+body { 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 100vh; /* Page length should always be at least the height of the viewport */
+    margin: 1rem;
+} 
+
+
+header { /* Logos + Site Navigation */
+    display: grid;
+    grid-template-rows: 1.5fr 1fr;
+}
+
+header ul, header nav {
+    display: flex;
+    flex-direction: row;
+
+    padding: 0.5rem;
+    height: 100%;
+}
+
+header ul  { justify-content: space-between; }
+
+header nav   { justify-content: right; }
+header nav a { padding: 0.25rem; margin: 0px 0.25rem; }
+
+
+footer { /* Extra site information */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+@media screen and (min-width: 700px) {
+    body {
+        margin: 1rem 15%;
+    }
+}
+
+@media screen and (min-width: 1125px) { /* Desktop Large Window */
+    #content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        height: 90vh;
+    }
+
+    .project-container {
+        padding: 2rem;
+    }
+}
+

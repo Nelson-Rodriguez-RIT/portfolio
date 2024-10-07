@@ -50,9 +50,46 @@ footer { /* Extra site information */
 }
 
 
-@media screen and (min-width: 700px) {
+
+.project {
+    height: min-content;
+}
+
+
+#extras-contact {
+    margin: 2rem 2.5%;
+}
+
+#extras-contact ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+
+#extras-contact li {
+    flex: 0 0 75px;
+    height: 75px;
+}
+
+
+#extras-interactables {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    margin: 2rem 2.5%;
+}
+
+
+@media screen and (min-width: 700px) { /* Desktop Small Window + Large Tablets */
     body {
         margin: 1rem 15%;
+    }
+
+    #extras-contact {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
     }
 }
 
@@ -61,11 +98,32 @@ footer { /* Extra site information */
         display: grid;
         grid-template-columns: 1fr 1fr;
 
-        height: 90vh;
+        height: 100vh;
     }
 
-    .project-container {
-        padding: 2rem;
+    #content-about {
+        padding: 5%;
     }
+
+    #content-wrapper .projects-container {
+        /* Allows for vertical scrolling without the scrollbar appearing */
+        overflow-y: scroll;
+        scrollbar-width: 0px; /* Firefox exclusive (Why does Chromium gotta make things harder?)*/
+        
+        max-height: 100vh;
+        margin: 5%;
+    }
+    #content-wrapper .projects-container::-webkit-scrollbar { /* The above but this targets Chrome and Safari */
+        display: none;
+    }
+
+
+    #content-wrapper .projects {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+
 }
 

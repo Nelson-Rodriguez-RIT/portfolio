@@ -1,4 +1,4 @@
-* { border: 1px solid black; } /* For layout purposes, use a / to comment out */
+/* { border: 1px solid black; } /* For layout purposes, use a / to comment out */
 
 /* Quick and dirty CSS reset */
 * { 
@@ -12,36 +12,75 @@
 
 
 body { 
+    /* I'm sure you could just use a flexbox, but this saves me time later when I convert it to a grid anyways */
     display: grid;
-    grid-template-areas: 
-        "header     header"
-        "about      content"
-        "footer     footer";
+    grid-template-areas: "content    about";
+    grid-template-columns: 1fr 1.25fr;
 
+    margin: 1rem auto;
 
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 10fr 0.5fr;
-
+    width: 750px;      /* Width was determined by how the content best matches the layout of the reference image */
     min-height: 100vh; /* Page length should always be at least the height of the viewport */
-    margin: 1rem;
 } 
 
 #about-wrapper {
     grid-area: about;
+    margin-top: 3.5rem;
 }
+
+#about-wrapper img {
+    height: 200px;
+    width: 100%;
+}
+
+
 
 #content-wrapper {
     grid-area: content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+
+}
+#content-wrapper img {
+    height: 175px;
+    width: 90%;
+    align-self: center;
+    margin-top: 2rem;
+}
+#content-wrapper h2 {
+    height: 3.5rem;
+    font-size: large;
+}
+#content-wrapper h3 {
+    text-align: center;
+}
+#content-wrapper section {
+    padding: 1rem;
+}
+
+#content-img-caption {
+    display: flex;
+    flex-direction: row;
+    padding: 0px 1rem;
+
+    font-size: small;
+}
+#content-img-caption span {
+    padding-right: 1rem;
 }
 
 
 
-/* Desktop Small Window + Large Tablets */
-@media screen and (min-width: 700px) { 
+.font-title {
 
 }
 
-/* Desktop Large Window */
-@media screen and (min-width: 1125px) {
-    
+.font-text {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.font-marker-text {
+
 }

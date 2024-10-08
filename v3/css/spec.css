@@ -1,0 +1,47 @@
+* { border: 1px solid black; } /* For layout purposes, use a / to comment out */
+
+/* Quick and dirty CSS reset */
+* { 
+    padding: 0%;
+    margin: 0%;
+    box-sizing: border-box;
+
+    list-style-type: none;
+    text-decoration: none;
+}
+
+
+body { 
+    display: grid;
+    grid-template-areas: 
+        "header     header"
+        "about      content"
+        "footer     footer";
+
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 10fr 0.5fr;
+
+    min-height: 100vh; /* Page length should always be at least the height of the viewport */
+    margin: 1rem;
+} 
+
+#about-wrapper {
+    grid-area: about;
+}
+
+#content-wrapper {
+    grid-area: content;
+}
+
+
+
+/* Desktop Small Window + Large Tablets */
+@media screen and (min-width: 700px) { 
+
+}
+
+/* Desktop Large Window */
+@media screen and (min-width: 1125px) {
+    
+}

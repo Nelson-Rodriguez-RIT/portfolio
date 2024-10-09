@@ -39,7 +39,7 @@ footer { /* Additional site info */
 
 
 
-/* Mobile and Small Desktop */
+
 body {
     margin: 1rem;
 
@@ -54,27 +54,28 @@ main {
     min-height: 90vh;
 }
 
-main ul {
+main > ul {
     display: grid;
-
-    grid-template-columns: repeat(auto-fill, 300px);
-    grid-template-rows: repeat(auto-fill, 300px);
-
+    grid-template-columns: repeat(auto-fill, 400px);
     grid-gap: 3rem;
-
     justify-content: center;
 
     width: 100%;
 }
 
-main li {
-    height: 300px;
-    width: 300px;
+main > ul > li {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 400px;
+    width: 400px;
 }
 
-/* Large Desktop */
-@media screen and (min-width: 1100px) {
-
-
-    
+main li > ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
+
+

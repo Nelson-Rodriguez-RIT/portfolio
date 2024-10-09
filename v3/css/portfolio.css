@@ -69,6 +69,25 @@ main {
     flex-direction: column;
 }
 
+
+
+#content-projects {
+    max-width: 400px;
+    max-height: 400px;
+
+    overflow-y: scroll;
+    margin: 0px auto;
+}
+
+#content-projects li {
+    width: 400px;
+    height: 400px;
+}
+
+
+
+
+
 #content-contact ul {
     display: flex;
     flex-direction: row;

@@ -5,14 +5,6 @@ const ctx = canvas.getContext('2d')
 canvas.width  = 1024
 canvas.height = 576
 
-
- /*
-Thank you random netizen https://stackoverflow.com/questions/5127937/how-to-center-canvas-in-html5
-     position: absolute;
-     top: 50%;
-     left: 50%;
-     transform: translate(-50%, -50%)
- */
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 deltatime = 0

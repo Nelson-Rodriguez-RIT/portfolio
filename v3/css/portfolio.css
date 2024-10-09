@@ -8,6 +8,7 @@
     list-style-type: none;
 }
 
+h1, h2, h3 { text-align: center; }
 
 header {
     display: grid;
@@ -45,6 +46,8 @@ body {
     min-height: 100vh;
 }
 
+
+
 main {
     display: flex;
     flex-direction: column;
@@ -52,16 +55,30 @@ main {
     height: 100%;
 }
 
+
+
 #about-wrapper {
     display: flex;
     flex-direction: column;
 }
+
+
 
 #content-wrapper {
     display: flex;
     flex-direction: column;
 }
 
+#content-contact ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+#content-contact li, #content-contact img {
+    width: 50px;
+    height: 50px;
+}
 
 
 /* Large Desktop */
@@ -72,5 +89,11 @@ main {
         grid-template-rows: 1fr 10fr 0.75fr;
 
         margin: 1rem 15%
+    }
+
+    main {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
     }
 }

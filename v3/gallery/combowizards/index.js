@@ -7,41 +7,51 @@ canvas.height = 576
 
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-deltatime = 0
-previousTime = window.performance.now()
-currentTime = 0
+var Deltatime = 0
+
+let previousTime = window.performance.now()
+let currentTime = 0
+
+
+const Players = []
+const Hitboxes = []
+
 
 class Object {
     constructor({position, dimensions}) {
 
-        this.position = {}
-        this.position.x = position.x
-        this.position.y = position.y
-        this.position.z = position.z
+        this.position = {
+            x: position.x,
+            y: position.y,
+            z: position.z
+        }
 
-        this.velocity = {}
-        this.velocity.x = 0
-        this.velocity.y = 0
-        this.velocity.z = 0
+        this.velocity = {
+            x: 0,
+            y: 0,
+            z: 0
+        }
 
-        this.acceleration = {}
-        this.acceleration.x = 0
-        this.acceleration.y = 0
-        this.acceleration.z = 0
+        this.acceleration = {
+            x: 0,
+            y: 0,
+            z: 0
+        }
 
-        this.dimensions = {}
-        this.dimensions.width  = dimensions.width
-        this.dimensions.height = dimensions.height        
+        this.dimensions = {
+            width:  dimensions.width,
+            height: dimensions.height
+        }    
     }
 
     update() {
-        this.velocity.x += this.acceleration.x * deltatime
-        this.velocity.y += this.acceleration.y * deltatime
-        this.velocity.z += this.acceleration.z * deltatime
+        this.velocity.x += this.acceleration.x * Deltatime
+        this.velocity.y += this.acceleration.y * Deltatime
+        this.velocity.z += this.acceleration.z * Deltatime
 
-        this.position.x += this.velocity.x * deltatime
-        this.position.y -= this.velocity.y * deltatime
-        this.position.z -= this.velocity.z * deltatime
+        this.position.x += this.velocity.x * Deltatime
+        this.position.y -= this.velocity.y * Deltatime
+        this.position.z -= this.velocity.z * Deltatime
     }
 
     draw(color) {
@@ -53,9 +63,9 @@ class Object {
 }
 
 class Character {
-    constructor({position, keybinds}) {
+    constructor({position, keybinds, stats}) {
         // Handles rendering and physics 
-        this.sprite = new Object({
+        this.object = new Object({
             position:   position,
             dimensions: {width: 25, height: 50}
         })
@@ -82,7 +92,6 @@ class Character {
         }
 
         // Tracks mouse info
-        this.controlsMouse = true
         this.mouse = {
             x: 0,
             y: 0,   // Called 'y' but really references the z axis in this context
@@ -98,15 +107,53 @@ class Character {
 
 
         // Tracks 4 different schools of magic, with there respecitive spells
-        this.magicSchools = [
+        this.magicSchools = [ // 2x2
             [
                 {
                     id: 1,
                     name: 'magic_school_1', 
                     spells: [
-                        {callback: () => {console.log('bang')}, chargeTime: 0},
-                        {callback: () => {console.log('boom')}, chargeTime: 1},
-                        {callback: () => {console.log('kaboom')}, chargeTime: 2}
+                        {callback: (x, z) => {
+                            let hitbox = new Hitbox({
+                                position: {x: this.object.position.x, y: 0, z: this.object.position.z},
+                                dimensions: {width: 25, height: 25},
+                                owner: this, // usually set to 'this' but for aoe moves that can hit yourself set it to null
+                                lifespan: 0.75, // seconds
+                                metadata: {
+                                    knockbackVelocity: 10, // Actuals knockback will be relavant to the source, pos means away, neg means towards
+                                    damageTypes: {hp: 25, mp: 0, sp: 0},
+                                    hitstun: 0.5,
+                                    pierces: false,
+                                    callback: () => console.log('hit'),
+                                    blockHitboxes: false,
+                                }
+                            })
+
+                            let directDistance = Math.sqrt(Math.pow(x - this.object.position.x, 2) + Math.pow(this.object.position.z - z, 2))
+
+                            hitbox.object.velocity.x = 500.0 * ((x - this.object.position.x) / directDistance)
+                            hitbox.object.velocity.z = 500.0 * ((this.object.position.z - z) / directDistance)
+
+                            Hitboxes.push(hitbox)
+                        }, chargeTime: 0, mpCost: 10, spCost: 25},
+                        {callback: (x, z) => {
+                            let hitbox = new Hitbox({
+                                position: {x: x, y: 0, z: z},
+                                dimensions: {width: 100, height: 100},
+                                owner: null,
+                                lifespan: 10,
+                                metadata: {
+                                    knockbackVelocity: 200, // Actuals knockback will be relavant to the source, pos means away, neg means towards
+                                    damageTypes: {hp: 150, mp: 100, sp: 100},
+                                    hitstun: 0.5,
+                                    pierces: false,
+                                    callback: () => console.log('hit'),
+                                    blockHitboxes: false,
+                                }
+                            })
+                            Hitboxes.push(hitbox)
+                        }, chargeTime: 1, mpCost: 25, spCost: 50},
+                        {callback: (x, z) => {console.log('kaboom')}, chargeTime: 2, mpCost: 50, spCost: 75}
                     ]
                 }
             ], 
@@ -114,6 +161,33 @@ class Character {
 
         ]
 
+        this.stats = {
+            // hp, mp, and rp regen mechanics
+            // hp: takes the longest to start regenerating, only the mana shield health can regenerate, and causes the most amount of exhuastion gain
+            // mp: takes a medium amount of time to start regenerating and causes a medium amount of exhuastion gain
+            // sp: takes the shortest amount of time to regenerate and causes the least amount of exhuastion gain
+
+            hp_max:    stats.hp,     // Health Points    if it reaches 0, the character dies. 
+            hp:        stats.hp / 2, // The first 50% of hp is a "mana shield health" while the latter is "true health". 
+            hp_shield: stats.hp / 2, // Reaching 0% mp causes the mana shield health to instantly deplete
+
+            mp_max: stats.mp,   // Mana Points      required to fufill the cost of casting spells and to maintain your mana shield
+            mp:     stats.mp,
+
+            sp_max: stats.sp,   // Stamina Points   required to fufill the cost of an action... an action can still be done if you have less than the cost but above 0 total
+            sp:     stats.sp,
+
+            exhaustion: 0,   // Recovering sp, mp, and hp causes exhuastion to build up reducing the rate at which those stats recover. 
+                             // Naturally goes away over time (even in combat) and directly decreases when your hp decreases
+
+            vit: stats.vit, // Vitality     determines the rate you recover exhaustion and how quickly you begin to regain hp, mp, and sp
+            atk: stats.atk, // Attack       determines the amount of damage you deal   (serves as a mutiplier)
+            def: stats.def, // Defense      determines the amount of damage you resist (serves as a mutiplier)
+            spd: stats.spd, // Speed        determines both the rate at which a character does non casting actions and the characters movement speed
+        }
+
+        this.hitstunTimer = 0
+        this.timeSinceLastAction = 0
 
         this.movementSpeed = 250 // Pixels per second
         this.m1HeldMaxTimer = 4 // In seconds
@@ -123,36 +197,38 @@ class Character {
     }
 
     update() {
+        this.timeSinceLastAction += Deltatime
+
         // Keyboard inputs
-        if (this.controllable) { 
-            this.sprite.velocity.z = 0
-            this.sprite.velocity.x = 0
+        if (this.controllable && (this.hitstunTimer -= Deltatime) <= 0) { 
+            this.object.velocity.z = 0
+            this.object.velocity.x = 0
 
             if (this.controls.up.pressed)
-                this.sprite.velocity.z = this.movementSpeed 
+                this.object.velocity.z = this.movementSpeed 
 
             if (this.controls.down.pressed)
-                this.sprite.velocity.z = -this.movementSpeed
+                this.object.velocity.z = -this.movementSpeed
 
             if (this.controls.left.pressed)
-                this.sprite.velocity.x = -this.movementSpeed
+                this.object.velocity.x = -this.movementSpeed
 
             if (this.controls.right.pressed)
-                this.sprite.velocity.x = this.movementSpeed
+                this.object.velocity.x = this.movementSpeed
 
             // Normalizes movement if its multi-directional
-            if (Math.abs(this.sprite.velocity.x) != 0 && Math.abs(this.sprite.velocity.z != 0)) {
-                this.sprite.velocity.x *= Math.sqrt(2) / 2
-                this.sprite.velocity.z *= Math.sqrt(2) / 2
+            if (Math.abs(this.object.velocity.x) != 0 && Math.abs(this.object.velocity.z != 0)) {
+                this.object.velocity.x *= Math.sqrt(2) / 2
+                this.object.velocity.z *= Math.sqrt(2) / 2
             }
         }
 
         // Mouse inputs
-        if (this.controlsMouse) {
+        if (this.controllable && this.hitstunTimer <= 0) {
             // Update m1 held timer (or keep it at its cap)
             if (this.mouse.m1Pressed)
-                this.mouse.m1PressedTimer += (this.mouse.m1PressedTimer + deltatime >= this.m1HeldMaxTimer) ? 
-                                             (-this.mouse.m1PressedTimer + this.m1HeldMaxTimer) : deltatime
+                this.mouse.m1PressedTimer += (this.mouse.m1PressedTimer + Deltatime >= this.m1HeldMaxTimer) ? 
+                                             (-this.mouse.m1PressedTimer + this.m1HeldMaxTimer) : Deltatime
     
     
             // Spellbook interaction
@@ -181,24 +257,75 @@ class Character {
             if (!this.mouse.m1Pressed && this.mouse.m1PressedTimer != 0 && this.selectedMagicSchool != null) {
                 for (let spell = this.selectedMagicSchool.spells.length - 1; spell >= 0; spell--)
                     if (this.selectedMagicSchool.spells[spell].chargeTime <= this.mouse.m1PressedTimer ||
-                        this.selectedMagicSchool.spells[spell].chargeTime == 0
+                        this.selectedMagicSchool.spells[spell].chargeTime == 0 
                     ) {
-                        this.selectedMagicSchool.spells[spell].callback()
+                        if (this.stats.mp >= this.selectedMagicSchool.spells[spell].mpCost && this.stats.sp > 0) {
+                            this.stats.mp -= this.selectedMagicSchool.spells[spell].mpCost
+                            this.stats.sp -= this.selectedMagicSchool.spells[spell].spCost
+
+                            this.selectedMagicSchool.spells[spell].callback(this.mouse.x, this.mouse.y)
+                        }
                         break
                     }
 
-                this.mouse.m1PressedTimer = 0
+                this.timeSinceLastAction = 0
             }
-                
-                    
+
+            if (!this.mouse.m1Pressed)
+                this.mouse.m1PressedTimer = 0
         }
 
+
+        // Track player death
+        if (this.stats.hp == 0)
+            this.controllable = false
+
+
+        // hp, mp, and sp recover logic + exhaustion logic
+        if (this.timeSinceLastAction > 1 && this.stats.sp < this.stats.sp_max) {
+            this.stats.sp += (125 * this.stats.vit / 10 * Deltatime) * (1 - this.stats.exhaustion)
+            this.stats.sp = (this.stats.sp > this.stats.sp_max) ? this.stats.sp_max : this.stats.sp
+
+            this.stats.exhaustion += 1.25 / 100 * Deltatime
+        }
+
+        if (this.timeSinceLastAction > 2.5 && this.stats.mp < this.stats.mp_max) {
+            this.stats.mp += (50 * this.stats.vit / 10 * Deltatime) * (1 - this.stats.exhaustion)
+            this.stats.mp = (this.stats.mp > this.stats.mp_max) ? this.stats.mp_max : this.stats.mp
+
+            this.stats.exhaustion += 2.5 / 100 * Deltatime
+        }
+
+        if (this.timeSinceLastAction > 5 && this.stats.hp_shield < this.stats.hp_max / 2) {
+            this.stats.hp_shield += (25 * this.stats.vit / 10 * Deltatime) * (1 - this.stats.exhaustion)
+            this.stats.hp_shield = (this.stats.hp_shield > this.stats.hp_max / 2) ? this.stats.hp_max / 2 : this.stats.hp_shield
+
+            this.stats.exhaustion += 5 / 100 * Deltatime
+        }
+
+        this.stats.exhaustion -= Deltatime / 100
+        if (this.stats.exhaustion < 0)
+            this.stats.exhaustion = 0
+        else if (this.stats.exhaustion > 1)
+            this.stats.exhaustion = 1
+
+
+        if (this.stats.hp < 0)
+            this.stats.hp = 0
+        if (this.stats.hp_shield < 0)
+            this.stats.hp_shield = 0
+        if (this.stats.mp < 0)
+            this.stats.mp = 0
+        if (this.stats.sp < 0)
+            this.stats.sp = 0
+
+
         // Should be last to give time for updating velocity, accceleration etc
-        this.sprite.update()
+        this.object.update()
     }
 
     draw() {
-        this.sprite.draw('white')
+        this.object.draw('white')
 
 
         // Draw progress bar if m1 is held
@@ -222,7 +349,7 @@ class Character {
                     if (this.mouse.x > (this.mouse.staticX - 150) + (row * 150) && this.mouse.x < (this.mouse.staticX - 150) + (row + 1) * 150 &&
                         this.mouse.y > (this.mouse.staticY - 150) + col * 150 && this.mouse.y < (this.mouse.staticY - 150) + (col + 1) * 150
                     ) {
-                        ctx.fillStyle = `rgb(240, 239, 125, 0.25)`
+                        ctx.fillStyle = `rgba(240, 239, 125, 0.25)`
                         ctx.fillRect((this.mouse.staticX - 150) + (row * 150), (this.mouse.staticY - 150) + (col * 150), 150, 150)
                     }
                 }
@@ -230,15 +357,90 @@ class Character {
             
         }
 
+        // Draw status UI
+        ctx.fillStyle = `rgba(0, 0, 0, 0.5)`
+        ctx.fillRect(10, 10, this.stats.hp_max, 10)
+        ctx.fillRect(10, 30, this.stats.mp_max, 10)
+        ctx.fillRect(10, 50, this.stats.sp_max, 10)
+
+        // hp bar
+        ctx.fillStyle = `rgb(255, 69, 69)`
+        ctx.fillRect(10, 10, this.stats.hp, 10)
+        ctx.fillStyle = `rgb(100, 100, 155)`
+        ctx.fillRect(10 + this.stats.hp, 10, this.stats.hp_shield, 10)
+
+        // mp bar 
+        ctx.fillStyle = `rgb(69, 69, 255)`
+        ctx.fillRect(10, 30, this.stats.mp, 10)
+
+        // sp + exhuastion bar
+        ctx.fillStyle = `rgb(69, 205, 69)`
+        ctx.fillRect(10, 50, this.stats.sp, 10)
+        ctx.fillStyle = `rgba(0, 0, 0, 0.5)`
+        ctx.fillRect(
+            10 + (this.stats.sp - (this.stats.sp_max * this.stats.exhaustion) > 0 ? this.stats.sp - (this.stats.sp_max * this.stats.exhaustion) : 0), 
+            50, 
+            this.stats.sp < (this.stats.sp_max * this.stats.exhaustion) ? this.stats.sp : (this.stats.sp_max * this.stats.exhaustion), 
+            10)
+
         // Draw cursor
         ctx.fillStyle = 'black'
         ctx.fillRect(this.mouse.x - 5, this.mouse.y - 5, 10, 10)
     }
 }
-player = new Character({
-    position: {x: 20, y: 0, z: 20}, 
-    keybinds: {up: 'w', down: 's', left: 'a', right: 'd'}
-})
+
+class Hitbox {
+    constructor({position, dimensions, owner, lifespan, metadata}) {
+        this.object = new Object({position, dimensions})
+
+        this.owner = owner
+        this.lifespan = lifespan
+
+        this.metadata = {
+            knockbackVelocity: metadata.knockbackVelocity,
+
+            damageTypes: {
+                hp: metadata.damageTypes.hp,
+                mp: metadata.damageTypes.mp,
+                sp: metadata.damageTypes.sp
+            },
+
+            hitstun: metadata.hitstun,
+            pierces: metadata.pierces,
+            callback: metadata.callback,
+            blockHitboxes: metadata.blockHitboxes
+        }
+    }
+
+    collidesWith(hitbox) {
+        return  this.object.position.x < hitbox.object.position.x + hitbox.object.dimensions.width && this.object.position.x + this.object.dimensions.width > hitbox.object.position.x &&
+                this.object.position.z < hitbox.object.position.z + hitbox.object.dimensions.height && this.object.position.z + this.object.dimensions.height > hitbox.object.position.z &&
+                this.object.position.y == hitbox.object.position.y
+    }
+
+    update() {
+        this.lifespan -= Deltatime
+        this.object.update()
+    }
+
+    draw() {
+        this.object.draw(`rgb(200, 25, 25)`)
+    }
+}
+
+
+
+
+
+
+
+Players.push(new Character({
+    position: {x: 25, y: 0, z: 100}, 
+    keybinds: {up: 'w', down: 's', left: 'a', right: 'd'},
+    stats:    {hp: 200, mp: 150, sp: 250, vit: 10, atk: 10, def: 10, spd: 10}
+}))
+
+
 
 
 
@@ -250,14 +452,82 @@ function main() {
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     currentTime = window.performance.now()
-    deltatime = (currentTime - previousTime) / 1000
-
+    Deltatime = (currentTime - previousTime) / 1000
 
 
     // Player
-    player.update()
-    player.draw()
+    let hitboxesValidated = false
+    for (let playerIndex = 0; playerIndex < Players.length; playerIndex++) {
+        
+        for (let hitboxIndex = 0; hitboxIndex < Hitboxes.length; hitboxIndex++) {
+            /*/ Check hitbox + hitbox interactions
+            if (!hitboxesValidated) {
+                for (let checkAgainstIndex = 0; checkAgainstIndex < Hitboxes.length; checkAgainstIndex++) {
+                    if (checkAgainstIndex == hitboxIndex) continue
+    
+                    if (Hitboxes[hitboxIndex].collidesWith(Hitboxes[checkAgainstIndex]) && Hitboxes[checkAgainstIndex].blockHitboxes)
+                        Hitboxes[hitboxIndex].lifespan = 0
+                }
+            }
+            */
+            // Check hitbox + player interactions
+            if (Hitboxes[hitboxIndex].collidesWith(Players[playerIndex]) && Hitboxes[hitboxIndex].owner != Players[playerIndex] && !(Hitboxes[hitboxIndex].lifespan <= 0)) {
+                // Deal respective damage types
+                Players[playerIndex].stats.hp_shield -= Hitboxes[hitboxIndex].metadata.damageTypes.hp
+                if (Players[playerIndex].stats.hp_shield < 0) {
+                    Players[playerIndex].stats.hp += Players[playerIndex].stats.hp_shield
+                    Players[playerIndex].stats.hp_shield = 0
+                }
 
+                Players[playerIndex].stats.mp -= Hitboxes[hitboxIndex].metadata.damageTypes.mp
+                if (Players[playerIndex].stats.mp < 0)
+                    Players[playerIndex].stats.mp = 0
+
+                Players[playerIndex].stats.mp -= Hitboxes[hitboxIndex].metadata.damageTypes.sp
+                if (Players[playerIndex].stats.sp < 0)
+                    Players[playerIndex].stats.sp = 0
+
+
+                // Set hitstun if needed
+                if (Players[playerIndex].hitstunTimer < Hitboxes[hitboxIndex].metadata.hitstun)
+                    Players[playerIndex].hitstunTimer = Hitboxes[hitboxIndex].metadata.hitstun
+
+
+                // Set knockback
+                let directDistance = Math.sqrt(Math.pow((Players[playerIndex].object.position.x - Hitboxes[hitboxIndex].object.position.x), 2) + Math.pow((Hitboxes[hitboxIndex].object.position.z - Players[playerIndex].object.position.z), 2))
+
+                Players[playerIndex].object.velocity.x = Hitboxes[hitboxIndex].metadata.knockbackVelocity * (Players[playerIndex].object.position.x - Hitboxes[hitboxIndex].object.position.x) / directDistance
+                Players[playerIndex].object.velocity.z = Hitboxes[hitboxIndex].metadata.knockbackVelocity * (Hitboxes[hitboxIndex].object.position.z - Players[playerIndex].object.position.z) / directDistance
+
+                // Check if this hitbox can pierces multiple players
+                if (!Hitboxes[hitboxIndex].metadata.pierces)
+                    Hitboxes[hitboxIndex].lifespan = 0
+
+                // Call this hitbox's callbacb if it has one
+                if (Hitboxes[hitboxIndex].metadata.callback != null)
+                    Hitboxes[hitboxIndex].metadata.callback(Players[playerIndex], Hitboxes[hitboxIndex])
+
+
+            }
+            
+        }
+        hitboxesValidated = true
+        
+
+        Players[playerIndex].update()
+        Players[playerIndex].draw()
+
+        
+    }
+
+    for (let hitboxIndex = 0; hitboxIndex < Hitboxes.length; hitboxIndex++) {
+        if (Hitboxes[hitboxIndex].lifespan > 0) {
+            Hitboxes[hitboxIndex].update()
+            Hitboxes[hitboxIndex].draw()
+        }
+
+        // Remove hitboxes with lifespan = 0, make sure to create a seperate array to prevent undefined behavior
+    }
 
     previousTime = currentTime
 } main()
@@ -265,73 +535,76 @@ function main() {
 
 
 
+
+
+
 window.addEventListener('keydown', (event) => {
-    key = event.key.toLowerCase()
+    let key = event.key.toLowerCase()
 
     switch(key) {
-        case player.controls.up.key:
-            player.controls.up.pressed    = true
+        case Players[0].controls.up.key:
+            Players[0].controls.up.pressed    = true
             break
 
-        case player.controls.down.key:
-            player.controls.down.pressed  = true
+        case Players[0].controls.down.key:
+            Players[0].controls.down.pressed  = true
             break
 
-        case player.controls.left.key:
-            player.controls.left.pressed  = true
+        case Players[0].controls.left.key:
+            Players[0].controls.left.pressed  = true
             break
 
-        case player.controls.right.key:
-            player.controls.right.pressed = true
+        case Players[0].controls.right.key:
+            Players[0].controls.right.pressed = true
             break
     }
 })
 
 window.addEventListener('keyup', (event) => {
-    key = event.key.toLowerCase()
+    let key = event.key.toLowerCase()
 
     switch(key) {
-        case player.controls.up.key:
-            player.controls.up.pressed = false
+        case Players[0].controls.up.key:
+            Players[0].controls.up.pressed = false
             break
 
-        case player.controls.down.key:
-            player.controls.down.pressed = false
+        case Players[0].controls.down.key:
+            Players[0].controls.down.pressed = false
             break
 
-        case player.controls.left.key:
-            player.controls.left.pressed = false
+        case Players[0].controls.left.key:
+            Players[0].controls.left.pressed = false
             break
 
-        case player.controls.right.key:
-            player.controls.right.pressed = false
+        case Players[0].controls.right.key:
+            Players[0].controls.right.pressed = false
     }
 })
 
 window.addEventListener('mousemove', (event) => {
-    player.mouse.x = event.layerX
-    player.mouse.y = event.layerY
+    Players[0].mouse.x = event.layerX
+    Players[0].mouse.y = event.layerY
 })
 
 window.addEventListener('mousedown', (event) => {
     if (event.button == 0)
-        player.mouse.m1Pressed = true
+        Players[0].mouse.m1Pressed = true
 
     if (event.button == 2) {
-        player.mouse.m2Pressed = true
-        player.mouse.staticX = event.layerX
-        player.mouse.staticY = event.layerY
+        Players[0].mouse.m2Pressed = true
+        Players[0].mouse.staticX = event.layerX
+        Players[0].mouse.staticY = event.layerY
     }
         
 })
 
 window.addEventListener('mouseup', (event) => {
     if (event.button == 0) {
-        player.mouse.m1Pressed = false
+        Players[0].mouse.m1Pressed = false
     }
 
     if (event.button == 2) {
-        player.mouse.m2Pressed = false
+        Players[0].mouse.m2Pressed = false
     }
         
 })

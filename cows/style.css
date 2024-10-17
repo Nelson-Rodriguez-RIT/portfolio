@@ -1,0 +1,93 @@
+* { border: 1px solid black; } /**/
+
+* { /* CSS reset */
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    text-decoration: none; 
+    list-style-type: none;
+}
+
+h1, h2, h3 { text-align: center; }
+
+header {
+    display: grid;
+    grid-template-rows: 1.5fr 1.0fr;
+
+    padding: 1rem;
+}
+header ul { /* Logos */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+header nav { /* Navigation */
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+
+footer { /* Additional site info */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    width: 100%;
+    padding: 1rem;
+}
+
+
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 100vh;
+}
+
+main {
+    height: 100%;
+}
+
+canvas {
+    cursor: none;
+
+    /* https://stackoverflow.com/questions/34597160/html-canvas-mouse-position-after-scale-and-translate */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  
+
+    width: 1024px;
+    height: 576px;
+
+    /* Ensures (or tries to ensure) a pixilated look */
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+main span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  
+}
+
+
+/* Hides canvas if screen dimensions aren't big enough. Reveals a message to inform the user */
+@media screen and (max-width: 1024px) {
+    canvas {
+        left: -9999px;
+    }
+}
+
+@media screen and (max-height: 576px) {
+    canvas {
+        left: -9999px;
+    }
+}

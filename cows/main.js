@@ -32,9 +32,10 @@ const config = {
     mageWidth:  25, // px
     mageHeight: 50, // px
 
-    dodgeBoost: 1.5, // %
+    dodgeBoost: 1.75, // multiplier
 
-    friction: 600,  // px/s^2
+    friction: 400,  // px/s^2
+    minVelocity: 5, // px/s, velocity has to be above this value
 
     defaultKeybinds: {
         up: 'w', down: 's', left: 'a', right: 'd',
@@ -66,9 +67,14 @@ const config = {
 
 [ ] For hp/hps, just have the the two bars overlap each other. (Logic change: make hps regen require not getting hit until its fully charged) During a hps shield break, use a custom "broken" bar
 
-[ ] Make reverse sprites for all images (Perhaps just flipe each image directly, and store two copies? Canvas scale doesn't really help at this (apparently without major performance hit))
+[*] Make reverse sprites for all images (Perhaps just flipe each image directly, and store two copies? Canvas scale doesn't really help at this (apparently without major performance hit))
 
-[ ] Adjust velocity required for turnarounds to around movement speed * 0.75 or * 0.5
+[*] Adjust velocity required for turnarounds to around movement speed * 0.75 or * 0.5
+    [ ] Make this a config setting
+
+[*] Make friction occur regardless if its a pc or npc
+
+[ ] Make dodge turn into a dash when there's not enough mp
 
 */
 
@@ -123,8 +129,6 @@ class Model {
                 this.framedata[this.spriteRow].frames.forEach( (frame) => {
                     if ((this.framedata[this.spriteRow].last - this.timer < frame) && (this.framedata[this.spriteRow].last != frame))
                         col--;
-
-                    console.log(col + ' ' + this.timer + ' ' + frame + ' ' + this.framedata[this.spriteRow].last)
                 })
         }
             
@@ -174,6 +178,25 @@ class Object {
         this.position.x += this.velocity.x * Deltatime;
         this.position.y += this.velocity.y * Deltatime;
         this.position.z += this.velocity.z * Deltatime;
+
+
+        // Friction only applies while touching the ground, y = 0, projectiles should make sure to set their y values different from 0
+        if (this.position.y == 0) {
+            if (this.velocity.x != 0) {
+                this.velocity.x += (this.velocity.x > 0 ? -config.friction : config.friction) * Deltatime;
+    
+                if (Math.abs(this.velocity.x) < config.minVelocity)
+                    this.velocity.x = 0;
+            }
+    
+            if (this.velocity.z != 0) {
+                this.velocity.z += (this.velocity.z > 0 ? -config.friction : config.friction) * Deltatime;
+    
+                if (Math.abs(this.velocity.z) < config.minVelocity)
+                    this.velocity.z = 0;
+            }
+        }
+            
     }
 
     draw() {
@@ -195,7 +218,7 @@ class Object {
 
 
 class Mage {
-    constructor({position}) {
+    constructor({position, stats}) {
         this.object = new Object({
             position: position,
             dimensions: {widht: config.mageWidth, height: config.mageHeight},
@@ -213,14 +236,24 @@ class Mage {
                 ],
                 rows: 8, columns: 9,
             }),
-        })
+        });
 
-        this.stats = {}
+        this.stats = {
+            hp_max: stats.hp_max,
+            hp_base: stats.hp_max / 2,
+            hp_mana: stats.hp_max / 2,
+
+            mp_max: stats.mp_max,
+            mp: stats.mp_max,
+
+            sp_max: stats.sp_max,
+            sp: stats.sp_max
+        }
 
         this.status = {
             dodge: {active: false, timer: 0},
             stun:  {active: false, timer: 0, isLag: false}, // isLag means the stun sprite won't be used
-        }
+        };
     }
 
     update() {
@@ -284,8 +317,8 @@ class Mage {
 
 
 class Player {
-    constructor({position, keybinds}) {
-        this.mage = new Mage({position});
+    constructor({position, keybinds, stats}) {
+        this.mage = new Mage({position, stats});
         Mages.push(this.mage);
 
         this.inputs = {
@@ -322,8 +355,8 @@ class Player {
             if (this.inputs.pressed.up && 
                 this.mage.object.velocity.z > -this.movementMaxVelocity * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1) 
             ) {
-                if (this.inputs.pressed.dodge) // Dodging immediatly increases movementVelocity
-                    this.mage.object.velocity.z = -this.movementMaxVelocity * config.dodgeBoost
+                if (this.inputs.pressed.dodge || this.mage.status.dodge.active) // Dodging immediatly increases movementVelocity
+                    this.mage.object.velocity.z = -this.movementMaxVelocity * config.dodgeBoost * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1);
                 else
                     this.mage.object.velocity.z -= this.movementAcceleraton * Deltatime;
             }
@@ -331,8 +364,8 @@ class Player {
             if (this.inputs.pressed.down && 
                 this.mage.object.velocity.z < this.movementMaxVelocity * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1) 
             ) {
-                if (this.inputs.pressed.dodge)
-                    this.mage.object.velocity.z = this.movementMaxVelocity * config.dodgeBoost
+                if (this.inputs.pressed.dodge || this.mage.status.dodge.active)
+                    this.mage.object.velocity.z = this.movementMaxVelocity * config.dodgeBoost * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1);
                 else
                     this.mage.object.velocity.z += this.movementAcceleraton * Deltatime;
             }
@@ -340,8 +373,8 @@ class Player {
             if (this.inputs.pressed.left && 
                 this.mage.object.velocity.x > -this.movementMaxVelocity * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1) 
             ) {
-                if (this.inputs.pressed.dodge)
-                    this.mage.object.velocity.x = -this.movementMaxVelocity * config.dodgeBoost
+                if (this.inputs.pressed.dodge || this.mage.status.dodge.active)
+                    this.mage.object.velocity.x = -this.movementMaxVelocity * config.dodgeBoost * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1);
                 else
                     this.mage.object.velocity.x -= this.movementAcceleraton * Deltatime;
             }
@@ -349,25 +382,17 @@ class Player {
             if (this.inputs.pressed.right && 
                 this.mage.object.velocity.x < this.movementMaxVelocity * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1) 
             ) {
-                if (this.inputs.pressed.dodge)
-                    this.mage.object.velocity.x = this.movementMaxVelocity * config.dodgeBoost
+                if (this.inputs.pressed.dodge || this.mage.status.dodge.active)
+                    this.mage.object.velocity.x = this.movementMaxVelocity * config.dodgeBoost * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1);
                 else
                     this.mage.object.velocity.x += this.movementAcceleraton * Deltatime;
             }
         }
-
-            // Use friction if no inputs (or external factors such as stun timers)
-            // Change this to be applicable to all mage and only do when y = 0
-            if (!(this.inputs.pressed.up || this.inputs.pressed.down) && Math.abs(this.mage.object.velocity.z) > 0)
-                this.mage.object.velocity.z -= (Math.abs(this.mage.object.velocity.z) < 1 ? this.mage.object.velocity.z : config.friction * (Math.abs(this.mage.object.velocity.z) / this.mage.object.velocity.z) * Deltatime);
-
-            if (!(this.inputs.pressed.left || this.inputs.pressed.right) && Math.abs(this.mage.object.velocity.x) > 0)
-                this.mage.object.velocity.x -= (Math.abs(this.mage.object.velocity.x) < 1 ? this.mage.object.velocity.x : config.friction * (Math.abs(this.mage.object.velocity.x) / this.mage.object.velocity.x) * Deltatime);
-        
     }
 
     // Player ui elements
     draw() {
+        // TODO: This... i've begun working on stats below
     }
 }
 
@@ -381,7 +406,7 @@ class Player {
 
 function init() {
     config.assets.forEach( (asset) => {
-        sprite = new Image(asset.columns * config.assetWidth, asset.rows * config.assetHeight);
+        let sprite = new Image(asset.columns * config.assetWidth, asset.rows * config.assetHeight);
         sprite.src = asset.url;
 
         Assets.push(sprite);
@@ -389,11 +414,21 @@ function init() {
 
     User = new Player({
         position: { x: 50, y: 0, z: 50 },
-        keybinds: config.defaultKeybinds
+        keybinds: config.defaultKeybinds,
+        stats: {
+            hp_max: 100,
+            mp_max: 80,
+            sp_max: 140,
+        }
     });
 
     Mages.push(new Mage({
-        position: { x: 50, y: 0, z: 50 }
+        position: { x: 50, y: 0, z: 50 },
+        stats: {
+            hp_max: 100,
+            mp_max: 80,
+            sp_max: 140,
+        }
     }))
 
     main();

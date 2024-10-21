@@ -32,7 +32,7 @@ const config = {
     mageWidth:  25, // px
     mageHeight: 50, // px
 
-    dodgeBoost: 1.75, // multiplier
+    dodgeBoost: 2, // multiplier
 
     friction: 400,  // px/s^2
     minVelocity: 5, // px/s, velocity has to be above this value
@@ -171,6 +171,9 @@ class Object {
             z: 0
         };
 
+        this.isAcceleratingX = false;
+        this.isAcceleratingZ = false;
+
         this.model = model;
     }
 
@@ -182,14 +185,14 @@ class Object {
 
         // Friction only applies while touching the ground, y = 0, projectiles should make sure to set their y values different from 0
         if (this.position.y == 0) {
-            if (this.velocity.x != 0) {
+            if (this.velocity.x != 0 && !this.isAcceleratingX) {
                 this.velocity.x += (this.velocity.x > 0 ? -config.friction : config.friction) * Deltatime;
     
                 if (Math.abs(this.velocity.x) < config.minVelocity)
                     this.velocity.x = 0;
             }
     
-            if (this.velocity.z != 0) {
+            if (this.velocity.z != 0 && !this.isAcceleratingZ) {
                 this.velocity.z += (this.velocity.z > 0 ? -config.friction : config.friction) * Deltatime;
     
                 if (Math.abs(this.velocity.z) < config.minVelocity)
@@ -338,11 +341,16 @@ class Player {
 
     // Player controls
     update() {
+        this.mage.object.isAcceleratingX = false;
+        this.mage.object.isAcceleratingZ = false;    
+
         // For spell selection, use movement keys to pick between one of the four (make it doable during something like dash)
 
         // If the up keybind is pressed, check if the current z velocity is less than the max 
         // movement velocity (normalize it if moving in more than axis) and if so, add to velocity (outside of typical acceleration)
         if (!this.mage.status.stun.active && !this.mage.status.dodge.active) {
+
+
             if (this.inputs.pressed.dodge) {
                 this.mage.status.stun.active = true;
                 this.mage.status.stun.timer = 12;
@@ -353,39 +361,61 @@ class Player {
             }
 
             if (this.inputs.pressed.up && 
-                this.mage.object.velocity.z > -this.movementMaxVelocity * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1) 
+                this.mage.object.velocity.z >= -this.movementMaxVelocity * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1) 
             ) {
+                this.mage.object.isAcceleratingZ = true;
+
                 if (this.inputs.pressed.dodge || this.mage.status.dodge.active) // Dodging immediatly increases movementVelocity
                     this.mage.object.velocity.z = -this.movementMaxVelocity * config.dodgeBoost * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1);
-                else
+                else {
                     this.mage.object.velocity.z -= this.movementAcceleraton * Deltatime;
+                }
             }
 
             if (this.inputs.pressed.down && 
-                this.mage.object.velocity.z < this.movementMaxVelocity * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1) 
+                this.mage.object.velocity.z <= this.movementMaxVelocity * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1) 
             ) {
+                this.mage.object.isAcceleratingZ = true;
+
                 if (this.inputs.pressed.dodge || this.mage.status.dodge.active)
                     this.mage.object.velocity.z = this.movementMaxVelocity * config.dodgeBoost * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1);
-                else
+                else {
                     this.mage.object.velocity.z += this.movementAcceleraton * Deltatime;
+                }
             }
 
+
             if (this.inputs.pressed.left && 
-                this.mage.object.velocity.x > -this.movementMaxVelocity * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1) 
+                this.mage.object.velocity.x >= -this.movementMaxVelocity * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1) 
             ) {
+                this.mage.object.isAcceleratingX = true;
+                
                 if (this.inputs.pressed.dodge || this.mage.status.dodge.active)
                     this.mage.object.velocity.x = -this.movementMaxVelocity * config.dodgeBoost * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1);
-                else
+                else {
                     this.mage.object.velocity.x -= this.movementAcceleraton * Deltatime;
+                }
             }
 
             if (this.inputs.pressed.right && 
-                this.mage.object.velocity.x < this.movementMaxVelocity * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1) 
+                this.mage.object.velocity.x <= this.movementMaxVelocity * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1) 
             ) {
+                this.mage.object.isAcceleratingX = true;
+
                 if (this.inputs.pressed.dodge || this.mage.status.dodge.active)
                     this.mage.object.velocity.x = this.movementMaxVelocity * config.dodgeBoost * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1);
-                else
+                else {
                     this.mage.object.velocity.x += this.movementAcceleraton * Deltatime;
+                }
+            }
+
+
+            if (!this.inputs.pressed.dodge) {
+                if (Math.abs(this.mage.object.velocity.x) > this.movementMaxVelocity * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1))
+                    this.mage.object.velocity.x = (this.mage.object.velocity.x > 0 ? this.movementMaxVelocity : -this.movementMaxVelocity) * ((this.inputs.pressed.up || this.inputs.pressed.down) ? Math.sqrt(2) / 2 : 1)
+
+                if (Math.abs(this.mage.object.velocity.z) > this.movementMaxVelocity * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1))
+                    this.mage.object.velocity.z = (this.mage.object.velocity.z > 0 ? this.movementMaxVelocity : -this.movementMaxVelocity) * ((this.inputs.pressed.left || this.inputs.pressed.right) ? Math.sqrt(2) / 2 : 1)
             }
         }
     }
@@ -473,7 +503,7 @@ function main() {
     User.draw();
 
 
-
+    console.log(Deltatime)
     previousTime = currentTime;
 } 
 

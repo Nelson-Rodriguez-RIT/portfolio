@@ -185,6 +185,7 @@ main {
 }
 
 #projects-showcase ul {
+    text-align: left;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
@@ -241,7 +242,10 @@ main {
     padding: 2rem 1rem;
 }
 
-
+.project-descriptor a h2, .showcase a h3 {
+    
+    color: #ffb0b0;
+}
 
 /* Small++ Desktops */
 @media screen and (min-width: 850px) { 
@@ -254,6 +258,7 @@ main {
     #gallery-wrapper .showcase, #gallery-wrapper p, #gallery-wrapper .tags {
         margin: 0.5rem;
     }
+
 }
 
 /* Small Desktops */
@@ -291,10 +296,18 @@ main {
     }
 
 
-    h1{
+    h1 {
         text-align: left;
+
     }
 
+    #projects-showcase h1{
+        text-align: left;
+        padding-top: 0.5rem;
+    }
+
+    
+    
     #about-me {
         margin-right: 2rem;
     }
@@ -304,6 +317,10 @@ main {
         left: initial;
 
         margin-left: 2rem;
+    }
+
+    #projects-showcase h2 {
+        text-align: left;
     }
 
     #projects-showcase > ul {
@@ -529,12 +546,10 @@ main {
     background-color: #74d088;
     border-radius: 25px;
 
+    color: rgb(227, 227, 227);
+
     width: 100px;
     height: 50px;
     padding-top: 15px;
     margin-left: 1rem;
-}
-
-.play-button > a {
-    color: rgb(227, 227, 227);
 }

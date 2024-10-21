@@ -251,6 +251,15 @@ main {
     #gallery-wrapper > ul { 
         grid-template-columns: 1fr 1fr;
     }
+
+    #gallery-wrapper > ul > li {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        height: 100%;
+        padding: 0.5rem 0rem;
+    }
 }
 
 
@@ -345,14 +354,7 @@ main {
         grid-gap: 0.75rem
     }
 
-    #gallery-wrapper > ul > li {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        height: 100%;
-        padding: 0.5rem 0rem;
-    }
+    
 }
 
 /* Large++ Desktops */

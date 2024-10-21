@@ -1,0 +1,349 @@
+/* {border: 1px solid black} /* Debug */
+
+/* CSS Reset */
+* {
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+
+    text-decoration: none;
+    list-style: none;
+}
+
+hr {
+    position: relative;
+    width: 95%;
+    left: 2.5%;
+}
+
+body {
+    background-color: rgb(24, 24, 24);
+    color: rgb(204, 204, 204);
+}
+
+body > * {
+    background-color: rgb(35, 35, 35);
+}
+
+
+/* Site Logos + Navigation */
+header {
+    display: grid;
+    grid-template-rows: 1.5fr 1fr;
+
+    padding: 1rem;
+}
+
+header > ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+header > nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+
+    margin-top: 1rem;
+}
+
+
+
+/* Extra Site Information */
+footer {
+    display: flex;
+    justify-content: center;
+
+    padding: 1rem;
+}
+
+
+
+
+main, section {
+    margin: 5%;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+h3 {
+    padding-left: 1rem;
+}
+
+main {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+#about-me {
+    padding-left: 1rem;
+}
+
+/* Hide this section if screen width is too small */
+#projects-showcase {
+    position: fixed;
+    left: -9999px;
+}
+
+
+#gallery-wrapper {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+#gallery-wrapper > ul {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto-fill, 1fr);
+
+    grid-gap: 2.5rem;
+}
+
+
+
+#contact-wrapper {
+    text-align: center;
+
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+
+#contact-wrapper ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#contact-wrapper li {
+    padding: 2rem 1rem;
+}
+
+
+
+/* Small++ Desktops */
+@media screen and (min-width: 850px) { 
+    main, section {
+        margin: 2rem 15%;
+    }
+
+    
+
+    #gallery-wrapper .showcase, #gallery-wrapper p, #gallery-wrapper .tags {
+        margin: 1rem;
+    }
+}
+
+/* Small Desktops */
+@media screen and (min-width: 970px) { 
+    main, section {
+        margin: 2rem 10%;
+    }
+
+    #gallery-wrapper > ul { 
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+
+/* Medium Desktops */
+@media screen and (min-width: 1250px) {
+    main, section {
+        margin: 2rem 10%;
+    }
+
+
+    main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    h1{
+        text-align: left;
+    }
+
+    #about-me {
+        margin-right: 2rem;
+    }
+
+    #projects-showcase {
+        position: initial;
+        left: initial;
+
+        margin-left: 2rem;
+    }
+
+    #projects-showcase > ul {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+
+        grid-gap: 1rem 4rem;
+    }
+    
+    .project-descriptor {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        height: 65px;
+    }
+    
+    .project-descriptor img {
+        display: block;
+    }
+    
+    #projects-showcase .showcase {
+        margin: 1rem 0px;
+    }
+    
+    #projects-showcase {
+        padding: 0px 1rem;
+    }
+
+
+    #gallery-wrapper > ul {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(auto-fill, 1fr);
+
+        grid-gap: 1rem 4rem;
+    }
+}
+
+/* Large Desktops */
+@media screen and (min-width: 1450px) {
+    main, section {
+        margin: 2rem 10%;
+    }
+
+    #about-me p {
+        padding: 0px 5rem;
+    }
+
+    #gallery-wrapper > ul {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: repeat(auto-fill, 1fr);
+
+        grid-gap: 0.75rem
+    }
+}
+
+/* Large++ Desktops */
+@media screen and (min-width: 1650px) {
+    main, section {
+        margin: 2rem 15%;
+    }
+
+    #about-me p {
+        padding: 0px 12.5%;
+    }
+}
+
+
+
+
+
+
+
+
+/* Tag Class */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.tags > li {
+    padding: 0.1rem 0.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.right {
+    flex-direction: row-reverse;
+}
+
+.right > li {
+    margin-left: 0.5rem;
+}
+
+
+
+
+/* Slideshow Class https://devncoffee.com/responsive-image-slider-in-html-css/ */
+
+/* Slideshow functionality */
+.slides input[type="radio"] { display: none; }
+.slides li {
+    visibility: hidden;
+    opacity: 0;
+
+    transition: all 0.35s;
+}
+
+.slides input[type="radio"]:checked + li {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.slides {
+    margin: 0px auto;
+    position: relative;
+
+    height: 300px;
+    width: 400px;
+}
+
+
+
+.slides img, .slides label {
+    position: absolute;
+}
+
+.slides label {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.slides img {
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slides label {
+    top: 50%; 
+    transform: translateY(-50%); 
+
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+
+    width: 40px; 
+    height: 40px; 
+    
+    border-radius: 50%;
+
+    font-size: 1em; 
+    cursor: pointer;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+
+.slides-small {
+    max-width: 350px;
+    max-height: 200px;
+}

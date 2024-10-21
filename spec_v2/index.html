@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+
+    
+    <link rel="stylesheet" href="./css/portfolio.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="fira-sans-regular">
+    <header>
+        <!--
+        <ul>
+            <li><a href="./"><img src="./media/" alt="Portfolio"></a></li>
+            <li><a href="https://github.com/Nelson-Rodriguez-RIT/"><i class="fab fa-github fa-4x"></i></a></li>
+        </ul>
+        -->
+
+        <nav>
+            <a href="./#about-wrapper">About</a>
+            <a href="./#gallery-wrapper">Gallery</a>
+            <a href="./#contact-wrapper">Contact</a>
+        </nav>
+    </header>
+
+    <main id="about-wrapper">
+        <div id="about-me">
+            <h1>About</h1>
+            <br><br>
+
+            <h2>Who Am I?</h2>
+            <p>
+                
+                My name is Nelson Rodriguez and I'm currently a second-year Game Design and Development student at the
+                <b><a href="https://www.rit.edu/computing/" target="_blank" rel="noopener noreferrer">Golisano College of Computing and Information Sciences</a></b>. When it comes down to it, my passion is software programming, especially in the context of
+                games and interactive media. I truly enjoy learning about the foundational systems (i.e. physics engine, 
+                graphical pipelines, gameplay systems) behind many of the awesome games that I play and make. 
+                <br><br><br>
+            </p>
+
+            <h2>What Can I Do?</h2>
+            <p>
+                My primary skillset revolves around programming, however, I do have expierence using asset creation tools (Maya, Shotcut, Paint.Net, and Aseprite). While taught 
+                both C# and HTML/CSS/JavaScript from college classes, I have gone out and expiremented with C++, OpenGL (and some of the shader programming that comes with it),
+                Lua, and Love2D.
+                <br><br><br>
+            </p>
+            
+            <h2>What Will You Find?</h2>
+            <p>
+                <!-- Site Description -->
+                On this site you'll find all of my notable projects and links to their repositories (to view one, click on the title of the project). Each project has specific tags to help you quickly identify core details about
+                the project. Additionally, if there are any projects made with JavaScript or WebGL (Unity), there will be seperate pages where you can view and play them!
+                <br><br> 
+                You can find my contact information at the bottom of this page. Click "Contact" in the navigation bar to instantly jump to it!
+            </p>
+
+            
+
+            
+        </div>
+
+        <div id="projects-showcase">
+            <!--Contains 3 projects max -->
+            <ul>
+                <li>
+                    <div class="project-descriptor">
+                        <a href="https://github.com/Nelson-Rodriguez-RIT/minecraft_prototype"><h2><br>Minecraft Demo</h2></a>
+
+                        
+                        <ul class="tags right">
+                            <li class="tag-color-pink">C++</li>
+                            <li class="tag-color-purple">OpenGL</li>
+                            <li class="tag-color-yellow">Game</li>
+                        </ul>
+
+                        
+                    </div>
+                    
+
+                    <!-- Slide show -->
+                    <div class="showcase">
+                        <ul class="slides slides-small">
+                            <input type="radio" name="slides-A" id="slide-A1" checked>
+                            <li>
+                                <img src="./media/project-images/project_3a.png" alt="prj A1 img">
+                                <label for="slide-A2" class="next">&#10095</label>
+                            </li>
+
+                            <input type="radio" name="slides-A" id="slide-A2" checked>
+                            <li>
+                                <img src="./media/project-images/project_3b.png" alt="prj A2 img">
+                                <label for="slide-A1" class="prev">&#10094</label>
+                                <label for="slide-A3" class="next">&#10095</label>
+                            </li>
+
+                            <input type="radio" name="slides-A" id="slide-A3" checked>
+                            <li>
+                                <img src="./media/project-images/project_3c.png" alt="prj A3 img">
+                                <label for="slide-A2" class="prev">&#10094</label>
+                            </li>
+                        </ul>
+
+                        <p>
+                            <br>
+                            A functional demo of “Minecraft” using C++ and OpenGL.
+                            <br><br>
+                            Includes multiple core Minecraft features such as physics, 
+                            breaking/place blocks, targeted block highlighting, a simple GUI, and hotbar functionality. 
+                        </p>
+                    </div>
+                    
+                    
+
+                    <br>
+                </li>
+
+                <li>
+                    <div class="project-descriptor">
+                        <a href="https://github.com/Nelson-Rodriguez-RIT/gdaps2_2235_team_2"><h2><br>Moonwalk</h2></a>
+
+                        
+                        <ul class="tags right">
+                            <li class="tag-color-red">C#</li>
+                            <li class="tag-color-green">Monogame</li>
+                            <li class="tag-color-yellow">Game</li>
+                        </ul>
+
+                        
+                    </div>
+
+                    <!-- Slide show -->
+                    <div class="showcase">
+                        <ul class="slides slides-small">
+                            <input type="radio" name="slides-B" id="slide-B1" checked>
+                            <li>
+                                <img src="./media/project-images/project_1a.png" alt="prj B1 img">
+                                <label for="slide-B2" class="next">&#10095</label>
+                            </li>
+
+                            <input type="radio" name="slides-B" id="slide-B2" checked>
+                            <li>
+                                <img src="./media/project-images/project_1b.png" alt="prj B2 img">
+                                <label for="slide-B1" class="prev">&#10094</label>
+                                <label for="slide-B3" class="next">&#10095</label>
+                            </li>
+
+                            <input type="radio" name="slides-B" id="slide-B3" checked>
+                            <li>
+                                <img src="./media/project-images/project_1c.png" alt="prj B3 img">
+                                <label for="slide-B2" class="prev">&#10094</label>
+                            </li>
+                        </ul>
+
+                        <p>
+                            <br>
+                            An action platformer where the player uses a companion robot to navigate otherwise unreachable terrain, while also attempting to 
+                            defend themselves from the remnants of the previous security force roaming a desolate laboratory. 
+                            <br><br>
+                            Programmed in Monogame with C#.
+                        </p>
+                    </div>
+                    
+                    
+                </li>
+
+            </ul>
+        </div>
+    </main>
+
+    <section id="gallery-wrapper">
+        <h2>Gallery</h2>
+        <br><br>
+        <ul>
+            <li>
+                <div class="showcase">
+                    <a href="https://github.com/Nelson-Rodriguez-RIT/minecraft_prototype"><h3>Minecraft Demo</h3></a>
+                    <br>
+
+                    <ul class="slides slides-small">
+                        <input type="radio" name="slides-1" id="slide-1A" checked>
+                        <li>
+                            <img src="./media/project-images/project_3a.png" alt="prj A1 img">
+                            <label for="slide-1B" class="next">&#10095</label>
+                        </li>
+
+                        <input type="radio" name="slides-1" id="slide-1B" checked>
+                        <li>
+                            <img src="./media/project-images/project_3b.png" alt="prj A2 img">
+                            <label for="slide-1A" class="prev">&#10094</label>
+                            <label for="slide-1C" class="next">&#10095</label>
+                        </li>
+
+                        <input type="radio" name="slides-1" id="slide-1C" checked>
+                        <li>
+                            <img src="./media/project-images/project_3c.png" alt="prj 1C img">
+                            <label for="slide-1B" class="prev">&#10094</label>
+                        </li>
+                    </ul>
+
+                    <p>
+                        A functional demo of “Minecraft” using C++ and OpenGL.
+                        <br><br>
+                        Includes multiple core Minecraft features such as physics, 
+                        breaking/place blocks, targeted block highlighting, a simple GUI, and hotbar functionality. 
+                        <br><br> 
+                        This was a personal project, done with the intent of learning both the fundamentals of both C++ and OpenGL via practical application. 
+                        The result was an increased understanding of C++ and a solid introduction to OpenGL, as well as the fundamentals of the graphic pipeline, shader programming, and GPU functionality.
+                    </p>
+                </div>
+
+                
+
+                <br>
+                <ul class="tags">
+                    <li class="tag-color-pink">C++</li>
+                    <li class="tag-color-purple">OpenGL</li>
+                    <li class="tag-color-yellow">Game</li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="showcase">
+                    <a href="https://github.com/Nelson-Rodriguez-RIT/console_snake"><h3>Console Snake</h3></a>
+                    <br>
+                    
+                    <ul class="slides slides-small">
+                        <input type="radio" name="slides-2" id="slide-2A" checked>
+                        <li>
+                            <img src="./media/project-images/project_2a.png" alt="prj 2A img">
+                            <label for="slide-2B" class="next">&#10095</label>
+                        </li>
+
+                        <input type="radio" name="slides-2" id="slide-2B" checked>
+                        <li>
+                            <img src="./media/project-images/project_2b.png" alt="prj 2B img">
+                            <label for="slide-2A" class="prev">&#10094</label>
+                        </li>
+                    </ul>
+
+                    <p>
+                        A real-time, interactive console application featuring the classic game of Snake.
+                        <br><br>
+                        Integrates real-time functionality through the use of manual delta-time calculations and the Window's API for input handling.
+                        <br><br>
+                        This was a personal project, with the sole intent of serving as an introduction to programming in C++.
+                    </p>
+                </div>
+
+                
+
+                <br>
+                <ul class="tags">
+                    <li class="tag-color-pink">C++</li>
+                    <li class="tag-color-green">Windows API</li>
+                    <li class="tag-color-yellow">Game</li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="showcase">
+                    <a href="https://github.com/Nelson-Rodriguez-RIT/gdaps2_2235_team_2"><h3>Moonwalk</h3></a>
+                    <br>
+
+                    <ul class="slides slides-small">
+                        <input type="radio" name="slides-3" id="slide-3A" checked>
+                        <li>
+                            <img src="./media/project-images/project_1a.png" alt="prj A1 img">
+                            <label for="slide-3B" class="next">&#10095</label>
+                        </li>
+
+                        <input type="radio" name="slides-3" id="slide-3B" checked>
+                        <li>
+                            <img src="./media/project-images/project_1b.png" alt="prj A2 img">
+                            <label for="slide-3A" class="prev">&#10094</label>
+                            <label for="slide-3C" class="next">&#10095</label>
+                        </li>
+
+                        <input type="radio" name="slides-3" id="slide-3C" checked>
+                        <li>
+                            <img src="./media/project-images/project_1c.png" alt="prj 1C img">
+                            <label for="slide-3B" class="prev">&#10094</label>
+                        </li>
+                    </ul>
+
+                    <p>
+                        An action platformer where the player uses a companion robot to navigate otherwise unreachable terrain, while also attempting to defend themselves from the remnants 
+                        of the previous security force roaming a desolate laboratory. Programmed in Monogame with C#.
+                        <br><br>
+                        This was a class group project, focused on developing a video game while simulating a more professional environment. This included both documentation and demonstrations, therefore
+                        requiring not only practical skills but also communication and group problem-solving. 
+                        <br><br>
+                        Additionally, third-party applications were both used and developed to aid the overall process.
+                    </p>
+                </div>
+
+                
+
+                <br>
+                <ul class="tags right">
+                    <li class="tag-color-red">C#</li>
+                    <li class="tag-color-green">Monogame</li>
+                    <li class="tag-color-yellow">Game</li>
+                </ul>
+            </li>
+
+        </ul>
+    </section>
+
+    <section id="contact-wrapper">
+        <h2>Contact</h2>
+        <hr>
+        <ul>
+            <li><a href="mailto:njr5833@rit.edu">Email</a> at njr5833@rit.edu</li>
+            <li><a href="https://www.linkedin.com/in/nelson-rodriguez-7119712a4/">LinkedIn</a></li>
+            <li><a href="https://github.com/Nelson-Rodriguez-RIT/">Github</a></li>
+        </ul>
+    </section>
+
+    <footer>
+        <span><a href="https://github.com/Nelson-Rodriguez-RIT/portfolio">Site Repository</a></span>
+        <span>Last updated 10.20.2024</span>
+    </footer>
+</body>
+</html>

@@ -521,3 +521,20 @@ main {
     max-width: 350px;
     max-height: 200px;
 }
+
+
+
+.play-button {
+    text-align: center;
+    background-color: #74d088;
+    border-radius: 25px;
+
+    width: 100px;
+    height: 50px;
+    padding-top: 15px;
+    margin-left: 1rem;
+}
+
+.play-button > a {
+    color: rgb(227, 227, 227);
+}

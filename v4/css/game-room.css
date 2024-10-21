@@ -1,0 +1,133 @@
+* { /* CSS reset */
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    text-decoration: none; 
+    list-style-type: none;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+.fira-sans-regular {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+a {
+    color: #ffb0b0;
+}
+
+body {
+    background-color: rgb(24, 24, 24);
+    color: rgb(204, 204, 204);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 100vh;
+}
+
+
+main {
+    height: 100%;
+}
+
+canvas {
+    cursor: none;
+
+    /* https://stackoverflow.com/questions/34597160/html-canvas-mouse-position-after-scale-and-translate */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  
+
+    width: 1024px;
+    height: 576px;
+}
+
+main span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  
+}
+
+
+/* Hides canvas if screen dimensions aren't big enough. Reveals a message to inform the user */
+@media screen and (max-width: 1024px) {
+    canvas {
+        left: -9999px;
+    }
+}
+
+@media screen and (max-height: 576px) {
+    canvas {
+        left: -9999px;
+    }
+}
+
+
+/* Site Logos + Navigation */
+header {
+    max-width: 100%;
+    width: 100%;
+    max-height: 100%;
+
+    background-color: rgb(55, 55, 55);
+    display: grid;
+    grid-template-rows: 1fr;
+
+    padding: 0.5rem calc(calc(100% - 1024px) / 2);
+    margin: 0px;
+    
+}
+
+header > nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+
+}
+
+header > nav > a {
+    border-radius: 25px;
+
+    background-color: rgb(24, 24, 24);
+    color: #ffb0b0;
+
+    padding: 1rem 1rem;
+    margin-left: 0.5rem;
+
+    width: 100px;
+    text-align: center;
+}
+
+@media screen and (max-width: 850px) {
+    header {
+        padding: 0.5rem 5%;
+        
+    }
+
+    header > nav {
+        justify-content: space-between;
+    }
+}
+
+
+
+/* Extra Site Information */
+footer {
+    background-color: rgb(55, 55, 55);
+
+    display: flex;
+    justify-content: center;
+
+    padding: 1rem;
+}
+
+footer span {
+    text-align: center;
+    padding: 0px 1rem;
+}

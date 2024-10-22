@@ -25,12 +25,37 @@ const Mages    = [];
 const Hitboxes = [];
 const Assets   = [];
 
+/*
 
+MaxQuadTreeDepth = ??? (Depends on map size, but I think ill stick with 3 for the demo)
+
+Hitboxes = {
+    nw: 
+    [
+        [
+            [],
+            [],
+            [],
+            []
+        ],
+        [],
+        [],
+        []
+    ]
+    ne: []
+    se: []
+    sw: []
+}
+
+
+*/
 
 // Config
 const config = {
     mageWidth:  25, // px
-    mageHeight: 50, // px
+    mageHeight: 25, // px
+
+    mageYHitbox: 50,
 
     dodgeBoost: 2, // multiplier
 
@@ -80,7 +105,26 @@ const config = {
 
 
 
+class Hitbox {
+    constructor({object, type, callback}) {
+        this.object = object;
 
+        this.type = type;
+
+        this.callback = callback;
+    }
+
+    collidesWith(hitbox) {
+        return  (this.object.position.x < hitbox.object.position.x + hitbox.object.dimensions.width) && 
+                (hitbox.object.position.x < this.object.position.x + this.object.dimensions.width) &&
+
+                (this.object.position.z < hitbox.object.position.z + hitbox.object.dimensions.height) && 
+                (hitbox.object.position.z < this.object.position.z + this.object.dimensions.height) &&
+
+                (this.object.position.y < hitbox.object.position.y + config.mageYHitbox) &&
+                (hitbox.object.position.y < this.object.position.y + config.mageYHitbox);
+    }
+}
 
 
 class Model {
@@ -209,7 +253,7 @@ class Object {
             this.model.draw({position: this.position});
 
         else {
-            ctx.fillStyle = 'rgb(222, 222, 222)';
+            ctx.fillStyle = 'rgba(222, 222, 222, 0.5)';
             ctx.fillRect(
                 this.position.x - this.dimensions.width / 2,
                 (this.position.z - this.position.y) - this.dimensions.height / 2,
@@ -224,7 +268,7 @@ class Mage {
     constructor({position, stats}) {
         this.object = new Object({
             position: position,
-            dimensions: {widht: config.mageWidth, height: config.mageHeight},
+            dimensions: {width: config.mageWidth, height: config.mageHeight},
             model: new Model({
                 spritesheets: [Assets[2], Assets[3]],
                 framedata: [
@@ -240,6 +284,28 @@ class Mage {
                 rows: 8, columns: 9,
             }),
         });
+
+        this.hitbox = new Hitbox({
+            object: this.object,
+            type: "player", 
+            callback: (hitbox) => {
+                switch(hitbox.type) {
+                    case "player":
+                        distanceX = (hitbox.object.position.x + hitbox.object.dimensions.width / 2) - (this.object.position.x + this.object.dimensions.width / 2)
+                        distanceZ = (hitbox.object.position.z + hitbox.object.dimensions.height / 2) - (this.object.position.z + this.object.dimensions.height / 2)
+
+                        scaler = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2))
+                        angle = distanceZ / distanceX;
+
+                        hitbox.object.velocity.x += (hitbox.object.velocity.x < 0 ? 1 : -1) * (Math.cos(angle)) * (1 / scaler);
+                        hitbox.object.velocity.z += (hitbox.object.velocity.z < 0 ? 1 : -1) * (Math.sin(angle)) * (1 / scaler);
+
+
+                        break;
+                }
+
+            }});
+        Hitboxes.push(this.hitbox)
 
         this.stats = {
             hp_max: stats.hp_max,
@@ -453,7 +519,7 @@ function init() {
     });
 
     Mages.push(new Mage({
-        position: { x: 50, y: 0, z: 50 },
+        position: { x: 350, y: 0, z: 50 },
         stats: {
             hp_max: 100,
             mp_max: 80,
@@ -480,6 +546,9 @@ function main() {
     // Check for user interaction and update player mage if needed
     User.update();
 
+    Hitboxes.forEach( (hitbox) => {
+
+    })
 
     // Update each mage and check for hitbox collisions
     Mages.forEach((mage) => { 

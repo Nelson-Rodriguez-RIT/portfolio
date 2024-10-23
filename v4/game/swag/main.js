@@ -23,7 +23,41 @@ var User = {};
 
 const Mages    = [];
 const Hitboxes = [];
-const Assets   = [];
+
+const Assets    = [];
+const Assets_UI = {
+    // I.e. health, mana, stamina, etc
+    container_start: {},
+    container_end: {},
+    container_center: {},
+
+    bar_start: {},
+    bar_end: {},
+    bar_center: {},
+
+    
+    // Spell charge UI
+    charge_container: {},
+    charge_bar: {},
+
+    // Mana shield indicator
+    shield_container: {},
+    shield_bar: {},
+
+    // Spell slot UI
+    spellslot_container: {},
+
+    spellslot_fire_icon: {},
+    spellslot_ice_icon: {},
+    spellslot_wind_icon: {},
+    spellslot_rock_icon: {},
+
+
+    // Enemy mage UI
+    enemy_container: {},
+    enemy_bar_hp: {},
+    enemy_bar_shield: {},
+}
 
 /*
 
@@ -63,9 +97,9 @@ const config = {
     minVelocity: 5, // px/s, velocity has to be above this value
 
     defaultKeybinds: {
-        up: 'w', down: 's', left: 'a', right: 'd',
-        dodge: 'shift', spellbook: false,
-        spellbook_slot1: false, spellbook_slot2: false, spellbook_slot3: false, spellbook_slot4: false
+        up: 'w', down: 's', left: 'a', right: 'd', dodge: 'shift', 
+        interact: 'm1', spellbook: 'm3',
+        spellbook_slot1: '1', spellbook_slot2: '2', spellbook_slot3: '3', spellbook_slot4: '4'
     },
 
 
@@ -77,6 +111,43 @@ const config = {
         {url: './assets/ice_mage.png', rows: 8, columns: 9},
         {url: './assets/ice_mage_r.png', rows: 8, columns: 9},
     ],
+
+    assets_uiURL: './assets/ui.png',
+    assets_uiMeta: { // https://stackoverflow.com/questions/2688961/how-do-i-tint-an-image-with-html5-canvas
+        // offsetX: 0, offsetY: 0, width: 0, height: 0, tint: 'rgba(255, 255, 255, 1.0)'
+
+        // I.e. health, mana, stamina, etc
+        container_start: {offsetX: 5, offsetY: 5, width: 10, height: 6},
+        container_end: {offsetX: 0, offsetY: 0, width: 0, height: 0},
+        container_center: {offsetX: 0, offsetY: 0, width: 0, height: 0},
+    
+        bar_start: {offsetX: 0, offsetY: 0, width: 0, height: 0},
+        bar_end: {offsetX: 0, offsetY: 0, width: 0, height: 0},
+        bar_center: {offsetX: 0, offsetY: 0, width: 0, height: 0},
+    
+        
+        // Spell charge UI
+        charge_container: {offsetX: 0, offsetY: 0, width: 0, height: 0},
+        charge_bar: {offsetX: 0, offsetY: 0, width: 0, height: 0},
+    
+        // Mana shield indicator
+        shield_container: {offsetX: 0, offsetY: 0, width: 0, height: 0},
+        shield_bar: {offsetX: 0, offsetY: 0, width: 0, height: 0},
+    
+        // Spell slot UI
+        spellslot_container: {},
+    
+        spellslot_fire_icon: {},
+        spellslot_ice_icon: {},
+        spellslot_wind_icon: {},
+        spellslot_rock_icon: {},
+    
+    
+        // Enemy mage UI
+        enemy_container: {},
+        enemy_bar_hp: {},
+        enemy_bar_shield: {},
+    },
 
     animationFPS: 60,
     animations: {
@@ -393,8 +464,8 @@ class Player {
         this.inputs = {
             keybinds: keybinds,
             pressed: {
-                up: false, down: false, left: false, right: false,
-                dodge: false, spellbook: false,
+                up: false, down: false, left: false, right: false, dodge: false, 
+                interact: false, spellbook: false,
                 spellbook_slot1: false, spellbook_slot2: false, spellbook_slot3: false, spellbook_slot4: false
             }
         };
@@ -403,6 +474,8 @@ class Player {
         // therefore if their acceleration is 400, it will take them 0.5 seconds to reach it
         this.movementMaxVelocity = 150; // px/s
         this.movementAcceleraton = 800; // px/s^2 
+
+        this.activeSpellSlot = 0;
     }
 
     // Player controls
@@ -607,6 +680,23 @@ window.addEventListener('keydown', (event) => {
         case User.inputs.keybinds.dodge:
             User.inputs.pressed.dodge = true;
             break;
+
+
+        case User.inputs.keybinds.spellbook_slot1:
+            User.inputs.pressed.spellbook_slot1 = true
+            break;
+
+        case User.inputs.keybinds.spellbook_slot2:
+            User.inputs.pressed.spellbook_slot2 = true
+            break;
+
+        case User.inputs.keybinds.spellbook_slot3:
+            User.inputs.pressed.spellbook_slot3 = true
+            break;
+            
+        case User.inputs.keybinds.spellbook_slot4:
+            User.inputs.pressed.spellbook_slot4 = true
+            break;
     }
 }); 
 
@@ -633,5 +723,52 @@ window.addEventListener('keyup', (event) => {
         case User.inputs.keybinds.dodge:
             User.inputs.pressed.dodge = false;
             break;
+
+        
+        case User.inputs.keybinds.spellbook_slot1:
+            User.inputs.pressed.spellbook_slot1 = false
+            break;
+
+        case User.inputs.keybinds.spellbook_slot2:
+            User.inputs.pressed.spellbook_slot2 = false
+            break;
+
+        case User.inputs.keybinds.spellbook_slot3:
+            User.inputs.pressed.spellbook_slot3 = false
+            break;
+            
+        case User.inputs.keybinds.spellbook_slot4:
+            User.inputs.pressed.spellbook_slot4 = false
+            break;
     }
 }); 
+
+
+
+window.addEventListener('mousedown', (event) => {
+    let button = event.key.toLocaleLowerCase();
+
+    switch (button) {
+        case User.inputs.keybinds.interact:
+            User.inputs.pressed.interact = true;
+            break;
+
+        case User.inputs.keybinds.spellbook:
+            User.inputs.pressed.spellbook = true;
+            break;
+    }
+})
+
+window.addEventListener('mouseup', (event) => {
+    let button = event.key.toLocaleLowerCase();
+
+    switch (button) {
+        case User.inputs.keybinds.interact:
+            User.inputs.pressed.interact = false;
+            break;
+
+        case User.inputs.keybinds.spellbook:
+            User.inputs.pressed.spellbook = false;
+            break;
+    }
+})

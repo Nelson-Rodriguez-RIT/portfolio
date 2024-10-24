@@ -1,0 +1,172 @@
+* {border: 1px solid black; } /* Debug */
+
+
+
+/* CSS Reset */
+/* https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after { box-sizing: border-box; }
+  
+/* 2. Remove default margin */
+* { margin: 0; list-style-type: none; }
+  
+body {
+    /* 3. Add accessible line-height */
+    line-height: 1.5;
+    /* 4. Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+}
+  
+/* 5. Improve media defaults */
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+  
+/* 6. Inherit fonts for form controls */
+input, button, textarea, select { font: inherit; }
+  
+/* 7. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+  
+/* 8. Improve line wrapping */
+p { text-wrap: pretty; }
+h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
+  
+/* 9. Create a root stacking context */
+#root, #__next { isolation: isolate; }
+
+
+
+
+
+
+/* Element Layout */
+body {
+    display: grid;
+    min-height: 100vh;
+}
+
+
+header {
+    position: fixed;
+    left: 0px; top: 0px;
+
+    max-width: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;  
+}
+
+nav {
+    align-content: center;
+}
+
+
+#desktop-wrapper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-auto-rows: 1fr;
+}
+#showcase-wrapper {
+    display: grid;
+    grid-template-rows: min-content 1fr 1fr;
+}
+
+
+#gallery {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-auto-rows: 1fr; /* https://stackoverflow.com/questions/44488357/equal-height-rows-in-css-grid-layout */
+}
+.gallery-project {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+#socials {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.tags {
+    display: flex;
+    flex-direction: row;
+}
+
+
+/* Element Sizing and Spacing */
+#desktop-wrapper, #gallery-wrapper, #contact-wrapper {
+    margin: 2rem 15%;
+}
+#desktop-wrapper {
+    margin-top: 6rem;
+    grid-gap: 2rem;
+}
+
+
+#gallery {
+    grid-gap: 1rem;
+}
+
+
+header {
+    padding: 1rem 0px;
+}
+nav, h1 {
+    margin: 0px 15%;
+}
+nav > a {
+    padding: 0.5rem 1.5rem;
+    margin-left: 1rem;
+}
+
+
+main, section {
+    padding: 1.5rem;
+}
+
+
+h2 {
+    text-align: center;
+}
+h3 {
+    padding: 0.5rem;
+    padding-left: 1rem;
+}
+p {
+    padding: 1rem;
+}
+#gallery-wrapper > p, #contact-wrapper > p {
+    text-align: center;
+}
+
+
+.tags {
+    padding: 0.5rem;
+    padding-left: 1rem;
+}
+
+.tags > li {
+    padding: 0rem 0.25rem;
+    margin-right: 0.25rem;
+}
+
+footer > p {
+    text-align: center;
+}
+
+
+/* Element Design */
+
+
+
+.tags > li {
+    font-size: smaller;
+}

@@ -13,7 +13,7 @@
     <header>
         <h1>Portfolio</h1>
         <nav>
-            <a href="./index.html">Home</a>
+            <a href="./index.html#desktop-wrapper">Home</a>
             <a href="./index.html#gallery-wrapper">Gallery</a>
             <a href="./index.html#contact-wrapper">Contact</a>
         </nav>
@@ -63,51 +63,91 @@
         <section id="showcase-wrapper">
             <h2>Showcase</h2>
 
-            <article class="showcase-project">
-                <h3>Minecraft Demo</h3>
+            <div id="showcase-projects">
+                <article class="showcase-project">
+                    <h3><a href="https://github.com/Nelson-Rodriguez-RIT/minecraft_prototype">Minecraft Demo</a></h3>
+    
+                    <ul class="tags">
+                        <li class="tag-language">C++</li>
+                        <li class="tag-genre">Sandbox</li>
+                        <li class="tag-framework">OpenGL</li>
+                        <li class="tag-purpose">Personal Development</li>
+                    </ul>
+    
+                    <div class="slideshow">
+                        <div class="slides">
+                            <input type="radio" name="slides-A" id="slide-A1">
+                            <figure>
+                                <img src="./media/project-images/project_3a.png" alt="prj A1 img">
+                                <label for="slide-A2" class="next">&#10095</label>
+                            </figure>
 
-                <ul class="tags">
-                    <li class="tag-language">C++</li>
-                    <li class="tag-genre">Sandbox</li>
-                    <li class="tag-framework">OpenGL</li>
-                    <li class="tag-purpose">Personal Development</li>
-                </ul>
+                            <input type="radio" name="slides-A" id="slide-A2">
+                            <figure>
+                                <img src="./media/project-images/project_3b.png" alt="prj A2 img">
+                                <label for="slide-A1" class="prev">&#10094</label>
+                                <label for="slide-A3" class="next">&#10095</label>
+                            </figure>
 
-                <div class="slideshow">
-                    <!-- TODO: Slideshow class reimplementation -->
-                </div>
+                            <input type="radio" name="slides-A" id="slide-A3" checked>
+                            <figure>
+                                <img src="./media/project-images/project_3c.png" alt="prj A3 img">
+                                <label for="slide-A2" class="prev">&#10094</label>
+                            </figure>
+                        </div>
+                    </div>
+    
+                    <p>
+                        A functional demo of “Minecraft” using C++ and OpenGL.
+    
+                        Includes multiple core Minecraft features such as physics, breaking/place blocks, 
+                        targeted block highlighting, a simple GUI, and hotbar functionality. 
+                    </p>
+                </article>
+    
+    
+                <article class="showcase-project">
+                    <h3><a href="https://github.com/Nelson-Rodriguez-RIT/gdaps2_2235_team_2">Moonwalk</a></h3>
+    
+                    <ul class="tags">
+                        <li class="tag-language">C#</li>
+                        <li class="tag-genre">Platformer</li>
+                        <li class="tag-framework">Monogame</li>
+                        <li class="tag-purpose">Class Project</li>
+                    </ul>
+    
+                    <div class="slideshow">
+                        <div class="slides">
+                            <input type="radio" name="slides-B" id="slide-B1">
+                            <figure>
+                                <img src="./media/project-images/project_1a.png" alt="prj B1 img">
+                                <label for="slide-B2" class="next">&#10095</label>
+                            </figure>
 
-                <p>
-                    A functional demo of “Minecraft” using C++ and OpenGL.
+                            <input type="radio" name="slides-B" id="slide-B2">
+                            <figure>
+                                <img src="./media/project-images/project_1b.png" alt="prj B2 img">
+                                <label for="slide-B1" class="prev">&#10094</label>
+                                <label for="slide-B3" class="next">&#10095</label>
+                            </figure>
 
-                    Includes multiple core Minecraft features such as physics, breaking/place blocks, 
-                    targeted block highlighting, a simple GUI, and hotbar functionality. 
-                </p>
-            </article>
-
-
-            <article class="showcase-project">
-                <h3>Moonwalk</h3>
-
-                <ul class="tags">
-                    <li class="tag-language">C#</li>
-                    <li class="tag-genre">Platformer</li>
-                    <li class="tag-framework">Monogame</li>
-                    <li class="tag-purpose">Class Project</li>
-                </ul>
-
-                <div class="slideshow">
-                    <!-- TODO: Slideshow class reimplementation -->
-                </div>
-
-                <p>
-                    An action platformer where the player uses a companion robot to navigate otherwise 
-                    unreachable terrain, while also attempting to defend themselves from the remnants 
-                    of the previous security force roaming a desolate laboratory.
-
-                    Programmed in Monogame with C#. 
-                </p>
-            </article>
+                            <input type="radio" name="slides-B" id="slide-B3" checked>
+                            <figure>
+                                <img src="./media/project-images/project_1c.png" alt="prj B3 img">
+                                <label for="slide-B2" class="prev">&#10094</label>
+                            </figure>
+                        </div>
+                    </div>
+    
+                    <p>
+                        An action platformer where the player uses a companion robot to navigate otherwise 
+                        unreachable terrain, while also attempting to defend themselves from the remnants 
+                        of the previous security force roaming a desolate laboratory.
+    
+                        Programmed in Monogame with C#. 
+                    </p>
+                </article>
+            </div>
         </section>
     </div>
 
@@ -126,10 +166,29 @@
         <div id="gallery">
             <article class="gallery-project">
                 <div class="gallery-project-content">
-                    <h3><a href="">Minecraft Demo</a></h3>
+                    <h3><a href="https://github.com/Nelson-Rodriguez-RIT/minecraft_prototype">Minecraft Demo</a></h3>
 
                     <div class="slideshow">
-                        <!-- TODO: Slideshow class reimplementation -->
+                        <div class="slides">
+                            <input type="radio" name="slides-1" id="slide-1a">
+                            <figure>
+                                <img src="./media/project-images/project_3a.png" alt="prj 1a img">
+                                <label for="slide-1b" class="next">&#10095</label>
+                            </figure>
+
+                            <input type="radio" name="slides-1" id="slide-1b">
+                            <figure>
+                                <img src="./media/project-images/project_3b.png" alt="prj 1b img">
+                                <label for="slide-1a" class="prev">&#10094</label>
+                                <label for="slide-1c" class="next">&#10095</label>
+                            </figure>
+
+                            <input type="radio" name="slides-1" id="slide-1c" checked>
+                            <figure>
+                                <img src="./media/project-images/project_3c.png" alt="prj 1c img">
+                                <label for="slide-1b" class="prev">&#10094</label>
+                            </figure>
+                        </div>
                     </div>
                     
                     <p>
@@ -156,10 +215,22 @@
 
             <article class="gallery-project">
                 <div class="gallery-project-content">
-                    <h3><a href="">Console Snake</a></h3>
+                    <h3><a href="https://github.com/Nelson-Rodriguez-RIT/console_snake">Console Snake</a></h3>
 
                     <div class="slideshow">
-                        <!-- TODO: Slideshow class reimplementation -->
+                        <div class="slides">
+                            <input type="radio" name="slides-2" id="slide-2a">
+                            <figure>
+                                <img src="./media/project-images/project_2a.png" alt="prj 2a img">
+                                <label for="slide-2b" class="next">&#10095</label>
+                            </figure>
+
+                            <input type="radio" name="slides-2" id="slide-2b" checked>
+                            <figure>
+                                <img src="./media/project-images/project_2b.png" alt="prj 2b img">
+                                <label for="slide-2a" class="prev">&#10094</label>
+                            </figure>
+                        </div>
                     </div>
                     
                     <p>
@@ -184,10 +255,29 @@
 
             <article class="gallery-project">
                 <div class="gallery-project-content">
-                    <h3><a href="">Moonwalk</a></h3>
+                    <h3><a href="https://github.com/Nelson-Rodriguez-RIT/gdaps2_2235_team_2">Moonwalk</a></h3>
 
                     <div class="slideshow">
-                        <!-- TODO: Slideshow class reimplementation -->
+                        <div class="slides">
+                            <input type="radio" name="slides-3" id="slide-3a">
+                            <figure>
+                                <img src="./media/project-images/project_1a.png" alt="prj 3a img">
+                                <label for="slide-3b" class="next">&#10095</label>
+                            </figure>
+
+                            <input type="radio" name="slides-3" id="slide-3b">
+                            <figure>
+                                <img src="./media/project-images/project_1b.png" alt="prj 3b img">
+                                <label for="slide-3a" class="prev">&#10094</label>
+                                <label for="slide-3c" class="next">&#10095</label>
+                            </figure>
+
+                            <input type="radio" name="slides-3" id="slide-3c" checked>
+                            <figure>
+                                <img src="./media/project-images/project_1c.png" alt="prj 3c img">
+                                <label for="slide-3b" class="prev">&#10094</label>
+                            </figure>
+                        </div>
                     </div>
                     
                     <p>
@@ -214,10 +304,15 @@
 
             <article class="gallery-project">
                 <div class="gallery-project-content">
-                    <h3><a href="">Combo Wizards</a></h3>
+                    <h3><a href="https://github.com/Nelson-Rodriguez-RIT/portfolio/tree/main/v5/game/swag">Combo Wizards</a></h3>
 
                     <div class="slideshow">
-                        <!-- TODO: Slideshow class reimplementation -->
+                        <div class="slides">
+                            <input type="radio" name="slides-4" id="slide-4a" checked>
+                            <figure>
+                                <img src="./media/project-images/project-placeholder.png" alt="prj 4a img">
+                            </figure>
+                        </div>
                     </div>
 
                     <p>
@@ -229,7 +324,7 @@
                         to the site. You can test out available features by clicking on the "Play Online" button below. 
                     </p>
 
-                    <div class="play-button">Play Online</div>
+                    <a href="./game/swag/index.html"><div class="play-button">Play Online</div></a>
                 </div>
                 
                 <ul class="tags">
@@ -247,12 +342,12 @@
     <section id="contact-wrapper">
         <h2>Contact</h2>
         <p>
-            The quickest way to reach me is through email at <a href="mailto:njr5833@rit.edu">njr5833@rit.edu</a>.
+            The quickest way to reach me is via email at <a href="mailto:njr5833@rit.edu">njr5833@rit.edu</a>.
         </p>
 
-        <ul id="socials">
-            <li><a href=""><img src="./media/logos/linkedin" alt="LinkedIn"></a></li>
-            <li><a href=""><img src="./media/logos/github" alt="Github"></a></li>
+        <ul id="socials"> <!-- Source: https://www.iconarchive.com -->
+            <li><a href="https://www.linkedin.com/in/nelson-rodriguez-7119712a4/"><img src="./media/logos/linkedin-icon.png" alt="LinkedIn"></a></li>
+            <li><a href="https://github.com/Nelson-Rodriguez-RIT/"><img src="./media/logos/github-icon.png" alt="Github"></a></li>
         </ul>
     </section>
 
@@ -260,7 +355,7 @@
 
     <!-- Additional site information -->
     <footer>
-        <p><a>Site Repository</a> | Updated 10.23.2024</p>
+        <p><a href="https://github.com/Nelson-Rodriguez-RIT/portfolio/v5">Site Repository</a> | Updated 10.24.2024</p>
     </footer>
 </body>
 </html>

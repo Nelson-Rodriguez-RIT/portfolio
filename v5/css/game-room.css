@@ -67,16 +67,8 @@ nav {
 
 
 /* Element Sizing and Spacing */
-h1 {
-    width: 250%;
-    text-wrap: nowrap;
-}
-
 header {
-    padding: 1rem 0px;
-}
-nav, h1 {
-    margin: 0px 15%;
+    padding: 1rem calc(50% - 512px);
 }
 nav > a {
     padding: 0.5rem 1.5rem;
@@ -131,6 +123,10 @@ a {
     color: #ffb0b0;
     text-decoration: none;
 }
+a:hover{
+    background-color: rgb(204, 204, 204);
+    color: rgb(24, 24, 24);
+}
 
 nav > a  {
     background-color: rgb(24, 24, 24);
@@ -181,10 +177,34 @@ main span {
     canvas {
         left: -9999px;
     }
+
+    header {
+        padding: 1rem;
+    }
 }
 
 @media screen and (max-height: 576px) {
     canvas {
         left: -9999px;
+    }
+}
+
+
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+    h1 {
+        position: fixed;
+        left: -9999px;
+    }
+    nav {
+        justify-content: space-between;
+
+        width: 100%;
+        height: 100%;
+        margin: 0px 1rem;
+    }
+    nav > a {
+        margin: 0px;
     }
 }

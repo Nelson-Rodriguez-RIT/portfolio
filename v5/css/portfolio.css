@@ -240,6 +240,13 @@ body {
     background-color: rgb(24, 24, 24);
 }
 
+main, #showcase-wrapper, #gallery-wrapper, #contact-wrapper {
+    background-color: rgb(35, 35, 35);
+}
+.gallery-project, .showcase-project, nav > a  {
+    background-color: rgb(24, 24, 24);
+}
+
 h1, h2, h3 {
     color: #97e8a9;
 }
@@ -251,13 +258,23 @@ a {
     text-decoration: none;
 }
 
-
-main, #showcase-wrapper, #gallery-wrapper, #contact-wrapper {
-    background-color: rgb(35, 35, 35);
+a:hover, .play-button:hover {
+    background-color: rgb(204, 204, 204);
+    color: rgb(24, 24, 24);
 }
-.gallery-project, .showcase-project, nav > a  {
+h3 > a:hover {
     background-color: rgb(24, 24, 24);
+    color: rgb(204, 204, 204);
 }
+main a:hover, #contact-wrapper a:hover {
+    background-color: rgb(35, 35, 35);
+    color: rgb(204, 204, 204);
+}
+footer a:hover {
+    background-color: rgb(55, 55, 55);
+    color: rgb(204, 204, 204);
+}
+
 
 .play-button {
     background-color: #358a47;

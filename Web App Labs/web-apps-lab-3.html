@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Web Apps-4-HW</title>
+	<style>
+		body{border:1px solid gray;}
+	</style>
+</head>
+<body>
+<h1>My Favorites</h1>
+<h2>My Favorite Colors</h2>
+
+<ol id="colorsList">
+</ol>
+
+<h2>My Favorite Foods</h2>
+
+<ol id="foodsList">
+</ol>
+
+<h2>My Favorite Links</h2>
+
+<ol id="linksList">
+</ol>
+
+<script>
+"use strict";
+let colorList = document.getElementById("colorsList");
+let colors = ["Emerald Green","Crimson","Neon Pink"];
+for (let color = 0; color < colors.length; color++)
+    colorList.appendChild(document.createElement("li").innerHTML = `${colors[color]}`);
+
+let foods = ["Mash Potatos", "Taco Bell's Steak Grilled Cheese Burrito (Would be #1 if I could make them at home)", "Burritos"]; // add some foods
+
+// Optional - can you figure out how to pull both the key AND the value
+// from the `links` object literal?
+let links = {
+		"Elden Ring Wiki": "https://eldenring.wiki.fextralife.com/Elden+Ring+Wiki",
+		"The Spriters Resource" : "https://www.spriters-resource.com/",
+		"LearnOpenGL" : "https://learnopengl.com/"
+	}
+
+</script>
+</body>
+</html>

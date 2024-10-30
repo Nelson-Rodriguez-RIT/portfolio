@@ -10,7 +10,8 @@ ctx.scale(2, 2);
 ctx.imageSmoothingEnabled = false;
 canvas.style.imageRendering = "pixelated";
 
-
+var MouseX = 0;
+var MouseY = 0;
 
 var Deltatime    = 0;
 let currentTime  = 0;
@@ -86,6 +87,9 @@ const KEYFRAMES = {
     ]
 }
 
+const Entities = {};
+
+const Hitboxes = {};
 
 
 
@@ -248,7 +252,7 @@ class Sprite {
             this.sprite.w, 
             this.sprite.h,
 
-            // Final image position
+            // Final image position. We want the origin to the be the center of the sprite
             position_vector.x - this.sprite.w / 2,
             position_vector.z - position_vector.y - this.sprite.h / 2,
 
@@ -541,13 +545,13 @@ class Mage {
 
 
         // Natural regen
-        if (this.status.naturalRegen <= 4.0 && (this.stats.sp += (75 + (CONFIG.statBonusSPRegen * this.stats.vit / 10)) * Deltatime) > this.stats.sp_max)
+        if (this.status.naturalRegen <= 3.5 && (this.stats.sp += (75 + (CONFIG.statBonusSPRegen * this.stats.vit / 10)) * Deltatime) > this.stats.sp_max)
             this.stats.sp = this.stats.sp_max;
 
-        if (this.status.naturalRegen <= 3.25 && (this.stats.mp += (100 + (CONFIG.statBonusMPRegen * this.stats.vit / 10)) * Deltatime) > this.stats.mp_max)
+        if (this.status.naturalRegen <= 3.0 && (this.stats.mp += (50 + (CONFIG.statBonusMPRegen * this.stats.vit / 10)) * Deltatime) > this.stats.mp_max)
             this.stats.mp = this.stats.mp_max;
 
-        if (this.status.naturalRegen <= 0 && (this.stats.shp += (100 + (CONFIG.statBonusSHPRegen * this.stats.vit / 10)) * Deltatime) > this.stats.hp_max / 2)
+        if (this.status.naturalRegen <= 0 && (this.stats.shp += (25 + (CONFIG.statBonusSHPRegen * this.stats.vit / 10)) * Deltatime) > this.stats.hp_max / 2)
             this.stats.shp = this.stats.hp_max / 2;
 
 
@@ -861,6 +865,72 @@ class Player {
     }
 }
 
+class Hitbox {
+    constructor({
+        position_vector, sprite = null, physics, 
+        dimensions, name, owner = null,
+        script_update = null, script_onhit = null
+    }) {
+        this.gameObject = new GameObject({position_vector, sprite, physics});
+
+        this.name = name;
+        this.owner = owner;
+        this.dimensions = dimensions;
+
+        // Most of the functionality comes from these, however, simple hitboxes
+        // could just use this.name and rely on the object being hit to do the work
+        this.script_update = script_update;
+        this.script_onhit = script_onhit;
+    }
+
+    update() {
+        this.gameObject.update();
+
+        if (this.script_update != null)
+            this.script_update(this);
+
+        Hitboxes.forEach((hitbox) => {
+            if (this.collidesWith(hitbox) && this.script_onhit != null)
+                this.script_onhit({self: this, hitbox: hitbox});
+
+        })
+    }
+
+    draw() {
+        this.gameObject.draw();
+    }
+
+    /*
+           ______
+          /|    /|  _ represets what I consider the "origin" of the hitbox, bottom center.
+         /_|___/ |    while the Sprite class doesn't account for an aditional axis like the hitbox
+        |  |   | |    it still centers the sprite based on its x/z and sprite width/height (see below).
+        |  |   | |    I did this so that GameObject.position.y = 0 represent being on the ground 
+        |  |___|_|      _____
+        | /  _ | /     |  _  |   _ represents the origin of the displayed sprite
+        |/_____|/      |_____|
+        
+        
+                y+
+                ^  z-          
+                | /         
+                |/
+          x-<---*---> x+    <--- Represents how axis are considered when both displaying and checking collisions
+               /|
+              / |
+             z+ v
+                y-
+    */
+
+    collidesWith(hitbox) {
+        return ((this.gameObject.position.x - this.dimensions.x / 2) < (hitbox.gameObject.x + this.dimensions.x / 2) && (this.gameObject.position.x + this.dimensions.x / 2) > (hitbox.gameObject.x - this.dimensions.x / 2) &&
+                 this.gameObject.position.y < (hitbox.gameObject.y + this.dimensions.y)                              &&  this.gameObject.position.y + this.dimensions.y > hitbox.gameObject.y &&
+                (this.gameObject.position.z - this.dimensions.z / 2) < (hitbox.gameObject.z + this.dimensions.z / 2) && (this.gameObject.position.z + this.dimensions.z / 2) > (hitbox.gameObject.z - this.dimensions.z / 2));
+    }
+}
+
+
+
 
 
 window.addEventListener('keydown', (event) => {
@@ -981,7 +1051,6 @@ window.addEventListener('mouseup', (event) => {
     switch (button) {
         case User.inputs.keybinds.interact:
             User.inputs.pressed.interact = false;
-            User.inputs.pressed
             break;
 
         case User.inputs.keybinds.spellbook:
@@ -990,6 +1059,12 @@ window.addEventListener('mouseup', (event) => {
     }
 })
 
+
+// We only care about positions within the canvas element
+canvas.addEventListener('mousemove', (event) => {
+    MouseX = event.layerX;
+    MouseY = event.layerY;
+})
 
 
 load();

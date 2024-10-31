@@ -20,6 +20,7 @@ let previousTime = 0;
 
 var User = {};
 
+
 const CONFIG = {
     animation_fps: 60,
 
@@ -52,7 +53,9 @@ const CONFIG = {
 
     // Only affects how fast the yellow bar created after your hp, mp, or sp decreases
     statusDecayRate: 30,
+
 };
+
 
 const ASSETS = {
     ui: {
@@ -126,6 +129,11 @@ function init() {
             def: 10,
             spd: 10,
 
+        },
+        spellbook: {
+            spellType_1: [
+                
+            ]
         }
     })
 
@@ -567,7 +575,7 @@ class Mage {
 }
 
 class Player {
-    constructor({position_vector = new Vector3(), keybinds = CONFIG.defaultKeybinds, sprite, stats}) {
+    constructor({position_vector = new Vector3(), keybinds = CONFIG.defaultKeybinds, sprite, stats, spellbook = null}) {
         this.mage = new Mage({position_vector: position_vector, sprite: sprite, stats: stats});
 
         this.inputs = {
@@ -689,6 +697,8 @@ class Player {
 
             }, cache: {stats: this.mage.stats, position: this.mage.gameObject.position}, image: ASSETS.ui.image}),
         ];
+
+        this.spellbook = spellbook;
     }
 
     update() {
@@ -867,31 +877,25 @@ class Player {
 
 class Hitbox {
     constructor({
-        position_vector, sprite = null, physics, 
+        gameObject = new GameObject({}),
         dimensions, name, owner = null,
-        script_update = null, script_onhit = null
+        scriptOnHit = null
     }) {
-        this.gameObject = new GameObject({position_vector, sprite, physics});
+        this.gameObject = gameObject;
 
         this.name = name;
         this.owner = owner;
         this.dimensions = dimensions;
 
-        // Most of the functionality comes from these, however, simple hitboxes
-        // could just use this.name and rely on the object being hit to do the work
-        this.script_update = script_update;
-        this.script_onhit = script_onhit;
+        this.onhit = scriptOnHit;
     }
 
     update() {
         this.gameObject.update();
 
-        if (this.script_update != null)
-            this.script_update(this);
-
         Hitboxes.forEach((hitbox) => {
             if (this.collidesWith(hitbox) && this.script_onhit != null)
-                this.script_onhit({self: this, hitbox: hitbox});
+                this.onhit({self: this, hitbox: hitbox});
 
         })
     }
@@ -929,7 +933,35 @@ class Hitbox {
     }
 }
 
+class Spell {
+    constructor({
+        gameObject = null, active = true, name = "",
+        initScript = null, updateScript = null, drawScript = null 
+    }) {
+        
+        this.gameObject = gameObject;
+        this.name = name;
 
+        // Set this to false to stop calling update and draw for this spell the following frame
+        this.active = active;
+
+        this.init = initScript;
+        this.update = updateScript;
+        this.draw = drawScript;
+    }
+}
+
+const Spellbook = {
+    fire: [
+        new Spell({
+            gameObject: new GameObject({
+
+            }), name: "fireball", 
+        
+            
+        })
+    ]
+}
 
 
 

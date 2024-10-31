@@ -532,7 +532,7 @@ class Mage {
         };
 
         this.hitbox = new Hitbox({
-            gameObject: this.gameObject, name = "mage",
+            gameObject: this.gameObject, name: "mage",
             dimensions: {width: 10, height: 15}, offsets: new Vector3({x: 0, y: -16, z: 0})
         })
     }
@@ -584,6 +584,8 @@ class Mage {
 
     draw() {
         this.gameObject.draw();
+
+
     }
 }
 
@@ -917,7 +919,13 @@ class Hitbox {
     }
 
     draw() {
-        this.gameObject.draw();
+        ctx.fillStyle = "rgba(255, 216, 0, 0.5)";
+        ctx.fillRect(
+            (this.gameObject.position.x + this.offset.x) + (this.dimensions.width / 2), 
+            (this.gameObject.position.z + this.gameObject.z) - (this.gameObject.position.y,
+
+            this.dimensions.width, this.dimensions.height
+        )
     }
 
     /*

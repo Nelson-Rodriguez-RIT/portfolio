@@ -87,6 +87,13 @@ const KEYFRAMES = {
         [3, 7, 11, 15, 42],                     // Death/Teleport
         [6, 12, 18, 24, 30, 36, 42, 48, 52],    // Attack
         [6, 12, 18, 24, 30, 36, 42, 48, 52],    // Attack Air
+    ],
+    fire: [
+        [5, 10, 15, 20, 25], // Fire explosion
+        [4, 8, 12],          // Fire ball
+
+        [0, 5, 10, 10, 10], // Fire burning in place
+
     ]
 }
 
@@ -254,7 +261,8 @@ class Sprite {
 
             // Offset before extracting image
             this.offset.x + (this.spriteFrame * this.sprite.w),
-            this.offset.y + (this.spriteSet   * this.sprite.h),
+            // Module by total animation count allows use to store more than one set of keyframes for the same animation
+            this.offset.y + ((this.spriteSet % (this.image.height / this.sprite.g))   * this.sprite.h),
 
             // Extracted image size
             this.sprite.w, 
@@ -522,6 +530,11 @@ class Mage {
             naturalRegen:   0,
 
         };
+
+        this.hitbox = new Hitbox({
+            gameObject: this.gameObject, name = "mage",
+            dimensions: {width: 10, height: 15}, offsets: new Vector3({x: 0, y: -16, z: 0})
+        })
     }
 
     update() {
@@ -878,14 +891,17 @@ class Player {
 class Hitbox {
     constructor({
         gameObject = new GameObject({}),
-        dimensions, name, owner = null,
+        dimensions = {width: 5, height: 5}, offsets = new Vector3({}), 
+        name = "", owner = null,
         scriptOnHit = null
     }) {
         this.gameObject = gameObject;
 
         this.name = name;
         this.owner = owner;
+
         this.dimensions = dimensions;
+        this.offsets = offsets;
 
         this.onhit = scriptOnHit;
     }
@@ -927,37 +943,39 @@ class Hitbox {
     */
 
     collidesWith(hitbox) {
-        return ((this.gameObject.position.x - this.dimensions.x / 2) < (hitbox.gameObject.x + this.dimensions.x / 2) && (this.gameObject.position.x + this.dimensions.x / 2) > (hitbox.gameObject.x - this.dimensions.x / 2) &&
-                 this.gameObject.position.y < (hitbox.gameObject.y + this.dimensions.y)                              &&  this.gameObject.position.y + this.dimensions.y > hitbox.gameObject.y &&
-                (this.gameObject.position.z - this.dimensions.z / 2) < (hitbox.gameObject.z + this.dimensions.z / 2) && (this.gameObject.position.z + this.dimensions.z / 2) > (hitbox.gameObject.z - this.dimensions.z / 2));
+        return (((this.gameObject.position.x + this.offsets.x) - this.dimensions.width / 2) < ((hitbox.gameObject.x + hitbox.offsets.x) + hitbox.dimensions.width / 2) && ((this.gameObject.position.x + this.offsets.x) + this.dimensions.width / 2) > ((hitbox.gameObject.x + hitbox.offsets.x) - hitbox.dimensions.width / 2) &&
+                 (this.gameObject.position.y + this.offsets.y)                              < ((hitbox.gameObject.y + hitbox.offsets.y) + hitbox.dimensions.height)    &&  (this.gameObject.position.y + this.offsets.y) + this.dimensions.height     >  (hitbox.gameObject.y + hitbox.offsets.y) &&
+                ((this.gameObject.position.z + this.offsets.z) - this.dimensions.width / 2) < ((hitbox.gameObject.z + hitbox.offsets.z) + hitbox.dimensions.width / 2) && ((this.gameObject.position.z + this.offsets.x) + this.dimensions.width / 2) > ((hitbox.gameObject.z + hitbox.offsets.z) - hitbox.dimensions.width / 2));
     }
 }
 
 class Spell {
     constructor({
-        gameObject = null, active = true, name = "",
+        active = true, name = "",
         initScript = null, updateScript = null, drawScript = null 
     }) {
-        
-        this.gameObject = gameObject;
-        this.name = name;
-
         // Set this to false to stop calling update and draw for this spell the following frame
         this.active = active;
+        this.name = name;
 
         this.init = initScript;
         this.update = updateScript;
         this.draw = drawScript;
+
+        this.cache = {};
     }
 }
 
 const Spellbook = {
     fire: [
-        new Spell({
-            gameObject: new GameObject({
+        new Spell({name: "fireball", 
+            initScript: (user) => {
+                this.cache.hitbox = new Hitbox({
+                    gameObject: new GameObject({position_vector: user.mage.gameObject.position, })
+                });
 
-            }), name: "fireball", 
-        
+                Hitboxes.push(this.cache.hitbox);
+            }
             
         })
     ]

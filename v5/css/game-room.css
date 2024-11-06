@@ -142,7 +142,15 @@ header, footer {
 
 /* JS Related Shenanigans  */
 main {
-    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  
+
+    width: 1024px;
+    height: 576px;
+    
+    user-select: none;
 }
 
 canvas {
@@ -162,6 +170,8 @@ canvas {
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+
+    
 }
 
 main span {

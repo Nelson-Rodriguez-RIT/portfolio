@@ -7,6 +7,8 @@ canvas.width = 1024;
 canvas.height = 576;
 ctx.scale(2, 2);
 
+canvas.style.cursor = "initial";
+
 // Maintains a pixalated look
 ctx.imageSmoothingEnabled = false;
 canvas.style.imageRendering = "pixelated";

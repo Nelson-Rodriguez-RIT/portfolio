@@ -4,9 +4,17 @@ const { join } = require('node:path');
 const { Server } = require('socket.io');
 
 const https = require('node:https');
+const fs = require('fs');
+
+const options = {
+    cert: fs.readFileSync("./ssl/nellyjelly_me.crt"),
+    ca: fs.readFileSync("./ssl/nellyjelly_me.ca-bundle"),
+    key: fs.readFileSync("./ssl/private.key"),
+}
+
 
 const app = express();
-const server = createServer(app);
+const server = https.createServer(options, app);
 const io = new Server(server);
 
 

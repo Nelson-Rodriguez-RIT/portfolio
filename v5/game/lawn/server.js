@@ -3,6 +3,8 @@ const { createServer } = require('node:http');
 const { join } = require('node:path');
 const { Server } = require('socket.io');
 
+const https = require('node:https');
+
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
@@ -44,9 +46,10 @@ io.on('connection', (socket) => {
 
     socket.on('update lobby', (msg) => {
         if (!lobby.connections) return;
-        
+
         for (let player of lobby.connections) {
-            player.connection.emit('lobby updated', msg.data);
+            if (player.id != lobby.host)
+                player.connection.emit('lobby updated', msg.data);
         }
             
     })
@@ -56,6 +59,6 @@ io.on('connection', (socket) => {
     })
 });
 
-server.listen(3000, () => {
-    console.log('server running at http://localhost:3000');
+server.listen(3000, "91.208.92.78", () => {
+    console.log('server running at http://91.208.92.78:3000');
 });

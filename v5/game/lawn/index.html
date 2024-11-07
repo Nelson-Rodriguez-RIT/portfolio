@@ -463,7 +463,23 @@ function update() {
                 Cache.lobby.chatInput.style.left     = "10px";
             }
 
-            if (Game.chat.length != Cache.lobby.chatText.childElementCount) {
+            console.log(Cache.lobby.chatText.childElementCount, Game.chat.length);
+            if (Cache.lobby.chatText.childElementCount > Game.chat.length)
+                Cache.lobby.chatText.innerHTML = "";
+
+            while (Cache.lobby.chatText.childElementCount < Game.chat.length) {
+                let text = document.createElement('li');
+                text.innerHTML           = `<span><b><u>${Game.chat[Cache.lobby.chatText.childElementCount].username}</u>: </b>${Game.chat[Cache.lobby.chatText.childElementCount].message}</span>`;
+                text.style.paddingBottom = "5px";
+                text.style.textWrap      = "wrap";
+                text.style.maxWidth      = "270px";
+
+                Cache.lobby.chatText.appendChild(text);
+                Cache.lobby.chatText.scrollTop = Cache.lobby.chatText.scrollHeight
+            }
+
+
+/*             if (Game.chat.length != Cache.lobby.chatText.childElementCount) {
                 // Clear chat
                 Cache.lobby.chatText.innerHTML = "";
 
@@ -479,7 +495,7 @@ function update() {
 
                 // Sets the scroll bar to the most recent message
                 Cache.lobby.chatText.scrollTop = Cache.lobby.chatText.scrollHeight
-            }
+            } */
             
 
             if (isHost) {

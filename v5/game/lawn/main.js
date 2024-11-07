@@ -111,28 +111,46 @@ function update() {
                 main.appendChild(menuTitle);
 
 
+                // Stores menu buttons for easy layout configuration
+                let menuButtons = document.createElement('div');
+                menuButtons.style.position = "relative";
+                menuButtons.style.display = "flex";
+                menuButtons.style.flexDirection = "column";
+
+                Cache.menu.buttons = menuButtons;
+                main.appendChild(menuButtons);
+
+
                 // TODO: Change state onClick()
                 // Create lobby button
                 let menuCreateLobby = document.createElement('button');
                 menuCreateLobby.innerHTML = "Create Lobby";
+                menuCreateLobby.style.margin = "2% 40%";
+                menuCreateLobby.onclick = (event) => { createLobby() };
 
                 Cache.menu.createLobby = menuCreateLobby;
-                main.appendChild(menuCreateLobby);
+                menuButtons.appendChild(menuCreateLobby);
 
 
                 // Join lobby button
                 let menuJoinLobby = document.createElement('button');
                 menuJoinLobby.innerHTML = "Join Lobby";
+                menuJoinLobby.style.margin = "0% 40%";
 
                 Cache.menu.joinLobby = menuJoinLobby;
-                main.appendChild(menuJoinLobby);
+                menuButtons.appendChild(menuJoinLobby);
             }
             
             // Initialize menu options if they haven't been already
             if (Cache.previousState != "menu") {
                 Cache.menu.title.style.position = "relative";
+                Cache.menu.title.style.left     = "initial";
+
                 Cache.menu.createLobby.style.position = "relative";
+                Cache.menu.createLobby.style.left     = "initial";
+
                 Cache.menu.joinLobby.style.position = "relative";
+                Cache.menu.joinLobby.style.left     = "initial";
             }
 
 
@@ -155,6 +173,16 @@ canvas.addEventListener('mousemove', (event) => {
     MouseX = event.layerX;
     MouseY = event.layerY;
 })
+
+
+function createLobby() {
+
+    return loadLobby()
+}
+
+function loadLobby() {
+    return "success"
+}
 
 
 onload();

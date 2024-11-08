@@ -7,9 +7,9 @@ const https = require('node:https');
 const fs = require('fs');
 
 const options = {
-    cert: fs.readFileSync("./ssl/nellyjelly_me.crt"),
-    ca: fs.readFileSync("./ssl/nellyjelly_me.ca-bundle"),
-    key: fs.readFileSync("./ssl/private.key"),
+    cert: fs.readFileSync("./ssl/ssl.crt"),
+    ca: fs.readFileSync("./ssl/ssl.ca-bundle"),
+    key: fs.readFileSync("./ssl/ssl.key")
 }
 
 
@@ -18,7 +18,11 @@ const server = https.createServer(options, app);
 const io = new Server(server);
 
 
-var lobby = null;
+var lobby = {
+    host: null, 
+    parentConnection: null,
+    connections: []
+}
 
 
 app.get('/', (req, res) => {
@@ -65,6 +69,25 @@ io.on('connection', (socket) => {
     socket.on('send message', (msg) => {
         lobby.parentConnection.emit("message sent", msg)
     })
+
+    socket.on('disconnected', () => {
+        if (lobby.parentConnection == socket) {
+            for (let player of lobby.connections)
+                player.connection.emit('lobby closed');
+        }
+        else {
+            for (let index = 0; index < lobby.connections.length; index++) {
+                if (lobby.connections[index].connection == socket) {
+                    lobby.parentConnection.emit('player disconnected', index);
+                    lobby.connections.filter((player) => player.connection != socket);
+                    break;
+                }
+
+            }
+
+            
+        }
+    });
 });
 
 server.listen(3000, "91.208.92.78", () => {

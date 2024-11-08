@@ -225,15 +225,21 @@
                 margin: 0px;
             }
         }
+
+
+        .js-chat-text {
+            user-select: text;
+        }
+
     </style>
 </head>
 <body>
     <header>
         <h1>L.A.W.N</h1>
         <nav>
-            <a href="../../index.html#desktop-wrapper">Home</a>
-            <a href="../../index.html#gallery-wrapper">Gallery</a>
-            <a href="../../index.html#contact-wrapper">Contact</a>
+            <a href="https://nellyjelly.me/index.html#desktop-wrapper">Home</a>
+            <a href="https://nellyjelly.me/index.html#gallery-wrapper">Gallery</a>
+            <a href="https://nellyjelly.me/index.html#contact-wrapper">Contact</a>
         </nav>
     </header>
 
@@ -286,6 +292,7 @@ const Cache = {
 
 // User Setup
 var userID = null;
+var username = null;
 var isHost = false;
 
 
@@ -304,8 +311,13 @@ function onload() {
     }
     console.log(`This session's token is ${userID}`);
 
-    socket.emit('loaded', userID);
-    console.log(`Connected to main server`);
+    if (!(username = localStorage.getItem(`${CONFIG.localStorageIdentifier}-username`))) {
+        username = userID;
+    }
+
+
+    socket.emit('loaded', `${username} (${userID})`);
+    console.log(`Connected to main server as ${username}`);
 
 
     Game.state = "menu";
@@ -338,6 +350,16 @@ function update() {
 
                 Cache.menu.joinLobby.style.position = "fixed";
                 Cache.menu.joinLobby.style.left     = "-9999px";
+
+
+                Cache.menu.usernameFieldContainer.style.position = "fixed";
+                Cache.menu.usernameFieldContainer.style.left     = "-9999px";
+
+                Cache.menu.usernameText.style.position = "fixed";
+                Cache.menu.usernameText.style.left     = "-9999px";
+
+                Cache.menu.usernameInput.style.position = "fixed";
+                Cache.menu.usernameInput.style.left     = "-9999px";
                 break;
 
             case "lobby":
@@ -381,7 +403,6 @@ function update() {
                 main.appendChild(menuButtons);
 
 
-                // TODO: Change state onClick()
                 // Create lobby button
                 let menuCreateLobby = document.createElement('button');
                 menuCreateLobby.innerHTML = "Create Lobby";
@@ -400,6 +421,36 @@ function update() {
 
                 Cache.menu.joinLobby = menuJoinLobby;
                 menuButtons.appendChild(menuJoinLobby);
+
+
+
+                // Username field
+                let usernameFieldContainer = document.createElement('div');
+                usernameFieldContainer.style.position = "relative";
+                usernameFieldContainer.style.display = "flex";
+                usernameFieldContainer.style.flexDirection = "column";
+                usernameFieldContainer.style.maxWidth = "150px";
+                usernameFieldContainer.style.margin = "25px auto";
+
+                Cache.menu.usernameFieldContainer = usernameFieldContainer;
+                main.appendChild(usernameFieldContainer);
+
+
+                let usernameText = document.createElement('span');
+                usernameText.style.position = "relative";
+                usernameText.style.textAlign = "center";
+                usernameText.innerHTML = "Username";
+
+                usernameFieldContainer.appendChild(usernameText);
+                Cache.menu.usernameText = usernameText;
+
+
+                let usernameInput = document.createElement('input');
+                usernameInput.value = (username) ? username : "";
+                usernameInput.style.position = "relative";
+
+                usernameFieldContainer.appendChild(usernameInput);
+                Cache.menu.usernameInput = usernameInput;
             }
             
             // Initialize menu options if they haven't been already
@@ -412,6 +463,17 @@ function update() {
 
                 Cache.menu.joinLobby.style.position = "relative";
                 Cache.menu.joinLobby.style.left     = "initial";
+
+
+
+                Cache.menu.usernameFieldContainer.style.position = "relative";
+                Cache.menu.usernameFieldContainer.style.left     = "initial";
+
+                Cache.menu.usernameText.style.position = "relative";
+                Cache.menu.usernameText.style.left     = "initial";
+
+                Cache.menu.usernameInput.style.position = "relative";
+                Cache.menu.usernameInput.style.left     = "initial";
             }
             break;
     
@@ -424,7 +486,7 @@ function update() {
                 chatText.style.left     = "10px";
                 chatText.style.top      = "10px";
                 chatText.style.height   = "494px";
-                chatText.style.width    = "300px";
+                chatText.style.width    = "600px";
                 chatText.style.color            = "white";
                 chatText.style.backgroundColor  = "rgb(24, 24, 24)";
                 chatText.style.display          = "flex";
@@ -434,6 +496,7 @@ function update() {
                 chatText.style.userSelect       = "auto !important"
                 chatText.style.zIndex           = "100 !important";
                 chatText.style.paddingLeft      = "5px";
+                chatText.style.userSelect = "initial";
 
                 Cache.lobby.chatText = chatText;
                 main.appendChild(chatText);
@@ -443,7 +506,7 @@ function update() {
                 chatInput.style.position = "relative";
                 chatInput.style.left    = "10px";
                 chatInput.style.top     = "20px";
-                chatInput.style.width   = "300px";
+                chatInput.style.width   = "600px";
                 chatInput.style.height  = "50px";
                 chatInput.style.backgroundColor = "rgb(24, 24, 24)";
                 chatInput.style.color           = "white";
@@ -463,16 +526,16 @@ function update() {
                 Cache.lobby.chatInput.style.left     = "10px";
             }
 
-            console.log(Cache.lobby.chatText.childElementCount, Game.chat.length);
             if (Cache.lobby.chatText.childElementCount > Game.chat.length)
                 Cache.lobby.chatText.innerHTML = "";
 
             while (Cache.lobby.chatText.childElementCount < Game.chat.length) {
                 let text = document.createElement('li');
-                text.innerHTML           = `<span><b><u>${Game.chat[Cache.lobby.chatText.childElementCount].username}</u>: </b>${Game.chat[Cache.lobby.chatText.childElementCount].message}</span>`;
+                text.innerHTML           = `<span class="js-chat-text"><b><u>${Game.chat[Cache.lobby.chatText.childElementCount].username}</u>: </b>${Game.chat[Cache.lobby.chatText.childElementCount].message}</span>`;
                 text.style.paddingBottom = "5px";
                 text.style.textWrap      = "wrap";
-                text.style.maxWidth      = "270px";
+                text.style.maxWidth      = "570px";
+                text.style.userSelect = "initial";
 
                 Cache.lobby.chatText.appendChild(text);
                 Cache.lobby.chatText.scrollTop = Cache.lobby.chatText.scrollHeight
@@ -519,13 +582,22 @@ socket.on('player connected', (msg) => {
 })
 
 socket.on('player disconnected', (msg) => {
-    Game.players.filter((player) => player.id != msg.id);
-    Game.chat.push({username: "server", message: `${msg.username} has disconnected`})
+    console.log("player disconnected");
+
+    let disconnectedPlayer = Game.players[msg];
+    Game.players.filter((player) => player.id != disconnectedPlayer.id);
+    Game.chat.push({username: "server", message: `${disconnectedPlayer.username} has disconnected`})
+})
+
+socket.on('lobby closed', () => {
+    Game.chat.push({username: "server", message: `host has disconnected, closing lobby...`});
 })
 
 socket.on('message sent', (msg) => {
     Game.chat.push({username: msg.username, message: msg.message})
 })
+
+
 
 
 // We only care about positions within the canvas element
@@ -538,21 +610,36 @@ window.addEventListener('keydown', (event) => {
     if (event.key == "Enter") event.preventDefault();
 
     if (Game.state == "lobby" && (event.key == "Enter" || event.key == "Return") && Cache.lobby.chatInput.value) {
-        socket.emit("send message", {id: userID, username: `user-${userID}`, message: Cache.lobby.chatInput.value})
+        socket.emit("send message", {id: userID, username: `${username}`, message: Cache.lobby.chatInput.value})
         Cache.lobby.chatInput.value = '';
     }      
 })
+
+window.addEventListener('beforeunload', (event) => {
+    socket.emit('disconnected');
+})
+
 
 
 function createLobby() {
     socket.emit('create lobby', userID);
     Game.state = "lobby";
     isHost = true;
+
+    Game.chat.push({username: "server", message: `lobby hosted by ${username}`})
+
     loadLobby();
 }
 
 function loadLobby() {
-    socket.emit('join lobby', {id: userID, username: `user-${userID}`, lobby: "__global"});
+
+    if ((username = Cache.menu.usernameInput.value) == null || username == "server" || username.trim() == "")
+        username == userID;
+
+    if (username != userID)
+        localStorage.setItem(`${CONFIG.localStorageIdentifier}-username`, username);
+
+    socket.emit('join lobby', {id: userID, username: `${username}`, lobby: "__global"});
 }
 
 

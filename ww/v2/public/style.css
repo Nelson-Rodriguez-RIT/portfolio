@@ -1,0 +1,102 @@
+.disabled {position: fixed !important; left: -9999px !important;}
+
+* {
+    padding: 0%;
+    margin: 0%;
+
+    box-sizing: content-box;
+    list-style-type: none;
+    border: none;
+}
+* {border: 1px solid black;} /* Debug */
+
+
+body {
+    width: 100%;
+    height: 100%;
+
+    max-width:  100vw;
+    max-height: 100vh;
+}
+
+
+#menu {
+    margin: 5vh 5vw;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4vh;
+}
+#menu-lobby {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+
+    width: 20vw;
+    height: 10vh;
+}
+#menu-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+
+
+#lobby {
+    margin: 5vh 5vw;
+    
+    display: flex;
+    flex-direction: row;
+}
+#chat {
+    height: 90vh;
+    width: 40vw;
+
+    
+}
+
+#chat-text {
+    height: 90%;
+    width: 100%;
+}
+#chat-input {
+    height: 10%;
+    width: 100%;
+}
+
+#gameplay {
+    height: 90vh;
+    width: 50vw;
+
+    display: flex;
+    flex-direction: column;
+}
+#gameplay-canvas {
+    height: 50%;
+    width: 100%;
+}
+
+#gameplay-menu {
+    height: 50%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+}
+#gameplay-menu-action {
+    width: 50%;
+    height: 100%;
+}
+#gameplay-menu-status {
+    width: 50%;
+    height: 100%;
+}
+
+#action-selection {
+    display: flex;
+    flex-direction: column;
+}
+#action-selection > button:active {
+    background-color: #7e7e7e;
+}

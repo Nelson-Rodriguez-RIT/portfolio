@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Wizards</title>
+    
+    <link rel="stylesheet" href="internal.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+
+
+<body>
+    <!-- Main menu elements -->
+    <div id="main-menu" class="">
+        <span id="main-menu-title">Web Wizards</span>
+
+        <div id="main-menu-user-settings">
+            <span id="main-menu-user-settings-username">Username <input id="main-menu-settings-username-input" type="text"></span>
+            <span>Class 
+                <select id="main-menu-class">
+                    <option value="debug">Debug</option>
+                    <option value="debug_test">Debug Test</option>
+            </select></span>
+        </div>
+
+        <div id="main-menu-lobby">
+            <span id="main-menu-lobby-status">Enter a lobby ID to join or create a lobby</span>
+            <span>Lobby ID <input id="main-menu-lobby-id" type="text"></span>
+            <button id="main-menu-lobby-create">Create Lobby</button>
+            <button id="main-menu-lobby-join">Join Lobby</button>
+        </div>
+
+        <span id="main-menu-info">Demo Build</span>
+    </div>
+
+    <div id="lobby" class="disabled">
+        <ul id="lobby-chat"></ul>
+        <input id="lobby-input" type="text">
+        <canvas id="lobby-canvas"></canvas>
+        <div id="lobby-character">
+            <div id="lobby-map">
+                <p id="lobby-map-display"></p>
+                <ul id="lobby-map-action">
+                    <li><button id="action-moveTo">Move</button></li>
+                </ul>
+            </div>
+
+            <div id="lobby-battle" class="disabled">
+                <span id="lobby-battle-status"></span>
+                <p id="lobby-battle-description"></p>
+                <ul id="lobby-battle-action">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="internal.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R.T.J.C</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <section id="main-menu">
+        <h1>R.T.J.C</h1>
+        <div><button id="mm-lobbies">Create/Join Lobby</button><span id="mm-lobbies-status" class="inactive"><i>You need to enter a username in settings first!</i></span></div>
+        <button id="mm-settings">Settings</button>
+
+
+        <article id="lobby-list" class="inactive">
+            <button id="ll-exit">[X]</button>
+            <div id="ll-wrapper">
+                <ul id="ll-lobbies"></ul>
+                <div id="ll-tools">
+                    <div><b>Lobby ID</b> <input id="ll-tools-id" type="text"></div>
+                    <div><b>Lobby Password</b> <input id="ll-tools-password" type="text"></div>
+                    <button id="ll-tools-create">Create Lobby</button>
+                    <button id="ll-tools-join">Join Lobby</button>
+                </div>
+            </div>
+
+        </article>
+
+        <article id="settings" class="inactive">
+            <button id="s-exit">[X]</button>
+            <div><b>Username</b> <input id="s-username-input" type="text"></div>
+            <div><b>Profile Picture</b> <img href=""> <input type="file"></div>
+        </article>
+    </section>
+    
+
+    <section id="lobby" class="inactive">
+        
+        <article id="tenor" class="inactive"></article>
+        <article id="emoji" class="inactive"></article>
+    </section>
+
+
+    <script src="./utils.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

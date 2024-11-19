@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taiko No Tatsujin</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <section id="main-menu">
+        <div><h1 id="mm-title">Taiko No Tatsujin</h1><span id="mm-title-desc">太鼓の達人</span></div>
+
+        <div><button id="mm-song-select">Song Select</button><span id="mm-song-select-desc" class="inactive">Select or import a beatmap to play!</span></div>
+        <div><button id="mm-settings">Settings</button><span id="mm-settings-desc" class="inactive">Adjust how the game functions or change controls</span></div>
+        <div><button>Tutorial</button><span>Learn the basics of Taiko No Tatsujin</span></div>
+    </section>
+
+    <article id="settings" class="inactive">
+        <button id="s-exit">X</button>
+    </article>
+    <!--Add tutorial after fixing setting's window functionality-->
+    <article id="tutorial" class="inactive"></article>
+
+
+    <section id="song-select" class="inactive">
+        <!--Upper row contains songs/beatmaps, lower contains buttons for functionality (i.e. upload a beatmap)-->
+        <ul id="ss-beatmaps"></ul>
+        <div id="ss-toolbar">
+            <div>
+                <button id="ss-upload">Upload Beatmap</button>
+                <!--Window below is shown when the button above is clicked-->
+                <article id="ss-upload-window" class="inactive">
+                    <button id="ss-upload-exit">X</button>
+                    <div id="ss-upload-file"><span id="ss-upload-file-desc"><i>Drag and drop a OSZ file here!</i></span></div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="game" class="inactive"></section>
+
+    <script src="./utilities.js"></script>
+    <script src="./classes.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

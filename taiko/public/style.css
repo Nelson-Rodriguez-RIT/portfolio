@@ -1,0 +1,56 @@
+* {padding: 0px; margin: 0px}
+
+.inactive {position: fixed; left: -9999px !important; top: -9999px !important;}
+
+
+
+#mm-title {
+    display: inline;
+}
+
+#settings {
+    position: fixed;
+    left: 20vw;
+    top: 20vh;
+
+    width: 60vw;
+    height: 60vh;
+
+    background-color: #202020;
+
+    border-radius: 25px;
+}
+
+#settings > * {
+    position: relative;
+}
+
+
+
+#song-select {
+    display: grid;
+    grid-template-rows: 80vh 20vh;
+}
+#ss-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#ss-upload-window {
+    position: fixed;
+    left: 20vw;
+    top: 20vh;
+
+    width: 60vw;
+    height: 60vh;
+
+    background-color: #202020;
+
+    border-radius: 25px;
+}
+
+#ss-upload-window > * {
+    position: relative;
+}

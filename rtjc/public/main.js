@@ -21,9 +21,10 @@ function update() {
         while ((messageCount = HTML.lobby.chat.childElementCount) < Network.lobby.chat.length)
             HTML.lobby.chat.innerHTML += 
                 `<li>
+                    <img src="${Network.lobby.chat[messageCount].profile ? "" : "./assets/no_pfp.png"}">
                     <b>${Network.lobby.chat[messageCount].username}: </b>
                     ${Network.lobby.chat[messageCount].message}
-                    ${Network.lobby.chat[messageCount].content ? `<img src=${Network.lobby.chat[messageCount].content}` : ""}
+                    ${Network.lobby.chat[messageCount].content?.tenor ? `<br><img src=${Network.lobby.chat[messageCount].content.tenor}` : ""}
                 </li>`
             
     }
@@ -138,8 +139,7 @@ function loadHTML() {
         }
     }
     HTML.lobby.tenor.onclick = e => {
-        console.log(10);
-        HTML.tenor.self.className = (HTML.tenor.self.className) ? "inactive" : "";
+        HTML.tenor.self.className = (HTML.tenor.self.className) ? "" : "inactive";
     }
 
     HTML.tenor.input.onkeydown = e => {
@@ -147,7 +147,7 @@ function loadHTML() {
 
         // OFFLINE TESTING CODE
         if (key == "enter" && HTML.tenor.input.value) {
-            HTML.tenor.results.innerHTML = API.getTenorGIFs(HTML.tenor.results, HTML.tenor.input.value);
+            API.getTenorGIFs(HTML.tenor.results, HTML.tenor.input.value);
             HTML.tenor.input.value = "";
         }
     }

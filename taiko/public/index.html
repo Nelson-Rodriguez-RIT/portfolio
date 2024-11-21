@@ -32,15 +32,33 @@
                 <!--Window below is shown when the button above is clicked-->
                 <article id="ss-upload-window" class="inactive">
                     <button id="ss-upload-exit">X</button>
-                    <div id="ss-upload-file"><span id="ss-upload-file-desc"><i>Drag and drop a OSZ file here!</i></span></div>
+                    <span id="ss-upload-file-desc"><i>Drag and drop a OSZ file here!</i></span>
+                    <input id="ss-upload-file" type="file">
                 </article>
             </div>
         </div>
     </section>
 
 
-    <section id="game" class="inactive"></section>
+    <section id="game" class="inactive">
+        <div id="g-upper">
+            <div id="g-health"></div>
+        </div>
 
+        <div id="g-field">
+            <div id="g-ui">
+                <div id="g-ui-score">0000000</div>
+                <div id="g-ui-combo">0</div>
+                <div id="g-ui-drum"></div>
+            </div>
+            <span id="g-hitzone">O</span>
+        </div>
+        <div id="g-lower"></div>
+    </section>
+
+    <section id="results" class="inactive"></section>
+
+    <!--<script src="/socket.io/socket.io.js"></script>-->
     <script src="./utilities.js"></script>
     <script src="./classes.js"></script>
     <script src="./main.js"></script>

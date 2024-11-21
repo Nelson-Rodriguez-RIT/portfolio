@@ -27,3 +27,8 @@ body {
 
     padding: 2vh 2vw;
 }
+
+#ll-window {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}

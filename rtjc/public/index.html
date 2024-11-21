@@ -16,13 +16,13 @@
 
         <article id="lobby-list" class="inactive">
             <button id="ll-exit">[X]</button>
-            <div id="ll-wrapper">
+            <div id="ll-window">
                 <ul id="ll-lobbies"></ul>
                 <div id="ll-tools">
-                    <div><b>Lobby ID</b> <input id="ll-tools-id" type="text"></div>
-                    <div><b>Lobby Password</b> <input id="ll-tools-password" type="text"></div>
-                    <button id="ll-tools-create">Create Lobby</button>
-                    <button id="ll-tools-join">Join Lobby</button>
+                    <div><b>ID</b> <input id="ll-tools-id" type="text"></div>
+                    <div><b>Password</b> <input id="ll-tools-password" type="text"></div>
+                    <div><button id="ll-tools-create">Create Lobby</button><button id="ll-tools-join">Join Lobby</button></div>
+                    <div><button id="ll-tools-refresh">Refresh List</button></div>
                 </div>
             </div>
 
@@ -33,13 +33,22 @@
             <div><b>Username</b> <input id="s-username-input" type="text"></div>
             <div><b>Profile Picture</b> <img href=""> <input type="file"></div>
         </article>
-    </section>
+    </section>`
     
 
     <section id="lobby" class="inactive">
-        
-        <article id="tenor" class="inactive"></article>
-        <article id="emoji" class="inactive"></article>
+        <ul id="l-chat"></ul>
+
+        <div id="l-input">
+            <input id="l-input-text" type="text">
+            <button id="l-input-tenor">GIF</button>
+        </div>
+
+        <article id="tenor" class="inactive">
+            <input id="t-input" type="text">    
+            <ul id="t-results"></ul>
+        </article>
+        <!--<article id="emoji" class="inactive"></article>-->
     </section>
 
 

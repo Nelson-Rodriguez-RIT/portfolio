@@ -7,13 +7,17 @@
 }
 .lobby-info {
     margin: 0.75rem;
-    margin-right: 10rem;
+    margin-right: 2rem;
     padding: 5px;
 
     background-color: #b6b6b6;
     color: #1a1a1a;
 
     border-radius: 10px;
+
+    text-wrap: wrap;
+    max-width: 40vw;
+    overflow-wrap: break-word;
 }
 
 
@@ -87,6 +91,14 @@ body {
 #ll-window {
     display: grid;
     grid-template-columns: 50% 50%;
+
+    height: 55vh;
+    max-height: 55vh;
+}
+#ll-lobbies {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-right: 1rem;
 }
 #ll-tools > * {
     margin-bottom: 1rem;
@@ -114,13 +126,18 @@ body {
     top: 10vh;
 
     width: 60vw;
+    max-width: 60vw;
     height: 70vh;
 
     padding: 1rem;
 
     overflow-y: scroll;
+    overflow-x: hidden;
     background-color: #121212;
     border-radius: 25px;
+    
+    text-wrap: wrap;
+    overflow-wrap: break-word;
 }
 #l-input {
     position: relative;

@@ -95,7 +95,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('_disconnect', () => {
-        if (socket.data.lobby) {
+        if (socket.data?.lobby) {
             if (socket.data.lobby.host == socket) // Make next host the second oldest user
                 socket.data.lobby.host = socket.data.lobby.users[1];
 

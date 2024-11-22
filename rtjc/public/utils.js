@@ -65,7 +65,11 @@ const UTIL = {
     // (Also avoids Cross-Origins erros in the processs)
     convertToBase64: (ref, fileToConvert) => {
         let fileReader = new FileReader();
-        fileReader.onload = (file) => {ref.image = file.target.result}
+        fileReader.onload = (file) => {
+            ref.image = file.target.result;
+            if (ref.image) 
+                HTML.settings.profileDisplay.src = (ref.image != 'null' ? ref.image : './assets/no_pfp.png');
+        }
         fileReader.readAsDataURL(fileToConvert);
     },
 
@@ -196,7 +200,7 @@ const SETUP = {
             for (let lobby of NETWORK.in)
                 HTML.lobbies.lobbies.innerHTML += 
                 `<li class="lobby-info">"${lobby.id}" hosted by <img src="${lobby.hostProfile && lobby.hostProfile != 'null' ? lobby.hostProfile : "./assets/no_pfp.png"}" class="pfp"> ${lobby.host}.
-                <br> ${lobby.usersConnected} users connected ${lobby.passwordRequired ? "(Password Required)" : ""}</li>`
+                <br><br> ${lobby.usersConnected} users connected ${lobby.passwordRequired ? "(Password Required)" : ""}</li>`
         });
 
         NETWORK.socket.on('get_lobby', (lobby) => {

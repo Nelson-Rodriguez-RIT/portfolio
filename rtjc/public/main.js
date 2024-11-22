@@ -5,7 +5,7 @@ const CONFIG  = {
     noProfilePictureURL: "./assets/no_pfp.png",
 
     tenorKey:   null,
-    tenorLimit: 20,
+    tenorLimit: 30,
 
     localStorageTag:     "njr-",
     localID:             "id",
@@ -31,15 +31,21 @@ function update() {
     if (NETWORK.in && !HTML.lobby.self.className) {
         // Update messages as new ones appear from Network
         let messageCount;
-        while ((messageCount = HTML.lobby.chat.childElementCount) < NETWORK.in.length)
+        while ((messageCount = HTML.lobby.chat.childElementCount) < NETWORK.in.length) {
             HTML.lobby.chat.innerHTML += 
                 `<li class="chat-message">
-                    <img src="${NETWORK.in[messageCount].profile ? NETWORK.in[messageCount].profile : "./assets/no_pfp.png"}" class="pfp">
+                    <img src="${NETWORK.in[messageCount].profile && NETWORK.in[messageCount].profile != 'null' ? NETWORK.in[messageCount].profile : "./assets/no_pfp.png"}" class="pfp">
                     <b>${NETWORK.in[messageCount].username}: </b>
                     ${NETWORK.in[messageCount].message}
                     ${NETWORK.in[messageCount].content ? `<br><img src=${NETWORK.in[messageCount].content}` : ""}
                 </li>`;
+
+            HTML.lobby.chat.scrollTop =  HTML.lobby.chat.scrollHeight;
+        }
+            
     }
 }
+
+window.addEventListener('beforeunload', () => {NET.disconnect();});
 
 load();

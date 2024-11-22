@@ -24,6 +24,11 @@ const NET = {
 
     sendMessage: (message = "", content = null) => {
         NETWORK.socket.emit("send_message", {message: message, content: content});
+    },
+
+    disconnect: () => {
+        NETWORK.socket.emit('_disconnect');
+        UTIL.saveUserInfo();
     }
 }
 
@@ -38,6 +43,7 @@ const API = {
             if (xmlHTTP.readyState == 4 && xmlHTTP.status == 200) {
                 let response = JSON.parse(xmlHTTP.responseText);
 
+                resultsHTML.innerHTML = "";
                 for (let gif of response.results) {
                     resultsHTML.innerHTML += `
                     <li>
@@ -72,7 +78,7 @@ const UTIL = {
 
         if (!USER.image && HTML.settings.profile.value) {
             UTIL.convertToBase64(USER, HTML.settings.profile.files[0]);
-            HTML.settings.profileDisplay.src = USER.image;
+            HTML.settings.profileDisplay.src = USER.image && USER.image != 'null' ? USER.image : './assets/no_pfp.png';
         }
             
 
@@ -121,6 +127,8 @@ const SETUP = {
             chat:  document.querySelector("#l-chat"),
             input: document.querySelector("#l-input-text"),
             tenor: document.querySelector("#l-input-tenor"),
+
+            disconnect: document.querySelector("#l-disconnect"),
         }
         HTML.tenor = {
             self: document.querySelector("#tenor"),
@@ -164,7 +172,8 @@ const SETUP = {
                 HTML.lobby.input.value = "";
             }
         }
-        HTML.lobby.tenor.onclick = () => {HTML.tenor.self.className = (HTML.tenor.self.className) ? "" : "inactive";}
+        HTML.lobby.tenor.onclick      = () => {HTML.tenor.self.className = (HTML.tenor.self.className) ? "" : "inactive";}
+        HTML.lobby.disconnect.onclick = () => {NET.disconnect(); }
 
         HTML.tenor.input.onkeydown = e => {
             let key = e.key.toLowerCase();
@@ -186,7 +195,7 @@ const SETUP = {
             HTML.lobbies.lobbies.innerHTML = "";
             for (let lobby of NETWORK.in)
                 HTML.lobbies.lobbies.innerHTML += 
-                `<li class="lobby-info">"${lobby.id}" hosted by ${lobby.host}.
+                `<li class="lobby-info">"${lobby.id}" hosted by <img src="${lobby.hostProfile && lobby.hostProfile != 'null' ? lobby.hostProfile : "./assets/no_pfp.png"}" class="pfp"> ${lobby.host}.
                 <br> ${lobby.usersConnected} users connected ${lobby.passwordRequired ? "(Password Required)" : ""}</li>`
         });
 
@@ -206,7 +215,14 @@ const SETUP = {
         NETWORK.socket.on('lobby_sync',    (lobby)   => {NETWORK.in = lobby;});
         NETWORK.socket.on('get_tenor_key', (key)     => {CONFIG.tenorKey = key;});
 
-        NET.loadProfile()
+        NETWORK.socket.on('_disconnected', () => {
+            HTML.mainMenu.self.className = "";
+
+            HTML.lobby.self.className = "inactive";
+            HTML.tenor.self.className = "inactive";
+        });
+
+        NET.loadProfile();
     },
 
     // Gets default information stored in the browser
@@ -216,7 +232,7 @@ const SETUP = {
         USER.image    = localStorage.getItem(CONFIG.localStorageTag + CONFIG.localProfilePicture);
 
         HTML.settings.username.value = USER.username;
-        if (USER.image) HTML.settings.profileDisplay.src = USER.image;
+        if (USER.image) HTML.settings.profileDisplay.src = USER.image != 'null' ? USER.image : './assets/no_pfp.png';
 
         UTIL.saveUserInfo();
     }

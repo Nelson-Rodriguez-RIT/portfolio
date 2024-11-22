@@ -39,7 +39,8 @@ io.on('connection', (socket) => {
         for (let lobby of Lobbies)
             lobbiesInfo.push({
                 id:               lobby.id, 
-                host:             lobby.host.data.username, 
+                host:             lobby.host.data.username,
+                hostProfile:      lobby.host.data.image, 
                 usersConnected:   lobby.users.length, 
                 passwordRequired: lobby.password
             });
@@ -48,24 +49,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('join_lobby', (info) => {
-        console.log(info.id, info.password);
-
         for (let lobby of Lobbies) {
-            console.log(lobby.id, lobby.password);
-
             if (lobby.id == info.id) {
-                if (lobby.password == null) {
-                    socket.data.lobby = lobby;
-
-                    lobby.users.push(socket);
-                    lobby.chat.push({profile: null, username: 'Server', message: `User ${socket.data.username} has connected`, content: null});
-
-                    socket.emit('get_lobby', lobby.chat);
-
-                    for (let user of socket.data.lobby.users)
-                        user.emit('lobby_sync', socket.data.lobby.chat);
-                }
-                else if (lobby.password == info.password) {
+                if (lobby.password == null || lobby.password == info.password) {
                     socket.data.lobby = lobby;
 
                     lobby.users.push(socket);
@@ -107,6 +93,27 @@ io.on('connection', (socket) => {
         for (let user of socket.data.lobby.users)
             user.emit('lobby_sync', socket.data.lobby.chat);
     });
+
+    socket.on('_disconnect', () => {
+        if (socket.data.lobby) {
+            if (socket.data.lobby.host == socket) // Make next host the second oldest user
+                socket.data.lobby.host = socket.data.lobby.users[1];
+
+            socket.data.lobby.users = socket.data.lobby.users.filter(s => s != socket)
+            socket.data.lobby.chat.push({profile: null, username: 'Server', message: `User ${socket.data.username} disconnected`, content: null});
+            for (let user of socket.data.lobby.users)
+                user.emit('lobby_sync', socket.data.lobby.chat);
+
+            // Close lobby if there are no user's present
+            if (socket.data.lobby.users.length == 0)
+                Lobbies = Lobbies.filter(l => l != socket.data.lobby);
+
+
+            socket.data = null;
+
+            socket.emit('_disconnected', null);
+        }
+    })
 });
 
 

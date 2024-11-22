@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 .inactive {position: fixed !important; left: -9999px !important; top: -9999px !important;}
 .pfp {width: 32px; height: 32px; max-width: 32px; max-height: 32px;}
 .chat-message  {
@@ -16,10 +18,13 @@
 
 
 
-* {padding: 0px; margin: 0px; list-style-type: none;}
+* {padding: 0px; margin: 0px; list-style-type: none; font-family: "Noto Sans", sans-serif;}
 input[type=text] {
     border-radius: 25px;
-    padding: auto 20px;
+    padding: 5px 20px;
+}
+button {
+    padding: 5px 20px;
 }
 body {
     max-width:  100vw;
@@ -60,6 +65,7 @@ body {
     border-radius: 15px;
     font-size: larger;
 
+    padding: initial;
     padding-bottom: 5px;
 }
 
@@ -88,8 +94,8 @@ body {
 #ll-tools-create, #ll-tools-join, #ll-tools-refresh {
     margin-right: 0.5rem;
 
-    width: 15%;
-    height: 30%;
+    width: 30%;
+    height: 40%;
 
     border-radius: 20px;
 }
@@ -113,20 +119,51 @@ body {
     padding: 1rem;
 
     overflow-y: scroll;
+    background-color: #121212;
+    border-radius: 25px;
 }
 #l-input {
     position: relative;
     left: 20vw;
-    bottom: 10vh;
+    bottom: -15vh;
+
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+
 
     width: 55vw;
+    padding: 0px 1rem;
+}
+#l-input-text {
+    width: 70%;
+}
+
+
+#l-input-tenor, #l-disconnect {
+    width: 10%;
+    border-radius: 25px;
+}
+#l-disconnect {
+    background-color: #c40000;
 }
 
 
 #tenor {
     position: fixed;
+    width: 500px;
+
+    right:  20%;
+    bottom: 17.5%;
+
+    border-radius: 15px;
+    background-color: #353535;
 }
 #t-input {
+    width: 80%;
+    margin: 5px 5%;
 }
 #t-results {
     display: grid;
@@ -139,4 +176,27 @@ body {
     grid-gap: 2px;
 
     overflow-y: scroll;
+}
+
+
+
+
+@media screen and (max-width: 1400px) {
+    button {
+        padding: 5px 10px;
+    }    
+
+
+    #ll-tools-create, #ll-tools-join, #ll-tools-refresh {
+        width: 35%;
+    }
+
+
+    #l-input-text {
+        width: 55%;
+    }
+    #l-input-tenor, #l-disconnect {
+        width: 15%;
+        border-radius: 25px;
+    }
 }

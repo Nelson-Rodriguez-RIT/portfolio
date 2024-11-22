@@ -70,8 +70,11 @@ const UTIL = {
         if (!USER.username)
             USER.username = HTML.settings.username.value;
 
-        if (!USER.image && HTML.settings.profile.value)
+        if (!USER.image && HTML.settings.profile.value) {
             UTIL.convertToBase64(USER, HTML.settings.profile.files[0]);
+            HTML.settings.profileDisplay.src = USER.image;
+        }
+            
 
         localStorage.setItem(CONFIG.localStorageTag + CONFIG.localID,             USER.id);
         localStorage.setItem(CONFIG.localStorageTag + CONFIG.localUsername,       USER.username);
@@ -105,8 +108,9 @@ const SETUP = {
             self: document.querySelector("#settings"),
             exit:     document.querySelector("#s-exit"),
 
-            username: document.querySelector("#s-username-input"),
-            profile:  document.querySelector("#s-profile-input"),
+            username:        document.querySelector("#s-username-input"),
+            profile:         document.querySelector("#s-profile-input"),
+            profileDisplay:  document.querySelector("#s-profilePic"),
         }
     
     
@@ -182,7 +186,7 @@ const SETUP = {
             HTML.lobbies.lobbies.innerHTML = "";
             for (let lobby of NETWORK.in)
                 HTML.lobbies.lobbies.innerHTML += 
-                `<li>"${lobby.id}" hosted by ${lobby.host}.
+                `<li class="lobby-info">"${lobby.id}" hosted by ${lobby.host}.
                 <br> ${lobby.usersConnected} users connected ${lobby.passwordRequired ? "(Password Required)" : ""}</li>`
         });
 
@@ -210,6 +214,9 @@ const SETUP = {
         USER.id       = localStorage.getItem(CONFIG.localStorageTag + CONFIG.localID);
         USER.username = localStorage.getItem(CONFIG.localStorageTag + CONFIG.localUsername);
         USER.image    = localStorage.getItem(CONFIG.localStorageTag + CONFIG.localProfilePicture);
+
+        HTML.settings.username.value = USER.username;
+        if (USER.image) HTML.settings.profileDisplay.src = USER.image;
 
         UTIL.saveUserInfo();
     }

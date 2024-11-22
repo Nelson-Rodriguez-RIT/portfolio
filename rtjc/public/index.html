@@ -10,12 +10,13 @@
 <body>
     <section id="main-menu">
         <h1>R.T.J.C</h1>
-        <div><button id="mm-lobbies">Create/Join Lobby</button><span id="mm-lobbies-status" class="inactive"><i>You need to enter a username in settings first!</i></span></div>
+        <button id="mm-lobbies">Create/Join Lobby</button>
         <button id="mm-settings">Settings</button>
+        <span id="mm-lobbies-status" class="inactive"><i>You need to enter a username in settings first!</i></span>
 
 
         <article id="lobby-list" class="inactive">
-            <button id="ll-exit">[X]</button>
+            <button id="ll-exit">x</button>
             <div id="ll-window">
                 <ul id="ll-lobbies"></ul>
                 <div id="ll-tools">
@@ -29,9 +30,9 @@
         </article>
 
         <article id="settings" class="inactive">
-            <button id="s-exit">[X]</button>
-            <div><b>Username</b> <input id="s-username-input" type="text"></div>
-            <div><b>Profile Picture</b> <img href=""> <input id="s-profile-input" type="file"></div>
+            <button id="s-exit">x</button>
+            <div id="s-username"><b>Username</b> <input id="s-username-input" type="text"></div>
+            <div id="s-profile"><b>Profile Picture</b> <img id="s-profilePic" src="./assets/no_pfp.png" class="pfp"> <input id="s-profile-input" type="file"></div>
         </article>
     </section>
     

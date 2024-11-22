@@ -1,7 +1,26 @@
 .inactive {position: fixed !important; left: -9999px !important; top: -9999px !important;}
+.pfp {width: 32px; height: 32px; max-width: 32px; max-height: 32px;}
+.chat-message  {
+    margin: 0.5rem 0px;
+}
+.lobby-info {
+    margin: 0.75rem;
+    margin-right: 10rem;
+    padding: 5px;
+
+    background-color: #b6b6b6;
+    color: #1a1a1a;
+
+    border-radius: 10px;
+}
+
+
 
 * {padding: 0px; margin: 0px; list-style-type: none;}
-
+input[type=text] {
+    border-radius: 25px;
+    padding: auto 20px;
+}
 body {
     max-width:  100vw;
     max-height: 100vh;
@@ -9,8 +28,39 @@ body {
     height: 100%;
     width:  100%;
 
-    background-color: #505050;
+    background-color: #1d1d1d;
     color: #f1f1f1
+}
+
+
+
+#main-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    position: relative;
+    top: 5rem;
+}
+#main-menu > h1 {
+    font-size: xx-large;
+}
+#mm-lobbies, #mm-settings {
+    width: 20%;
+    height: 30%;
+
+    border-radius: 20px;
+    margin-top: 2rem;
+}
+
+#ll-exit, #s-exit {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 15px;
+    font-size: larger;
+
+    padding-bottom: 5px;
 }
 
 #lobby-list, #settings {
@@ -22,7 +72,7 @@ body {
     width:  60vw;
     height: 60vh;
 
-    background-color: #252525;
+    background-color: #353535;
     border-radius: 25px;
 
     padding: 2vh 2vw;
@@ -32,8 +82,52 @@ body {
     display: grid;
     grid-template-columns: 50% 50%;
 }
+#ll-tools > * {
+    margin-bottom: 1rem;
+}
+#ll-tools-create, #ll-tools-join, #ll-tools-refresh {
+    margin-right: 0.5rem;
+
+    width: 15%;
+    height: 30%;
+
+    border-radius: 20px;
+}
+
+#s-username, #s-profile {
+    margin-top: 2rem;
+}
+#s-username > *, #s-profile > * {
+    padding: 0px 0.5rem;
+}
 
 
+#l-chat {
+    position: relative;
+    left: 20vw;
+    top: 10vh;
+
+    width: 60vw;
+    height: 70vh;
+
+    padding: 1rem;
+
+    overflow-y: scroll;
+}
+#l-input {
+    position: relative;
+    left: 20vw;
+    bottom: 10vh;
+
+    width: 55vw;
+}
+
+
+#tenor {
+    position: fixed;
+}
+#t-input {
+}
 #t-results {
     display: grid;
     grid-template-columns: 220px 220px;

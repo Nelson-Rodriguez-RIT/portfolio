@@ -33,8 +33,8 @@ function update() {
         let messageCount;
         while ((messageCount = HTML.lobby.chat.childElementCount) < NETWORK.in.length)
             HTML.lobby.chat.innerHTML += 
-                `<li>
-                    <img src="${NETWORK.in[messageCount].profile ? NETWORK.in[messageCount].profile : "./assets/no_pfp.png"}">
+                `<li class="chat-message">
+                    <img src="${NETWORK.in[messageCount].profile ? NETWORK.in[messageCount].profile : "./assets/no_pfp.png"}" class="pfp">
                     <b>${NETWORK.in[messageCount].username}: </b>
                     ${NETWORK.in[messageCount].message}
                     ${NETWORK.in[messageCount].content ? `<br><img src=${NETWORK.in[messageCount].content}` : ""}

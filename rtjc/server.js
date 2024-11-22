@@ -26,6 +26,9 @@ io.on('connection', (socket) => {
     socket.on('load_profile', (user) => {
         socket.data       = user;
         socket.data.lobby = null;
+
+        // Prevent users from entering HTML tag elements
+        socket.data.username = sanatize(socket.data.username);
     });
 
     socket.on('request_tenor_key', () => {socket.emit('get_tenor_key', TENOR_KEY);});
@@ -35,9 +38,9 @@ io.on('connection', (socket) => {
 
         for (let lobby of Lobbies)
             lobbiesInfo.push({
-                id: lobby.id, 
-                host: lobby.host.data.username, 
-                usersConnected: lobby.users.length, 
+                id:               lobby.id, 
+                host:             lobby.host.data.username, 
+                usersConnected:   lobby.users.length, 
                 passwordRequired: lobby.password
             });
 
@@ -62,25 +65,17 @@ io.on('connection', (socket) => {
                     for (let user of socket.data.lobby.users)
                         user.emit('lobby_sync', socket.data.lobby.chat);
                 }
-                
-
-                /*if (lobby.password && lobby.password != null)
-                    if (lobby.password == info.password) {
-                        socket.data.lobby = lobby;
-
-                        lobby.users.push(socket);
-                        lobby.chat.push({profile: null, username: 'Server', message: `User ${socket.data.username} has connected`, content: null});
-
-                        socket.emit('get_lobby', lobby.chat);
-                    }
-                else {
+                else if (lobby.password == info.password) {
                     socket.data.lobby = lobby;
 
                     lobby.users.push(socket);
                     lobby.chat.push({profile: null, username: 'Server', message: `User ${socket.data.username} has connected`, content: null});
 
                     socket.emit('get_lobby', lobby.chat);
-                }*/
+
+                    for (let user of socket.data.lobby.users)
+                        user.emit('lobby_sync', socket.data.lobby.chat);
+                }
             }
         }
             

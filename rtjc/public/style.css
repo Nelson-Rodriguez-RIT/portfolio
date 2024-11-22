@@ -186,6 +186,7 @@ body {
     display: grid;
     grid-template-columns: 220px 220px;
     grid-template-rows: repeat(auto-fill, min-content);
+    justify-items: center;
 
     width: 500px;
     height: 500px;
@@ -193,8 +194,12 @@ body {
     grid-gap: 2px;
 
     overflow-y: scroll;
+    padding-left: 1.65rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
-
+#t-results::-webkit-scrollbar {display: none;}
+#t-status {margin-left: 1rem;}
 
 
 
@@ -216,4 +221,11 @@ body {
         width: 15%;
         border-radius: 25px;
     }
+}
+
+
+#documentation-ZZzzz {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
 }

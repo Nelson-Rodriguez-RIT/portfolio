@@ -9,7 +9,7 @@
 </head>
 <body>
     <section id="main-menu">
-        <h1>R.T.J.C</h1>
+        <h1>Real Time Jello Chat (R.T.J.C)</h1>
         <button id="mm-lobbies">Create/Join Lobby</button>
         <button id="mm-settings">Settings</button>
         <span id="mm-lobbies-status" class="inactive"><i>You need to enter a username in settings first!</i></span>
@@ -24,6 +24,7 @@
                     <div><b>Password</b> <input id="ll-tools-password" type="text"></div>
                     <div><button id="ll-tools-create">Create Lobby</button><button id="ll-tools-join">Join Lobby</button></div>
                     <div><button id="ll-tools-refresh">Refresh List</button></div>
+                    <div id="ll-status" class="inactive"><i>You must enter an ID first before creating/joining a lobby!</i></div>
                 </div>
             </div>
 
@@ -32,7 +33,7 @@
         <article id="settings" class="inactive">
             <button id="s-exit">x</button>
             <div id="s-username"><b>Username</b> <input id="s-username-input" type="text"></div>
-            <div id="s-profile"><b>Profile Picture</b> <img id="s-profilePic" src="./assets/no_pfp.png" class="pfp"> <input id="s-profile-input" type="file"></div>
+            <div id="s-profile"><b>Profile Picture</b> <img id="s-profilePic" alt="profile" src="./assets/no_pfp.png" class="pfp"> <input id="s-profile-input" type="file"></div>
         </article>
     </section>
     
@@ -47,12 +48,15 @@
         </div>
 
         <article id="tenor" class="inactive">
-            <input id="t-input" type="text">    
+            <input id="t-input" type="text">  
+            <span id="t-status"><i>Type a search term and hit ENTER to search Tenor!</i></span>  
             <ul id="t-results"></ul>
         </article>
         <!--<article id="emoji" class="inactive"></article>-->
     </section>
 
+
+    <span id="documentation-ZZzzz"><a href="./about.html">Documentation</a></span>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./utils.js"></script>
     <script src="./main.js"></script>

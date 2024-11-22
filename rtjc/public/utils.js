@@ -113,6 +113,8 @@ const SETUP = {
             create:   document.querySelector("#ll-tools-create"),
             join:     document.querySelector("#ll-tools-join"),
             refresh:  document.querySelector("#ll-tools-refresh"),
+
+            status:   document.querySelector("#ll-status"),
         }
         HTML.settings = {
             self: document.querySelector("#settings"),
@@ -139,6 +141,7 @@ const SETUP = {
     
             input:   document.querySelector("#t-input"),
             results: document.querySelector("#t-results"),
+            status:  document.querySelector("#t-status"),
         }
     },
 
@@ -157,10 +160,15 @@ const SETUP = {
         HTML.mainMenu.lobbies.onmouseover = () => {if (!HTML.settings.username.value) HTML.mainMenu.lobbiesStatus.className = "";};
         HTML.mainMenu.lobbies.onmouseout  = () => {HTML.mainMenu.lobbiesStatus.className = "inactive";};
         
-        HTML.lobbies.exit.onclick    = () => {HTML.lobbies.self.className = "inactive";};
-        HTML.lobbies.join.onclick    = () => {if (HTML.lobbies.id.value) NET.joinLobby(HTML.lobbies.id.value, HTML.lobbies.password.value);};
-        HTML.lobbies.create.onclick  = () => {if (HTML.lobbies.id.value) NET.createLobby(HTML.lobbies.id.value, HTML.lobbies.password.value);};
-        HTML.lobbies.refresh.onclick = () => {NET.requestLobbies();};
+        HTML.lobbies.exit.onclick     = () => {HTML.lobbies.self.className = "inactive";};
+        HTML.lobbies.join.onclick     = () => {if (HTML.lobbies.id.value) NET.joinLobby(HTML.lobbies.id.value, HTML.lobbies.password.value);};
+        HTML.lobbies.create.onclick   = () => {if (HTML.lobbies.id.value) NET.createLobby(HTML.lobbies.id.value, HTML.lobbies.password.value);};
+        HTML.lobbies.refresh.onclick  = () => {NET.requestLobbies();};
+        
+        HTML.lobbies.join.onmouseover = () => {if (!HTML.lobbies.id.value) HTML.lobbies.status.className = "";}
+        HTML.lobbies.join.onmouseout  = () => {HTML.lobbies.status.className = "inactive";}
+        HTML.lobbies.create.onmouseover = () => {if (!HTML.lobbies.id.value) HTML.lobbies.status.className = "";}
+        HTML.lobbies.create.onmouseout  = () => {HTML.lobbies.status.className = "inactive";}
     
         HTML.settings.exit.onclick       = () => {HTML.settings.self.className = "inactive";};
         HTML.settings.username.onkeyup   = () => {USER.username = HTML.settings.username.value;};
@@ -168,6 +176,7 @@ const SETUP = {
         HTML.settings.profile.ondrop     = () => {if (HTML.settings.profile.files[0]) UTIL.convertToBase64(USER, HTML.settings.profile.files[0]);};
         
     
+        HTML.lobby.chat.onclick    = () => {HTML.tenor.self.className = "inactive";}
         HTML.lobby.input.onkeydown = e => {
             let key = e.key.toLowerCase();
     

@@ -1,6 +1,7 @@
 // This is a standalone build for gameplay features of Project 3
 
 function load() {
+    new Taiko.Beatmap(10);
 
     update();
 }
@@ -17,7 +18,7 @@ function update() {
     // this means that I will also have to start them further back. Ill need to into the beatmap
     // data to figure out how to get a multiplier for these two things (since they are directly related)
 
-    // Objects (i.e. dons and kats) are to be spawned in a specific quantity. I initially thought 50, but if these
+    // Objects (i.e. dons and katsus) are to be spawned in a specific quantity. I initially thought 50, but if these
     // is in the browser I should probably attempt to be efficient with memory usage, specically since these
     // HAVE to be DOM objects (remmeber no CANVAS element usage is allowed)
 
@@ -36,7 +37,27 @@ function update() {
     
 
     // TODO: UI Handling
+    // Hitting a note should involve a small animation of the note either going off screen at a curved angle (opposed to just moving straight offscreen as if you missed it)
+    // or to the health bar. At 50 or 75% health bar should visually change to show this i.e. the tamashii icon should change, entire bar gets a glow
 
+    // Hitting a note should show its accuracy animation and change for bigger varieties respectivily
+    // If combo reaches 50 and above, spritesheet for combo numbers should change to golden ver
+
+    // Score should show the number (quickly but) gradually increasing with a +### indicator underneath to show recently earned points
+    // I should probably use a queue for this system
+
+    // Hitzone and general UI elements to change to be more "active"/glowing during Kai periods
+
+    // I definitly have to implement don chan
+    // He should have idle, combo reached/special note cleared, failing, and kai time animations
+    
+    // Reach combo milestone should have don chan also let an exclamation of reached combo
+
+    // Don and Katsu should become animated at 50 combo and twice as fast as at 150. This should be BPM
+
+
+    
+    // TODO: Ideas for calculating BPM
 }
 
 load();

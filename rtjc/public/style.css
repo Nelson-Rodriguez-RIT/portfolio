@@ -199,7 +199,7 @@ body {
     -ms-overflow-style: none;
 }
 #t-results::-webkit-scrollbar {display: none;}
-#t-status {margin-left: 1rem;}
+#t-status {margin-left: 1.5rem;}
 
 
 

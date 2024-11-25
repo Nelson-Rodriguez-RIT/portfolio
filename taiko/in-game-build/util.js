@@ -68,10 +68,10 @@ const Util = {
 
     },
 
-    ConvertOSU: function (data) {
+    ConvertOSU: function (rawData) {
         
     },
-    ConvertOSZ: function () {
+    ConvertOSZ: function (rawData) {
 
     },
 }

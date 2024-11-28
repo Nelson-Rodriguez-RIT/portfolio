@@ -144,8 +144,10 @@ const Util = {
 }
 
 const Setup = {
-    GetGameHTML: function (HTMLRef) {
-        HTMLRef = {
+    GetGameHTML: function () {
+        return { 
+            game: document.querySelector("#game-window"),
+
             soulBar:    document.querySelector("#soul-bar"),
             soulFilled: document.querySelector("#soul-filled"),
 

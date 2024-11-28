@@ -1,7 +1,7 @@
 // This is a standalone build for gameplay features of Project 3
 
 let BEATMAP = null;
-let HTML;
+let HTML = {};
 
 const GAME = {
     // Partially set upon map load/start, periodically updated
@@ -31,13 +31,15 @@ const GAME = {
 const CONFIG = {
     hitObjectBaseValue: 380,
     comboScoreBonus: 90,
+
+    hitZoneXOffset: 200, //px
 }
 
 let FileInput = document.querySelector("#input");
 FileInput.addEventListener('change', load);
 
 function load() {
-    Setup.GetGameHTML(HTML); 
+    HTML = Setup.GetGameHTML(); 
     Util.GetRawText(FileInput.files[0]);
 
     update();
@@ -50,8 +52,10 @@ function update() {
 
 
     if (BEATMAP) {
-        console.log(BEATMAP);
-        debugger;
+        HTML.game.className = '';
+        FileInput.className = 'inactive'
+        //console.log(BEATMAP);
+        //debugger;
     }
 
 

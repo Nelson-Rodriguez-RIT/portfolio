@@ -10,9 +10,40 @@
 <body>
     <!-- This is a standalone build for gameplay features of Project 3 -->
     
-    <!-- Encases all gameplay elements, this is set to the 'inactive' class when not being used -->
-    <section id="game-window">
+    <!-- File loading -->
+    <input id="input" class="" type="file">
 
+    <!-- Encases all gameplay elements, this is set to the 'inactive' class when not being used -->
+    <section id="game-window" class="inactive">
+        <div id="top">
+            <span id="don-chan"></span>
+            <span id="soul-bar"><span id="soul-filled"></span></span>
+        </div>
+
+        <div id="middle">
+            <div id="ui-bg">
+                <div id="score"></div>
+                
+                <div id="ui-bg">
+                    <span id="drum"></span>
+                    <span id="combo">???</span>
+
+
+                    <span id="drum-lr"  class=""></span>
+                    <span id="drum-rr" class=""></span>
+                    <span id="drum-lc"  class=""></span>
+                    <span id="drum-rc" class=""></span>
+                </div>
+            </div>
+
+            <ul id="game-field">
+
+            </ul>
+        </div>
+
+        <div id="bottom">
+
+        </div>
     </section>
 
     <!-- Scripts require access to pre-exisiting DOM elements; Must be loaded after everything else -->

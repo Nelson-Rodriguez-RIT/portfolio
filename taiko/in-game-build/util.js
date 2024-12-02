@@ -15,8 +15,20 @@ const Taiko = {
 
     // Idea is that will do  `<li class="${HitObjectCSSTypes[HitObject.type][gameplayStateVariable]}"></li>`    when adding this to the active hitobjects html element
 
+    HitObjectTypes: [
+        'hit-object-red-base',
+        'hit-object-blue-base',
+        'hit-object-big-red-base',
+        'hit-object-big-blue-base',
+    ],
+
     HitObject: class HitObject {
         constructor(type, timing) {
+            this.active = true;
+            
+            this.html  = null;
+            this.sv    = 1;
+
             this.type   = type;   // Controls the kind of note 
             this.timing = timing; // Controls when, in ms and from the start of the song, this note should reach the hitzone
             
@@ -100,8 +112,8 @@ const Util = {
                         
                         Number(timingPoint[1]) > 0 ? Number(timingPoint[1]) : Number(timingPoint[1]) / 50,
 
-                        Number(timingPoint[6]),      // Volumne
-                        timingPoint[8] == '1'));     // In kiai time
+                        Number(timingPoint[5]) / 100, // Volumne
+                        timingPoint[8] == '1'));      // In kiai time
                 }
             }
 
@@ -141,6 +153,28 @@ const Util = {
     ConvertOSZ: function (rawData) {
 
     },
+
+    Animation: class Animation {
+        constructor(links, framesBetween, imgClass) {
+            this.links  = links;
+            this.framesBetween = framesBetween;
+
+            this.html = document.createElement('img');
+            this.html.className = imgClass;
+
+            this.html.src = links[0];
+            this.timer = 0;
+        }
+
+        update() {
+            this.timer += GAME.delta / CONFIG.fps;
+
+            if (this.timer >= this.links.length * this.framesBetween)
+                this.timer = 0;
+
+            this.html.src = this.links[Math.min(this.links.length , Math.floor(uhis.timer / this.framesBetween))]
+        }
+    }
 }
 
 const Setup = {
@@ -163,6 +197,33 @@ const Setup = {
 
             scrollImage: document.querySelector("#top"),
             bgImage:     document.querySelector("#bottom"),
+
+            hitZone: document.querySelector("#hit-zone"),
+
+
+            music: document.querySelector("#music"),
+            sounds: document.querySelector("#sound-effects"),
         }
     }
+}
+
+
+const Links = {
+    goodJudgement: [ // Used for animation
+        './assets/ui/good-judgement/taiko-hit300-0.png',
+        './assets/ui//good-judgement/taiko-hit300-1.png',
+        './assets/ui//good-judgement/taiko-hit300-2.png',
+        './assets/ui//good-judgement/taiko-hit300-3.png',
+        './assets/ui//good-judgement/taiko-hit300-4.png',
+        './assets/ui//good-judgement/taiko-hit300-5.png',
+        './assets/ui//good-judgement/taiko-hit300-6.png',
+        './assets/ui//good-judgement/taiko-hit300-7.png',
+        './assets/ui//good-judgement/taiko-hit300-8.png',
+        './assets/ui//good-judgement/taiko-hit300-9.png',
+        './assets/ui//good-judgement/taiko-hit300-10.png',
+        './assets/ui//good-judgement/taiko-hit300-11.png',
+        './assets/ui//good-judgement/taiko-hit300-12.png',
+        './assets/ui//good-judgement/taiko-hit300-13.png',
+        './assets/ui//good-judgement/taiko-hit300-14.png',
+    ]
 }

@@ -12,6 +12,7 @@
     
     <!-- File loading -->
     <input id="input" class="" type="file">
+    <input id="input-audio" class="inactive" type="file">
 
     <!-- Encases all gameplay elements, this is set to the 'inactive' class when not being used -->
     <section id="game-window" class="inactive">
@@ -22,22 +23,25 @@
 
         <div id="middle">
             <div id="ui-bg">
-                <div id="score"></div>
                 
-                <div id="ui-bg">
-                    <span id="drum"></span>
-                    <span id="combo">???</span>
+                <ul id="score"><li class="ui-0-score"></li><li class="ui-0-score"><li class="ui-0-score"></li><li class="ui-0-score"><li class="ui-0-score"></li><li class="ui-0-score"><li class="ui-0-score"></li><li class="ui-0-score"></li><!--Format: HTML.score.innerHTML += <li class="ui-0-score"></li>--></ul>
 
+                <div id="drum"></div>
+                
+                
 
-                    <span id="drum-lr"  class=""></span>
-                    <span id="drum-rr" class=""></span>
-                    <span id="drum-lc"  class=""></span>
-                    <span id="drum-rc" class=""></span>
-                </div>
+                
+                <div id="drum-lc" class=""></div>
+                <div id="drum-rc" class="inactive"></div>
+
+                <div id="drum-lr" class="inactive"></div>
+                <div id="drum-rr" class=""></div>
+
+                <ul id="combo"><li class="ui-0"></li><li class="ui-0-gold"></li><li class="ui-0-gold"></li></ul>
             </div>
 
             <ul id="game-field">
-                <div id="hit-zone"></div>
+                <ul id="hit-zone"></ul>
             </ul>
         </div>
 
@@ -46,6 +50,15 @@
         </div>
     </section>
 
+    <audio id="music"></audio>
+    <ul id="sound-effects">
+
+    </ul>
+
+    <audio id="audio-drum" src="./assets/audio/taiko-drum.wav"></audio>
+    <audio id="audio-rim" src="./assets/audio/taiko-rim.wav"></audio>
+    <audio id="audio-drum-heavy" src="./assets/audio/taiko-drum-heavy.wav"></audio>
+    <audio id="audio-rim-heavy" src="./assets/audio/taiko-rim-heavy.wav"></audio>
     <!-- Scripts require access to pre-exisiting DOM elements; Must be loaded after everything else -->
     <script src="./util.js"></script>
     <script src="./main.js"></script>

@@ -1,7 +1,8 @@
 .inactive {position: fixed; left: -9999px !important; top: -9999px !important;}
 
-* {padding: 0px; border: none; margin: 0px; list-style-type: none;}
+* {padding: 0px; border: none; margin: 0px; list-style-type: none; box-sizing: content-box;}
 body {overflow: hidden;}
+span, li {display: inline-block;}
 
 /* All CSS classes used to style gameplay elements are ratio based of 120x120 being worth 10vhx10vh or 10vhx10vw*/
 
@@ -13,16 +14,16 @@ body {overflow: hidden;}
     width: 200vw;
     max-width: 200vw;
 }
-.top-bg-normal {background-image: url(./assets/bgs/top-normal.png); background-size: contain; background-repeat: repeat-x;}
-.top-bg-pass   {background-image: url(./assets/bgs/top-pass.png); background-size: contain; background-repeat: repeat-x;}
+.top-bg-normal {background-image: url(./assets/bgs/top-normal.png); background-size: contain; background-repeat: repeat-x; z-index: 0;}
+.top-bg-pass   {background-image: url(./assets/bgs/top-pass.png); background-size: contain; background-repeat: repeat-x; z-index: 0;}
 
 
-#don-chan {}
+#don {}
 
 
-#soul-bar        {position: relative; top: 22.75vh; left: 50vw; height: 7.5vh; width: 50vw; background-image: url(./assets/ui/soul-bar.png); background-size: 100% 100%; background-repeat: no-repeat;}
-#soul-completion {position: relative; height: 7.5vh; width: 50vw; background-image: url(./assets/ui/soul-completion.png); background-size: 100% 100%; background-repeat: no-repeat; clip-path: rect(0 50% 100% 0);} /* Change clip-path (2nd value) to set percentage soul*/
-#soul-indicator  {position: relative; left: calc(50vw - 4.667vw - 4px); top: -10vh; height: calc(1.9 * 4.667vh); width: 4.667vw; background-image: url(./assets/ui/soul-indicator.png); background-size: 100% 100%; z-index: 2;}
+#soul-bar        {position: relative; top: 22.75vh; left: 47.5vw; height: 7.5vh; width: 50vw; background-image: url(./assets/ui/soul-bar.png); background-size: 100% 100%; background-repeat: no-repeat; z-index: 1;}
+#soul-completion {position: relative; left: 0; height: 7.5vh; width: 44.25vw; background-image: url(./assets/ui/soul-completion.png); background-size: 100% 100%; background-repeat: no-repeat; clip-path: rect(0 78% 100% 0); z-index: 2;} /* Change clip-path (2nd value) to set percentage soul 77.6% = completetion*/
+#soul-indicator  {position: relative; left: calc(50vw - 4.667vw - 1.13vw); top: -12vh; height: calc(1.9 * 6vh); width: 6vw; background-image: url(./assets/ui/soul-indicator.png); background-size: 100% 100%; z-index: 2;}
 
 .soul-completed {}
 
@@ -37,56 +38,37 @@ body {overflow: hidden;}
     max-width: 100vw;
 }
 
-#ui-bg   {position: relative; left: 0px; height: 25vh; width: 25vw; background-image: url(./assets/bgs/ui.png); background-size: 100% 100%; background-repeat: no-repeat;}
-#drum    {}
-#drum-lr {}
-#drum-rr {}
-#drum-lc {}
-#drum-rc {}
+#ui-bg   {position: relative; left: 0px; height: 25vh; width: 25vw; background-image: url(./assets/bgs/ui.png); background-size: 100% 100%; background-repeat: no-repeat; z-index: 4;}
+#score   {position: absolute; display: flex; flex-direction: row; justify-content: right; padding-right: 9.5vw; top: 18.5vh; right: 0; height: 5vh; width: 15vw; background-image: url(./assets/ui/score-bg.png); background-size: 100% 100%; z-index: 5;}
+#combo   {display: flex; flex-direction: row; justify-content: center; position: absolute; top: 6vh; right: 0.5vw; height: 20vh; width: 10vw; z-index: 6;}
 
-.hit-object-red-base {position: relative; top: 10vh; width: 10vh; height: 10vh; background-image: url(./assets/notes/red-base.png); background-size: 100% 100%;}
-.hit-object-red-norm {position: relative; top: 10vh; width: 10vh; height: 10vh; background-image: url(./assets/notes/red-norm.png); background-size: 100% 100%;}
-.hit-object-red-kiai {position: relative; top: 10vh; width: 10vh; height: 10vh; background-image: url(./assets/notes/red-kiai.png); background-size: 100% 100%;}
-.hit-object-big-red-base {position: relative; top: 8vh; width: 14vh; height: 14vh; background-image: url(./assets/notes/big-red-base.png); background-size: 100% 100%;}
-.hit-object-big-red-norm {position: relative; top: 8vh; width: 14vh; height: 14vh; background-image: url(./assets/notes/big-red-norm.png); background-size: 100% 100%;}
-.hit-object-big-red-kiai {position: relative; top: 8vh; width: 14vh; height: 14vh; background-image: url(./assets/notes/big-red-kiai.png); background-size: 100% 100%;}
+#drum    {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/drum.png); background-size: 100% 100%; z-index: 5;}
+#drum-lr {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/rim-left.png); background-size: 100% 100%; z-index: 6;}
+#drum-rr {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/rim-right.png); background-size: 100% 100%; z-index: 6;}
+#drum-lc {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/center-left.png); background-size: 100% 100%; z-index: 6;}
+#drum-rc {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/center-right.png); background-size: 100% 100%; z-index: 6;}
 
-.hit-object-blue-base {position: relative; top: 10vh; width: 10vh; height: 10vh; background-image: url(./assets/notes/blue-base.png); background-size: 100% 100%;}
-.hit-object-blue-norm {position: relative; top: 10vh; width: 10vh; height: 10vh; background-image: url(./assets/notes/blue-norm.png); background-size: 100% 100%;}
-.hit-object-blue-kiai {position: relative; top: 10vh; width: 10vh; height: 10vh; background-image: url(./assets/notes/blue-kiai.png); background-size: 100% 100%;}
-.hit-object-big-blue-base {position: relative; top: 8vh; width: 14vh; height: 14vh; background-image: url(./assets/notes/big-blue-base.png); background-size: 100% 100%;}
-.hit-object-big-blue-norm {position: relative; top: 8vh; width: 14vh; height: 14vh; background-image: url(./assets/notes/big-blue-norm.png); background-size: 100% 100%;}
-.hit-object-big-blue-kiai {position: relative; top: 8vh; width: 14vh; height: 14vh; background-image: url(./assets/notes/big-blue-kiai.png); background-size: 100% 100%;}
+/* Hitzone and HitObject positioning is fucked and I should probably hanged for this */
+/* Future me, please do past youself justice and never touch a keyboard again */
+.hit-object-red-base {position: absolute; margin-left: calc(-12.5vh / 2 - 8.75vh - 50px); top: 5.5vh; width: 12.5vh; height: 12.5vh; background-image: url(./assets/notes/red-base.png); background-size: 100% 100%; z-index: 3;}
+.hit-object-big-red-base {position: absolute; margin-left: calc(-17.5vh / 2 - 8.75vh - 50px); top: 3.5vh; width: 17.5vh; height: 17.5vh; background-image: url(./assets/notes/big-red-base.png); background-size: 100% 100%; z-index: 3;}
+
+.hit-object-blue-base {position: absolute; margin-left: calc(-12.5vh / 2 - 8.75vh - 50px); top: 5.5vh; width: 12.5vh; height: 12.5vh; background-image: url(./assets/notes/blue-base.png); background-size: 100% 100%; z-index: 3;}
+.hit-object-big-blue-base {position: absolute; margin-left: calc(-17.5vh / 2 - 8.75vh - 50px); top: 3.5vh; width: 17.5vh; height: 17.5vh; background-image: url(./assets/notes/big-blue-base.png); background-size: 100% 100%; z-index: 3;}
 
 
-.ui-0-gold {height: 6.833vh; width: 5.250vw; background-image: url(./assets/ui/num-0-gold.png); background-size: 100% 100%;}
-.ui-1-gold {height: 6.833vh; width: 3.916vw; background-image: url(./assets/ui/num-1-gold.png); background-size: 100% 100%;}
-.ui-2-gold {height: 6.833vh; width: 5.500vw; background-image: url(./assets/ui/num-2-gold.png); background-size: 100% 100%;}
-.ui-3-gold {height: 6.833vh; width: 5.166vw; background-image: url(./assets/ui/num-3-gold.png); background-size: 100% 100%;}
-.ui-4-gold {height: 6.833vh; width: 5.666vw; background-image: url(./assets/ui/num-4-gold.png); background-size: 100% 100%;}
-.ui-5-gold {height: 6.833vh; width: 5.250vw; background-image: url(./assets/ui/num-5-gold.png); background-size: 100% 100%;}
-.ui-6-gold {height: 6.833vh; width: 5.166vw; background-image: url(./assets/ui/num-6-gold.png); background-size: 100% 100%;}
-.ui-7-gold {height: 6.833vh; width: 5.333vw; background-image: url(./assets/ui/num-7-gold.png); background-size: 100% 100%;}
-.ui-8-gold {height: 6.833vh; width: 5.333vw; background-image: url(./assets/ui/num-8-gold.png); background-size: 100% 100%;}
-.ui-9-gold {height: 6.833vh; width: 5.166vw; background-image: url(./assets/ui/num-9-gold.png); background-size: 100% 100%;}
+.ui-0-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 1.9vw; background-image: url(./assets/ui/num-0-score.png); background-size: 100% 100%;}
 
-.ui-0 {height: 6.833vh; width: 5.250vw; background-image: url(./assets/ui/num-0.png); background-size: 100% 100%;}
-.ui-1 {height: 6.833vh; width: 3.916vw; background-image: url(./assets/ui/num-1.png); background-size: 100% 100%;}
-.ui-2 {height: 6.833vh; width: 5.500vw; background-image: url(./assets/ui/num-2.png); background-size: 100% 100%;}
-.ui-3 {height: 6.833vh; width: 5.166vw; background-image: url(./assets/ui/num-3.png); background-size: 100% 100%;}
-.ui-4 {height: 6.833vh; width: 5.666vw; background-image: url(./assets/ui/num-4.png); background-size: 100% 100%;}
-.ui-5 {height: 6.833vh; width: 5.250vw; background-image: url(./assets/ui/num-5.png); background-size: 100% 100%;}
-.ui-6 {height: 6.833vh; width: 5.166vw; background-image: url(./assets/ui/num-6.png); background-size: 100% 100%;}
-.ui-7 {height: 6.833vh; width: 5.333vw; background-image: url(./assets/ui/num-7.png); background-size: 100% 100%;}
-.ui-8 {height: 6.833vh; width: 5.333vw; background-image: url(./assets/ui/num-8.png); background-size: 100% 100%;}
-.ui-9 {height: 6.833vh; width: 5.166vw; background-image: url(./assets/ui/num-9.png); background-size: 100% 100%;}
+.ui-0-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.265vw; background-image: url(./assets/ui/num-0-gold.png); background-size: 100% 100%; z-index: 10;}
+
+.ui-0 {position: relative; top: -2vh; height: 8.5vh; width: 3.265vw; background-image: url(./assets/ui/num-0.png); background-size: 100% 100%; z-index: 10;}
 
 /*
 These widths need to be modified. width has to be in vw since this needs to width * (screen_height / screen_width)
 */
 
-#game-field {position: relative; left: 25vw; top: -25vh; height: 25vh; width: 75vw; background-image: url(./assets/bgs/game-field.png); background-size: contain; background-repeat: repeat-x; z-index: 1;}
-#hit-zone   {position: relative; left: calc(100px - 6.75vh); top: 5vh; max-height: 13.5vh; height: 13.5vh; max-width: 13.5vh; width: 13.5vh; background-image: url(./assets/ui/hitzone.png); background-size: 100% 100%; z-index: 2;}
+#game-field {position: relative; left: 25vw; top: -25vh; height: 25vh; width: 75vw; background-image: url(./assets/bgs/game-field.png); background-size: contain; background-repeat: repeat-x; z-index: 0;}
+#hit-zone   {position: relative; left: calc(100px - 17.5vh / 2); top: 3.5vh; height: 17.5vh; width: 17.5vh; background-image: url(./assets/ui/hitzone.png); background-size: 100% 100%; z-index: 2;}
 
 .ui-good {}
 .ui-ok   {}
@@ -94,6 +76,8 @@ These widths need to be modified. width has to be in vw since this needs to widt
 
 
 
+.judgementOk {position: fixed; left: 24vw; top: 25vh; height: 35vh; width: 35vh; background-image: url(); background-size: 100% 100%; z-index: 3;}
+.judgement {position: fixed; left: 24vw; top: 25vh; height: 35vh; width: 35vh; z-index: 3;}
 
 #bottom {
     height: 45vh;

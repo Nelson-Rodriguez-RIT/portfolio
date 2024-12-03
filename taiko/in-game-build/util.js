@@ -172,7 +172,7 @@ const Util = {
             if (this.timer >= this.links.length * this.framesBetween)
                 this.timer = 0;
 
-            this.html.src = this.links[Math.min(this.links.length , Math.floor(uhis.timer / this.framesBetween))]
+            this.html.src = this.links[Math.min(this.links.length , Math.floor(this.timer / this.framesBetween))]
         }
     }
 }

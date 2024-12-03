@@ -34,7 +34,7 @@ const GAME = {
 
 
     // Environment
-    progression: 0, // ms
+    progression: -1000, // ms
     delta:       0, // sec, i.e. 1 = 1 second, 0.001 = 1ms
     input: {
         lc: false, rc: false, // Center
@@ -74,14 +74,14 @@ const CONFIG = {
     defaultOkTiming: 65,   // +- ms for half points
     defaultBadTiming: 75,  // +- ms for no points and broken combo (needed to prevent button mashing OK timings)
 
-    judgementLength: 400,
-
+    judgementLength: 400, //ms
+    scoreUILength: 500,   //ms
     
 }
 
 
 
-let FileAudioInput = document.querySelector("#input");
+let FileAudioInput = document.querySelector("#input-audio");
 let AudioURL = null;
 let MusicPlayer = null;
 FileAudioInput.addEventListener('change', e => {AudioURL = URL.createObjectURL(FileAudioInput.files[0])});
@@ -133,6 +133,7 @@ function update() {
     if (BEATMAP && HTML.game.className != '') {
         HTML.game.className = '';
         FileInput.className = 'inactive';
+        FileAudioInput.className = 'inactive';
 
         GAME.hitObjectsQueue   = Object.assign(BEATMAP.hitObjects);
         GAME.timingPoints      = Object.assign(BEATMAP.timingPoints);
@@ -140,14 +141,9 @@ function update() {
         GAME.baseSV = BEATMAP.settings.baseSV;
 
         if (AudioURL) {
-            //MusicPlayer = new Audio(`${AudioURL}.mp3`);
-            //MusicPlayer.play();
-
-            // TODO: Audio plz
+            MusicPlayer = new Audio(AudioURL);
+            MusicPlayer.play();
         }
-
-        HTML.music.src = './beatmap/audio.mp3';
-        HTML.music.play();
     }
 
     if (BEATMAP) {
@@ -305,6 +301,10 @@ function update() {
                             else {
                                 console.log('Poor')
 
+                                if (combo > 30) {
+                                    // Play combobreak sound effect
+                                }
+
                                 GAME.combo = 0; // No points and combo is broken/reset
                             }
 
@@ -314,10 +314,37 @@ function update() {
                     }
                         
             }
+
+            // Play combo milestone sound effect
+            switch(combo) {
+                case 50: break;
+                case 100: break;
+                case 200: break;
+                case 300: break;
+                case 400: break;  
+                case 500: break;
+                case 600: break;  
+                case 700: break;
+                case 800: break;  
+                case 900: break;
+                case 1000: break;
+                case 1100: break;
+                case 1200: break;  
+                case 1300: break;
+                case 1400: break;  
+                case 1500: break;
+            }
+
             
             // Break combo is note is missed (different from poor timing but same result: no points and a broken combo)
-            if (position < -CONFIG.defaultOkTiming)
+            if (position < -CONFIG.defaultOkTiming) {
+                if (combo > 30) {
+                    // Play combobreak sound effect
+                }
+
                 GAME.combo = 0;
+            }
+                
 
             if (position < -CONFIG.noteDespawnXOffset) // If note moves offscreen, despawn it {}
                 o.active = false;
@@ -354,8 +381,31 @@ function update() {
         }
         GAME.timingUIQueue = GAME.timingUIQueue.filter(j => {if (j.at + CONFIG.judgementLength < GAME.progression) {j.anim.html.remove(); return false} return true})
 
+
+        // Updating these per update loop seem ok for performance. 
+        // Chrome handles it fine but Firefox handles it a little worse
+
+        
         // Update score display
-        HTML.score.innerHTML
+        // Note: Only made to handle score values up to 9 999 999. Taiko scoring really only reaches 1 mil for longer songs, let alone anything above like 3mil
+        HTML.score.innerHTML = // Shows all 7 digits
+            `
+            <li class="ui-${Math.floor(GAME.score / 1000000)}-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 1000000) / 100000)}-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 100000) / 10000)}-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 10000) / 1000)}-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 1000) / 100)}-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 100) / 10)}-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 10))}-score"></li>
+            `
+
+        // Update combo display,
+        // Note: Only made to handle combo values up to 9999 (i dont know of a beatmap longer than 3000)
+        HTML.combo.innerHTML = // Shows only relavent digits, additionally after reaching 100 combo, use gold letter (since combo bonus stops increasing after 100 anyways)
+            `
+            <li class=""></li>
+            `
+
 
         //debugger
         GAME.progression += GAME.delta;

@@ -55,24 +55,24 @@ const CONFIG = {
     hitZoneXOffset: 200,     //px
     noteDespawnXOffset: 350, //px
 
-    maxLoadedHitObjects: 50,
+    maxLoadedHitObjects: 25,
 
     fps: 60, // Used for BPM related features only
-    scrollBGMoveSpeed: 0.5, // px
+    scrollBGMoveSpeed: 0.025, // px
 
     inputDuration: 100, //ms
-    doubleInputWindow: 20, //ms, length of time to hit a big note with two inputs for double points
+    doubleInputWindow: 35, //ms, length of time to hit a big note with two inputs for double points
 
     keybinds: {
         lc: 'j', rc: 'k', // Center
         lr: 'd', rr: 'f', // Rim
     },
     
-    baseSV: 0.35,              // Controls how fast hit objects move from left to right
+    baseSV: 1.00,              // Controls how fast hit objects move from left to right
 
     defaultGoodTiming: 30, // +- ms for full points
     defaultOkTiming: 65,   // +- ms for half points
-    defaultBadTiming: 75,  // +- ms for no points and broken combo (needed to prevent button mashing OK timings)
+    defaultBadTiming: 95,  // +- ms for no points and broken combo (needed to prevent button mashing OK timings)
 
     judgementLength: 400, //ms
     scoreUILength: 500,   //ms
@@ -91,7 +91,11 @@ FileInput.addEventListener('change', load);
 
 window.onkeydown = e => {
     switch(e.key.toLowerCase()) {
-        case CONFIG.keybinds.lc: if (!GAME.input.lc) {GAME.input.lc = true; GAME.inputQueue.push({type: 'lc', at: GAME.progression, active: true}); GAME.soundEffects.push(new Audio('./assets/audio/taiko-drum.wav'));} break;
+        case CONFIG.keybinds.lc: if (!GAME.input.lc) {
+            GAME.input.lc = true; 
+            GAME.inputQueue.push({type: 'lc', at: GAME.progression, active: true}); 
+            GAME.soundEffects.push(new Audio('./assets/audio/taiko-drum.wav'));} 
+            break;
         case CONFIG.keybinds.rc: if (!GAME.input.rc) {GAME.input.rc = true; GAME.inputQueue.push({type: 'rc', at: GAME.progression, active: true}); GAME.soundEffects.push(new Audio('./assets/audio/taiko-drum.wav'));} break;
         case CONFIG.keybinds.lr: if (!GAME.input.lr) {GAME.input.lr = true; GAME.inputQueue.push({type: 'lr', at: GAME.progression, active: true}); GAME.soundEffects.push(new Audio('./assets/audio/taiko-rim.wav'));} break;
         case CONFIG.keybinds.rr: if (!GAME.input.rr) {GAME.input.rr = true; GAME.inputQueue.push({type: 'rr', at: GAME.progression, active: true}); GAME.soundEffects.push(new Audio('./assets/audio/taiko-rim.wav'));} break;
@@ -122,6 +126,8 @@ async function load() {
 function update() {
     // Request update to be called next frame
     // Works off of CSS framerates, so this is normally tied to monitor refresh rate
+    // Addendum: the fact it is based off the the monitor refresh rate means it vsync and
+    // that WILL cause stutters outside of my control. Chrome runs better than firefox for this game 
     window.requestAnimationFrame(update);
 
     // Update deltatime
@@ -142,77 +148,29 @@ function update() {
 
         if (AudioURL) {
             MusicPlayer = new Audio(AudioURL);
-            MusicPlayer.play();
+            MusicPlayer.loop = false;
         }
+
+        // Set difficulty settings
+        GAME.soulDifficulty = 100 / GAME.hitObjectsQueue.length;
+
+        HTML.soulBar.className = '';
     }
 
     if (BEATMAP) {
+
         // Remove deactivated hit objects
         GAME.hitObjects = GAME.hitObjects.filter(o => { if (!o.active) o.html.remove(); return o.active;});
 
 
+        if (MusicPlayer.paused && !MusicPlayer.ended && GAME.progression >= 0)
+            MusicPlayer.play();
 
-        // Check for input
-        // Remove inputs from queue if it has existed longer than the input duration
-        GAME.inputQueue = GAME.inputQueue.filter(i => i.at + CONFIG.inputDuration > GAME.progression); 
-        // Check for double hits
-        for(let i = 0; i < GAME.inputQueue.length - 1; i++)
-            if (GAME.inputQueue[i] && GAME.inputQueue[i + 1].at - GAME.inputQueue[i].at < CONFIG.doubleInputWindow)
-                switch(GAME.inputQueue[i].type) {
-                    case 'lc': 
-                        if (GAME.inputQueue[i + 1].type == 'rc') {
-                            GAME.soundEffects[i].pause();           // Stop playing regular audio
-                            GAME.soundEffects[i].ended = true;      // Flag it to be removed from the audio queue
 
-                            GAME.inputQueue[i + 1].type = 'dc';
-                            GAME.soundEffects[i + 1] = new Audio('./assets/audio/taiko-drum-heavy.wav');
-                        } 
-                        break;
-                    case 'rc': 
-                        if (GAME.inputQueue[i + 1].type == 'lc')  {
-                            GAME.soundEffects[i].pause();
-                            GAME.soundEffects[i].ended = true;
-
-                            GAME.inputQueue[i + 1].type = 'dc';
-                            GAME.soundEffects[i + 1] = new Audio('./assets/audio/taiko-drum-heavy.wav');
-                        } 
-                        break;
-                    case 'lr': 
-                        if (GAME.inputQueue[i + 1].type == 'rr')  {
-                            GAME.soundEffects[i].pause();
-                            GAME.soundEffects[i].ended = true;
-
-                            GAME.inputQueue[i + 1].type = 'dr';
-                            GAME.soundEffects[i + 1] = new Audio('./assets/audio/taiko-rim-heavy.wav');
-                        } 
-                        break;
-                    case 'rr': 
-                        if (GAME.inputQueue[i + 1].type == 'lr')  {
-                            GAME.soundEffects[i].pause();
-                            GAME.soundEffects[i].ended = true;
-
-                            GAME.inputQueue[i + 1].type = 'dr';
-                            GAME.soundEffects[i + 1] = new Audio('./assets/audio/taiko-rim-heavy.wav');
-                        } 
-                        break;
-            }
+        
             
 
-        // Drum UI hit indicators
-        HTML.lr.className = "inactive"; HTML.rr.className = "inactive"; 
-        HTML.lc.className = "inactive"; HTML.rc.className = "inactive";
         
-        for (let input of GAME.inputQueue) {
-            switch (input.type) {
-                case 'lr': HTML.lr.className = ""; break;
-                case 'rr': HTML.rr.className = ""; break;
-                case 'lc': HTML.lc.className = ""; break;
-                case 'rc': HTML.rc.className = ""; break;
-
-                case 'dr': HTML.rr.className = ""; HTML.lr.className = ""; break;
-                case 'dc': HTML.rc.className = ""; HTML.lc.className = "";break;
-            }
-        }
 
 
         // Audio -> Update sound effects
@@ -234,8 +192,6 @@ function update() {
             if (GAME.timingPoints.length && GAME.timingPoints[0].timing <= hitObject.timing) {
                 let timingPoint = GAME.timingPoints.shift();
 
-                console.log(timingPoint.volume)
-
                 GAME.volume = timingPoint.volume;
                 GAME.inKiai = timingPoint.kiai;
 
@@ -244,6 +200,7 @@ function update() {
                 if (timingPoint.sv < 0) // Intreprete as SV change
                     GAME.multiplierSV = -timingPoint.sv; // TODO: Use this value and store it in the hitObject itself
             }
+            hitObject.inKiai = GAME.inKiai
             hitObject.sv = GAME.multiplierSV;
 
             HTML.gameField.insertBefore(hitObject.html, HTML.gameField.firstChild);
@@ -255,13 +212,16 @@ function update() {
         
 
 
-
-        // TODO: Do SV by adjusting a hitObjects.timing and GAME.delta (when adding to left) 
-        // i.e. 2x SV would make hitObjectg.timing * 2 amd GAME.delta * 2 (for that hitObject)
+        // HEY FUTURE ME !!!!!!
+        // This is why sv is broken and also not broken at the same time. The implementation of SV is correct (probably),
+        // it just that SV changes affect a specific group of hitObjects, not all of the preceding ones after the timing point
+        
+        
+        
         // change timing point reader to be able to read multiple timing points a head
         // perhaps display hitobjects in sudo groups created by timing points?
 
-        // Move hit objects
+        // Update hit objects i.e. moves, checks InputQueue (and follows up)
         for (let o of GAME.hitObjects) {
             let position = o.timing - GAME.progression;
 
@@ -281,67 +241,161 @@ function update() {
                         if ((input.type == 'lc' || input.type == 'rc') && (o.type == 0 || o.type == 2)) {
                             timingDifference = Math.abs((input.at - GAME.progression) + position);
                         }
-                            
 
-                        if (timingDifference != null) { // (380 + 90 * comboBonus) * (timingIsGood ? 1 : 0.5) 
+                        if (timingDifference != null) {
                             if (timingDifference <= CONFIG.defaultGoodTiming) {
-                                GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation(Links.goodJudgement, 0.5, 'judgement')})
+                                GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation(Links.goodJudgement, 0.5, 'judgement'), type: `good${o.type == 2 || o.type == 3 ? (o.type == 2 ? '-big-don' : '-big-katu') : ''}`})
                                 GAME.combo++;
                                 GAME.score += (380 + 90 * ( // Higher combo higher score gained. (380 + 90 * comboBonus) combos is 0 at <10, 1 >10, 2 >30, 4 >50, and 8 >100 (combo)
                                     GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
-                                        8 : 4) : 2) : 1) : 0))
+                                        8 : 4) : 2) : 1) : 0)) * (GAME.inKiai ? 1.20 : 1);
+                                GAME.soul += GAME.soulDifficulty * 1.5;
                             }
                             else if (timingDifference <= CONFIG.defaultOkTiming) {
-                                console.log('Ok')//GAME.timingUIQueue.unshift({at: GAME.progression, class: 'judgementOk', path: './assets/ui/ok-judgement.gif', html: document.createElement('li')})
+                                GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation(Links.okJudgement, 0.5, 'judgement'), type: `ok${o.type == 2 || o.type == 3 ? (o.type == 2 ? '-big-don' : '-big-katu') : ''}`})
                                 GAME.combo++;
                                 GAME.score += (380 + 90 * ( // Higher combo higher score gained. (380 + 90 * comboBonus) combos is 0 at <10, 1 >10, 2 >30, 4 >50, and 8 >100 (combo)
                                     GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
-                                        8 : 4) : 2) : 1) : 0)) * 0.5 // half as many points rewarded for ok timing
+                                        8 : 4) : 2) : 1) : 0)) * 0.5 * (GAME.inKiai ? 1.20 : 1) // half as many points rewarded for ok timing
+                                GAME.soul += GAME.soulDifficulty * 0.75;
                             }
                             else {
-                                console.log('Poor')
-
+                                GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation(Links.poorJudgement, 0.5, 'judgement'), type: ''})
                                 if (combo > 30) {
                                     // Play combobreak sound effect
                                 }
 
                                 GAME.combo = 0; // No points and combo is broken/reset
+                                GAME.soul -= GAME.soulDifficulty * 2;
+                            }
+
+                            // Play combo milestone sound effect
+                            switch(combo) {
+                                case 50: break;
+                                case 100: break;
+                                case 200: break;
+                                case 300: break;
+                                case 400: break;  
+                                case 500: break;
+                                case 600: break;  
+                                case 700: break;
+                                case 800: break;  
+                                case 900: break;
+                                case 1000: break;
+                                case 1100: break;
+                                case 1200: break;  
+                                case 1300: break;
+                                case 1400: break;  
+                                case 1500: break;
                             }
 
                             o.active = false;
-                            input.active = false;
+                            input.active = false;   
                         }
                     }
                         
             }
 
-            // Play combo milestone sound effect
-            switch(combo) {
-                case 50: break;
-                case 100: break;
-                case 200: break;
-                case 300: break;
-                case 400: break;  
-                case 500: break;
-                case 600: break;  
-                case 700: break;
-                case 800: break;  
-                case 900: break;
-                case 1000: break;
-                case 1100: break;
-                case 1200: break;  
-                case 1300: break;
-                case 1400: break;  
-                case 1500: break;
-            }
 
+            // Check for input
+        // Remove inputs from queue if it has existed longer than the input duration
+        GAME.inputQueue = GAME.inputQueue.filter(i => i.at + CONFIG.inputDuration > GAME.progression); 
+        // Check for double hits
+        for(let i = 0; i < GAME.inputQueue.length - 1; i++)
+            if (GAME.inputQueue[i] && GAME.inputQueue[i + 1].at - GAME.inputQueue[i].at < CONFIG.doubleInputWindow)
+                switch(GAME.inputQueue[i].type) {
+                    case 'lc': 
+                        if (GAME.inputQueue[i + 1].type == 'rc') {
+                            GAME.soundEffects[i].pause();           // Stop playing regular audio
+                            GAME.soundEffects[i].ended = true;      // Flag it to be removed from the audio queue
+                            GAME.soundEffects[i + 1].pause();           // Stop playing regular audio
+                            GAME.soundEffects[i + 1].ended = true;      // Flag it to be removed from the audio queue
+
+                            if (GAME.timingUIQueue[0]?.type.includes('big-don')) {
+                                GAME.score += (380 + 90 * ( // Higher combo higher score gained. (380 + 90 * comboBonus) combos is 0 at <10, 1 >10, 2 >30, 4 >50, and 8 >100 (combo)
+                                    GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
+                                        8 : 4) : 2) : 1) : 0)) * (GAME.timingUIQueue[0].type.includes('good') ? 1 : 0.5) * (GAME.inKiai ? 1.20 : 1) // half as many points rewarded for ok timing
+
+                                GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation((GAME.timingUIQueue[0].type.includes('good') ? Links.goodBigJudgement : Links.okBigJudgement), 0.5, 'judgement'), type: ''})
+                                
+                            }
+                            
+                            GAME.soundEffects.push(new Audio('./assets/audio/taiko-drum-heavy.wav'));
+                            GAME.inputQueue[i + 1].type = 'dc';
+                            GAME.inputQueue[i + 1].active = false;  
+                        } 
+                        break;
+                    case 'rc':
+                        if (GAME.inputQueue[i + 1].type == 'lc')  {
+                            GAME.soundEffects[i].pause();
+                            GAME.soundEffects[i].ended = true;
+                            GAME.soundEffects[i + 1].pause();           // Stop playing regular audio
+                            GAME.soundEffects[i + 1].ended = true;      // Flag it to be removed from the audio queue
+
+                            if (GAME.timingUIQueue[0]?.type.includes('big-don')) {
+                                GAME.score += (380 + 90 * ( // Higher combo higher score gained. (380 + 90 * comboBonus) combos is 0 at <10, 1 >10, 2 >30, 4 >50, and 8 >100 (combo)
+                                    GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
+                                        8 : 4) : 2) : 1) : 0)) * (GAME.timingUIQueue[0].type.includes('good') ? 1 : 0.5) * (GAME.inKiai ? 1.20 : 1) // half as many points rewarded for ok timing
+
+                                GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation((GAME.timingUIQueue[0].type.includes('good') ? Links.goodBigJudgement : Links.okBigJudgement), 0.5, 'judgement'), type: ''})
+                            }
+
+                            GAME.inputQueue[i + 1].type = 'dc';
+                            GAME.soundEffects[i + 1] = new Audio('./assets/audio/taiko-drum-heavy.wav');
+                            GAME.inputQueue[i + 1].active = false;  
+                        } 
+                        break;
+                    case 'lr': 
+                        if (GAME.inputQueue[i + 1].type == 'rr')  {
+                            GAME.soundEffects[i].pause();
+                            GAME.soundEffects[i].ended = true;
+                            GAME.soundEffects[i + 1].pause();           // Stop playing regular audio
+                            GAME.soundEffects[i + 1].ended = true;      // Flag it to be removed from the audio queue
+                
+
+                            if (GAME.timingUIQueue[0]?.type.includes('big-katu')) {
+                                GAME.score += (380 + 90 * ( // Higher combo higher score gained. (380 + 90 * comboBonus) combos is 0 at <10, 1 >10, 2 >30, 4 >50, and 8 >100 (combo)
+                                    GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
+                                        8 : 4) : 2) : 1) : 0)) * (GAME.timingUIQueue[0].type.includes('good') ? 1 : 0.5) * (GAME.inKiai ? 1.20 : 1) // half as many points rewarded for ok timing
+                             
+                                GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation((GAME.timingUIQueue[0].type.includes('good') ? Links.goodBigJudgement : Links.okBigJudgement), 0.5, 'judgement'), type: ''})
+                            }
+
+                            GAME.inputQueue[i + 1].type = 'dr';
+                            GAME.soundEffects[i + 1] = new Audio('./assets/audio/taiko-rim-heavy.wav');
+                            GAME.inputQueue[i + 1].active = false;  
+                        } 
+                        break;
+                    case 'rr': 
+                        if (GAME.inputQueue[i + 1].type == 'lr')  {
+                            GAME.soundEffects[i].pause();
+                            GAME.soundEffects[i].ended = true;
+                            GAME.soundEffects[i + 1].pause();           // Stop playing regular audio
+                            GAME.soundEffects[i + 1].ended = true;      // Flag it to be removed from the audio queue
+
+                            if (GAME.timingUIQueue[0]?.type.includes('big-katu')) {
+                                GAME.score += (380 + 90 * ( // Higher combo higher score gained. (380 + 90 * comboBonus) combos is 0 at <10, 1 >10, 2 >30, 4 >50, and 8 >100 (combo)
+                                    GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
+                                        8 : 4) : 2) : 1) : 0)) * (GAME.timingUIQueue[0].type.includes('good') ? 1 : 0.5) * (GAME.inKiai ? 1.20 : 1) // half as many points rewarded for ok timing
+
+                                GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation((GAME.timingUIQueue[0].type.includes('good') ? Links.goodBigJudgement : Links.okBigJudgement), 0.5, 'judgement'), type: ''})
+                            }
+
+                            GAME.inputQueue[i + 1].type = 'dr';
+                            GAME.soundEffects[i + 1] = new Audio('./assets/audio/taiko-rim-heavy.wav');
+                            GAME.inputQueue[i + 1].active = false;  
+                        } 
+                        break;
+            }
             
             // Break combo is note is missed (different from poor timing but same result: no points and a broken combo)
-            if (position < -CONFIG.defaultOkTiming) {
+            // Checks if a 
+            if (position < -CONFIG.defaultOkTiming && position + GAME.delta > -CONFIG.defaultOkTiming) {
                 if (combo > 30) {
                     // Play combobreak sound effect
                 }
 
+                GAME.soul -= GAME.soulDifficulty * 2;
                 GAME.combo = 0;
             }
                 
@@ -351,6 +405,25 @@ function update() {
             else
                 o.html.style.left = `${(o.timing * CONFIG.baseSV * o.sv) - (GAME.progression * CONFIG.baseSV * o.sv) + CONFIG.hitZoneXOffset}px`;
         }
+
+        // Drum UI hit indicators
+        HTML.lr.className = "inactive"; HTML.rr.className = "inactive"; 
+        HTML.lc.className = "inactive"; HTML.rc.className = "inactive";
+        
+        for (let input of GAME.inputQueue) {
+            switch (input.type) {
+                case 'lr': HTML.lr.className = ""; break;
+                case 'rr': HTML.rr.className = ""; break;
+                case 'lc': HTML.lc.className = ""; break;
+                case 'rc': HTML.rc.className = ""; break;
+
+                case 'dr': HTML.rr.className = ""; HTML.lr.className = ""; break;
+                case 'dc': HTML.rc.className = ""; HTML.lc.className = "";break;
+            }
+        }
+
+
+        
             
 
 
@@ -362,15 +435,19 @@ function update() {
 
         // Update UI
         // Move top bg, it is 2x vw so set upon moving it half distance
+        // Remeber style.left is a string!
+        let topScrollX = Number(HTML.scrollImage.style.left.replace('px', ''));
         HTML.scrollImage.style.left = `${
-            (HTML.scrollImage.style.left > HTML.scrollImage.offsetWidth / 2) ? 
-            0 : HTML.scrollImage.style.left + GAME.delta // * CONFIG.scrollBGMoveSpeed
+            (topScrollX < -HTML.scrollImage.offsetWidth / 2) ? 
+            0 : topScrollX - GAME.delta * CONFIG.scrollBGMoveSpeed
         }px`;
 
 
         // use Util.Animation
         for (let judgement of GAME.timingUIQueue) {
             if (judgement.at == GAME.progression) { // change to https://www.w3schools.com/jsref/met_node_insertbefore.asp
+                
+                // Puts new judgement ui animations on top of previous ones
                 if (HTML.hitZone.children.length == 0)
                     HTML.hitZone.appendChild(judgement.anim.html);
                 else
@@ -390,21 +467,60 @@ function update() {
         // Note: Only made to handle score values up to 9 999 999. Taiko scoring really only reaches 1 mil for longer songs, let alone anything above like 3mil
         HTML.score.innerHTML = // Shows all 7 digits
             `
-            <li class="ui-${Math.floor(GAME.score / 1000000)}-score"></li>
-            <li class="ui-${Math.floor((GAME.score % 1000000) / 100000)}-score"></li>
-            <li class="ui-${Math.floor((GAME.score % 100000) / 10000)}-score"></li>
-            <li class="ui-${Math.floor((GAME.score % 10000) / 1000)}-score"></li>
-            <li class="ui-${Math.floor((GAME.score % 1000) / 100)}-score"></li>
-            <li class="ui-${Math.floor((GAME.score % 100) / 10)}-score"></li>
-            <li class="ui-${Math.floor((GAME.score % 10))}-score"></li>
+            <li class="ui-${Math.floor(GAME.score             / 1000000)}-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 1000000) / 100000) }-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 100000)  / 10000)  }-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 10000)   / 1000)   }-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 1000)    / 100)    }-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 100)     / 10)     }-score"></li>
+            <li class="ui-${Math.floor((GAME.score % 10))               }-score"></li>
             `
 
         // Update combo display,
         // Note: Only made to handle combo values up to 9999 (i dont know of a beatmap longer than 3000)
         HTML.combo.innerHTML = // Shows only relavent digits, additionally after reaching 100 combo, use gold letter (since combo bonus stops increasing after 100 anyways)
             `
-            <li class=""></li>
+            <li class="ui-${GAME.combo > 999 ? Math.floor(GAME.combo / 1000)         + (GAME.combo >= 100 ? '-gold' : '') : ''}"></li>
+            <li class="ui-${GAME.combo > 99  ? Math.floor((GAME.combo % 1000) / 100) + (GAME.combo >= 100 ? '-gold' : '') : ''}"></li>
+            <li class="ui-${GAME.combo > 9   ? Math.floor((GAME.combo % 100) / 10)   + (GAME.combo >= 100 ? '-gold' : '') : ''}"></li>
+            <li class="ui-${GAME.combo > 0   ? Math.floor(GAME.combo % 10)           + (GAME.combo >= 100 ? '-gold' : '') : ''}"></li>
             `
+
+
+        if (GAME.soul > 100) GAME.soul = 100;
+        if (GAME.soul < 0) GAME.soul = 0;
+
+        if (GAME.soul == 100) {
+            HTML.soulFilled.style.backgroundImage = "url(./assets/ui/soul-completed.png)";
+            HTML.soulIndicator.style.backgroundImage = "url(./assets/ui/soul-indicator-pass.png)";
+            HTML.soulIndicator.innerHTML = `<span id="soul-indicator-complete"></span>`
+            HTML.soulFilled.style.clipPath = `rect(0 ${GAME.soul}% 100% 0)`
+        }
+        else {
+            HTML.soulFilled.style.backgroundImage = "url(./assets/ui/soul-completion.png)";
+            HTML.soulFilled.style.clipPath = `rect(0 ${GAME.soul}% 100% 0)`
+            HTML.soulIndicator.innerHTML = '';
+
+            if (GAME.soul >= 77.6) { // 77.6% is passing. Technically you'd only need 75% but we dont get that luxury with this current soul guage implementation
+                HTML.soulIndicator.style.backgroundImage = "url(./assets/ui/soul-indicator-pass.png)";
+                //HTML.scrollImageOverlay.style.left = HTML.scrollImage.style.left //`${(topScrollX < -HTML.scrollImage.offsetWidth / 2) ? 0 : topScrollX - GAME.delta * CONFIG.scrollBGMoveSpeed}px`
+                HTML.scrollImageOverlay.style.opacity = (GAME.soul - 77.6) / 17.4;
+
+            }
+            else {
+                HTML.soulIndicator.style.backgroundImage = "url(./assets/ui/soul-indicator.png)";
+                HTML.scrollImageOverlay.style.opacity = 0;
+            }
+                
+        }
+
+        if (GAME.hitObjects[0]?.inKiai) {
+            HTML.hitZoneKiai.className = '';
+        }
+        else
+            HTML.hitZoneKiai.className = 'inactive';
+
+            // Is SV just backwards??
 
 
         //debugger

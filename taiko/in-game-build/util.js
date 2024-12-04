@@ -29,6 +29,8 @@ const Taiko = {
             this.html  = null;
             this.sv    = 1;
 
+            this.inKiai = false;
+
             this.type   = type;   // Controls the kind of note 
             this.timing = timing; // Controls when, in ms and from the start of the song, this note should reach the hitzone
             
@@ -46,6 +48,10 @@ const Taiko = {
             // CSS class names for each type of hitObject (note, classes applied during JS execution start with an underscore)
             // _don-static & _don-big-static   --after reachng 50 combo--> _don-anim & _don-big-anim --after reaching 150 combo-->  _don-anim-fast & _don-big-anim-fast
             // _katsu-static & _katsu-big-static   --after reachng 50 combo--> _katsu-anim & _katsu-big-anim --after reaching 150 combo-->  _katsu-anim-fast & _katsu-big-anim-fast
+        }
+
+        applySVFromTimingPoints(timingPoints) { // Use this af
+
         }
     },
 
@@ -107,13 +113,14 @@ const Util = {
 
                 for (index++; lines[index].length != 1; index++) {
                     timingPoint = lines[index].split(',');
+                    console.log(timingPoint[7])
                     BEATMAP.timingPoints.push(new Taiko.TimingPoint(
                         Number(timingPoint[0]),      // Timing in ms
                         
-                        Number(timingPoint[1]) > 0 ? Number(timingPoint[1]) : Number(timingPoint[1]) / 50,
+                        Number(timingPoint[1]) > 0 ? Number(timingPoint[1]) : 50 / Number(timingPoint[1]),
 
                         Number(timingPoint[5]) / 100, // Volumne
-                        timingPoint[8] == '1'));      // In kiai time
+                        timingPoint[7] == 1));      // In kiai time
                 }
             }
 
@@ -182,8 +189,9 @@ const Setup = {
         return { 
             game: document.querySelector("#game-window"),
 
-            soulBar:    document.querySelector("#soul-bar"),
-            soulFilled: document.querySelector("#soul-filled"),
+            soulBar:       document.querySelector("#soul-bar"),
+            soulFilled:    document.querySelector("#soul-completion"),
+            soulIndicator: document.querySelector("#soul-indicator"),
 
             score: document.querySelector("#score"),
             combo: document.querySelector("#combo"),
@@ -196,9 +204,11 @@ const Setup = {
             rc: document.querySelector("#drum-rc"),
 
             scrollImage: document.querySelector("#top"),
+            scrollImageOverlay: document.querySelector("#top-overlay"),
             bgImage:     document.querySelector("#bottom"),
 
-            hitZone: document.querySelector("#hit-zone"),
+            hitZone:     document.querySelector("#hit-zone"),
+            hitZoneKiai: document.querySelector("#hit-zone-kiai"),
 
 
             music: document.querySelector("#music"),
@@ -225,5 +235,133 @@ const Links = {
         './assets/ui//good-judgement/taiko-hit300-12.png',
         './assets/ui//good-judgement/taiko-hit300-13.png',
         './assets/ui//good-judgement/taiko-hit300-14.png',
-    ]
+    ],
+    okJudgement: [ // Used for animation
+        './assets/ui/ok-judgement/taiko-hit100-0.png',
+        './assets/ui/ok-judgement/taiko-hit100-1.png',
+        './assets/ui/ok-judgement/taiko-hit100-2.png',
+        './assets/ui/ok-judgement/taiko-hit100-3.png',
+        './assets/ui/ok-judgement/taiko-hit100-4.png',
+        './assets/ui/ok-judgement/taiko-hit100-5.png',
+        './assets/ui/ok-judgement/taiko-hit100-6.png',
+        './assets/ui/ok-judgement/taiko-hit100-7.png',
+        './assets/ui/ok-judgement/taiko-hit100-8.png',
+        './assets/ui/ok-judgement/taiko-hit100-9.png',
+        './assets/ui/ok-judgement/taiko-hit100-10.png',
+        './assets/ui/ok-judgement/taiko-hit100-11.png',
+        './assets/ui/ok-judgement/taiko-hit100-12.png',
+        './assets/ui/ok-judgement/taiko-hit100-13.png',
+        './assets/ui/ok-judgement/taiko-hit100-14.png',
+    ],
+    poorJudgement: [
+        './assets/ui/poor-judgement/poor-judgement-0.png',
+        './assets/ui/poor-judgement/poor-judgement-1.png',
+        './assets/ui/poor-judgement/poor-judgement-2.png',
+        './assets/ui/poor-judgement/poor-judgement-3.png',
+        './assets/ui/poor-judgement/poor-judgement-4.png',
+        './assets/ui/poor-judgement/poor-judgement-5.png',
+        './assets/ui/poor-judgement/poor-judgement-6.png',
+        './assets/ui/poor-judgement/poor-judgement-7.png',
+        './assets/ui/poor-judgement/poor-judgement-8.png',
+        './assets/ui/poor-judgement/poor-judgement-9.png',
+    ],
+
+    goodBigJudgement: [ // Used for animation
+        './assets/ui/good-big-judgement/taiko-hit300k-0.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-1.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-2.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-3.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-4.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-5.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-6.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-7.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-8.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-9.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-10.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-11.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-12.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-13.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-14.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-15.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-16.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-17.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-18.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-19.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-20.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-21.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-22.png',
+        './assets/ui/good-big-judgement/taiko-hit300k-23.png',
+    ],
+    okBigJudgement: [ // Used for animation
+        './assets/ui/ok-big-judgement/taiko-hit100k-0.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-1.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-2.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-3.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-4.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-5.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-6.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-7.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-8.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-9.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-10.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-11.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-12.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-13.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-14.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-15.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-16.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-17.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-18.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-19.png',
+        './assets/ui/ok-big-judgement/taiko-hit100k-20.png',
+    ],
+
+
+    donWadaIdle: [
+        
+    ],
+    donWadaClear: [
+
+    ],
+    donWadaKiai: [
+
+    ],
+
+
+    donCombo: [
+        './assets/notes/red-base.png',
+        './assets/notes/red-norm.png'
+    ],
+    donKiai: [
+        './assets/notes/red-base.png',
+        './assets/notes/red-kiai.png'
+    ],
+    katuCombo: [
+        './assets/notes/blue-base.png',
+        './assets/notes/blue-norm.png'
+    ],
+    katuKiai: [
+        './assets/notes/blue-base.png',
+        './assets/notes/blue-kiai.png'
+    ],
+
+    donBigCombo: [
+        './assets/notes/red-big-base.png',
+        './assets/notes/red-big-norm.png'
+    ],
+    donBigKiai: [
+        './assets/notes/red-big-base.png',
+        './assets/notes/red-big-kiai.png'
+    ],
+    katuBigCombo: [
+        './assets/notes/blue-big-base.png',
+        './assets/notes/blue-big-norm.png'
+    ],
+    katuBigKiai: [
+        './assets/notes/blue-big-base.png',
+        './assets/notes/blue-big-kiai.png'
+    ],
+
+    // use an apng for notes it auto syncs itself! have kiai, static and active varients
+    // dumbass its bpm based
 }

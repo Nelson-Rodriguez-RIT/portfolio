@@ -17,8 +17,9 @@
     <!-- Encases all gameplay elements, this is set to the 'inactive' class when not being used -->
     <section id="game-window" class="inactive">
         <div id="top" class="top-bg-normal">
+            <div id="top-overlay"></div>
             <div id="don-chan"></div>
-            <div id="soul-bar"><div id="soul-completion"></div><div id="soul-indicator"></div></div>
+            <div class="inactive" id="soul-bar"><div id="soul-completion"></div><div id="soul-indicator"></div></div>
         </div>
 
         <div id="middle">
@@ -41,6 +42,7 @@
             </div>
 
             <ul id="game-field">
+                <span id="hit-zone-kiai"></span>
                 <ul id="hit-zone"></ul>
             </ul>
         </div>

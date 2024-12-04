@@ -43,7 +43,7 @@ const GAME = {
 
     // Changed via timing points
     BPM:          0,
-    multiplierSV: 1,     // Multiplier applied to baseSV
+    multiplierSV: null,     // Multiplier applied to baseSV
     inKiai:       false, // Used to signal a peak/chorus/important part of a song. Increases point gain by 20% for the duration its active
     volume:       0,     // %
 }
@@ -57,7 +57,7 @@ const CONFIG = {
 
     maxLoadedHitObjects: 25,
 
-    fps: 60, // Used for BPM related features only
+    fps: 60, // Used for BPM and animation via the Animation class
     scrollBGMoveSpeed: 0.025, // px
 
     inputDuration: 100, //ms
@@ -74,8 +74,8 @@ const CONFIG = {
     defaultOkTiming: 65,   // +- ms for half points
     defaultBadTiming: 95,  // +- ms for no points and broken combo (needed to prevent button mashing OK timings)
 
-    judgementLength: 400, //ms
-    scoreUILength: 500,   //ms
+    judgementLength: 350, //ms
+    scoreUILength: 400,   //ms
     
 }
 
@@ -130,6 +130,8 @@ function update() {
     // that WILL cause stutters outside of my control. Chrome runs better than firefox for this game 
     window.requestAnimationFrame(update);
 
+
+
     // Update deltatime
     currentTime = window.performance.now();
     GAME.delta = (currentTime - previousTime); // These means that if deltatime was cumulative it would equal 1 after 1 second
@@ -155,6 +157,17 @@ function update() {
         GAME.soulDifficulty = 100 / GAME.hitObjectsQueue.length;
 
         HTML.soulBar.className = '';
+
+
+        // Set inital SV from the first inherited timing point
+        if (GAME.multiplierSV == null) {
+            for (let tp of GAME.timingPoints)
+                if (tp.sv < 0) {
+                    GAME.multiplierSV = -tp.sv;
+                    break;
+                }
+    }
+
     }
 
     if (BEATMAP) {
@@ -183,7 +196,7 @@ function update() {
             }
 
         // Load more hitObjects until active cap is reached or if remaining hitObject queue is less than cap, use that
-        while (GAME.hitObjectsQueue.length && GAME.hitObjects.length < (GAME.hitObjectsQueue.length < CONFIG.maxLoadedHitObjects ? CONFIG.maxLoadedHitObjects : GAME.hitObjectsQueue.length)) {
+        while (GAME.hitObjectsQueue.length && GAME.hitObjects.length < (GAME.hitObjectsQueue.length < CONFIG.maxLoadedHitObjects ?  GAME.hitObjectsQueue.length : CONFIG.maxLoadedHitObjects)) {
             let hitObject            = GAME.hitObjectsQueue.shift();
             hitObject.html           = document.createElement('li');
             hitObject.html.className = Taiko.HitObjectTypes[hitObject.type];
@@ -198,7 +211,7 @@ function update() {
                 if (timingPoint.sv > 0) // Intreprete as BPM change
                     GAME.BPM = 0; // TODO
                 if (timingPoint.sv < 0) // Intreprete as SV change
-                    GAME.multiplierSV = -timingPoint.sv; // TODO: Use this value and store it in the hitObject itself
+                    GAME.multiplierSV = -timingPoint.sv;
             }
             hitObject.inKiai = GAME.inKiai
             hitObject.sv = GAME.multiplierSV;
@@ -209,17 +222,6 @@ function update() {
            
 
 
-        
-
-
-        // HEY FUTURE ME !!!!!!
-        // This is why sv is broken and also not broken at the same time. The implementation of SV is correct (probably),
-        // it just that SV changes affect a specific group of hitObjects, not all of the preceding ones after the timing point
-        
-        
-        
-        // change timing point reader to be able to read multiple timing points a head
-        // perhaps display hitobjects in sudo groups created by timing points?
 
         // Update hit objects i.e. moves, checks InputQueue (and follows up)
         for (let o of GAME.hitObjects) {
@@ -316,6 +318,7 @@ function update() {
                                     GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
                                         8 : 4) : 2) : 1) : 0)) * (GAME.timingUIQueue[0].type.includes('good') ? 1 : 0.5) * (GAME.inKiai ? 1.20 : 1) // half as many points rewarded for ok timing
 
+                                //GAME.timingUIQueue.shift().html.className = 'inactive'; // Remove added UI element since this one below replaces it
                                 GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation((GAME.timingUIQueue[0].type.includes('good') ? Links.goodBigJudgement : Links.okBigJudgement), 0.5, 'judgement'), type: ''})
                                 
                             }
@@ -336,7 +339,7 @@ function update() {
                                 GAME.score += (380 + 90 * ( // Higher combo higher score gained. (380 + 90 * comboBonus) combos is 0 at <10, 1 >10, 2 >30, 4 >50, and 8 >100 (combo)
                                     GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
                                         8 : 4) : 2) : 1) : 0)) * (GAME.timingUIQueue[0].type.includes('good') ? 1 : 0.5) * (GAME.inKiai ? 1.20 : 1) // half as many points rewarded for ok timing
-
+                                //GAME.timingUIQueue.shift().html.className = 'inactive';
                                 GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation((GAME.timingUIQueue[0].type.includes('good') ? Links.goodBigJudgement : Links.okBigJudgement), 0.5, 'judgement'), type: ''})
                             }
 
@@ -357,7 +360,7 @@ function update() {
                                 GAME.score += (380 + 90 * ( // Higher combo higher score gained. (380 + 90 * comboBonus) combos is 0 at <10, 1 >10, 2 >30, 4 >50, and 8 >100 (combo)
                                     GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
                                         8 : 4) : 2) : 1) : 0)) * (GAME.timingUIQueue[0].type.includes('good') ? 1 : 0.5) * (GAME.inKiai ? 1.20 : 1) // half as many points rewarded for ok timing
-                             
+                                //GAME.timingUIQueue.shift().html.className = 'inactive';
                                 GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation((GAME.timingUIQueue[0].type.includes('good') ? Links.goodBigJudgement : Links.okBigJudgement), 0.5, 'judgement'), type: ''})
                             }
 
@@ -377,7 +380,7 @@ function update() {
                                 GAME.score += (380 + 90 * ( // Higher combo higher score gained. (380 + 90 * comboBonus) combos is 0 at <10, 1 >10, 2 >30, 4 >50, and 8 >100 (combo)
                                     GAME.combo > 10 ? (GAME.combo > 30 ? (GAME.combo > 50 ? (GAME.combo > 100 ? 
                                         8 : 4) : 2) : 1) : 0)) * (GAME.timingUIQueue[0].type.includes('good') ? 1 : 0.5) * (GAME.inKiai ? 1.20 : 1) // half as many points rewarded for ok timing
-
+                                //GAME.timingUIQueue.shift().html.className = 'inactive';
                                 GAME.timingUIQueue.unshift({at: GAME.progression, anim: new Util.Animation((GAME.timingUIQueue[0].type.includes('good') ? Links.goodBigJudgement : Links.okBigJudgement), 0.5, 'judgement'), type: ''})
                             }
 

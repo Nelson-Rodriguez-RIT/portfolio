@@ -55,7 +55,7 @@ const CONFIG = {
     hitZoneXOffset: 200,     //px
     noteDespawnXOffset: 350, //px
 
-    maxLoadedHitObjects: 25,
+    maxLoadedHitObjects: 35,
 
     fps: 60, // Used for BPM and animation via the Animation class
     scrollBGMoveSpeed: 0.025, // px
@@ -110,7 +110,12 @@ window.onkeyup = e => {
     }
 }
 
-
+// Preload all needed images
+//await Setup.PreloadImages(Links.goodJudgement);
+//await Setup.PreloadImages(Links.goodBigJudgement);
+//await Setup.PreloadImages(Links.okJudgement);
+//await Setup.PreloadImages(Links.okBigJudgement);
+//await Setup.PreloadImages(Links.poorJudgement);
 
 
 async function load() {
@@ -196,7 +201,7 @@ function update() {
             }
 
         // Load more hitObjects until active cap is reached or if remaining hitObject queue is less than cap, use that
-        while (GAME.hitObjectsQueue.length && GAME.hitObjects.length < (GAME.hitObjectsQueue.length < CONFIG.maxLoadedHitObjects ?  GAME.hitObjectsQueue.length : CONFIG.maxLoadedHitObjects)) {
+        while (GAME.hitObjectsQueue.length && GAME.hitObjects.length < CONFIG.maxLoadedHitObjects) {
             let hitObject            = GAME.hitObjectsQueue.shift();
             hitObject.html           = document.createElement('li');
             hitObject.html.className = Taiko.HitObjectTypes[hitObject.type];
@@ -523,7 +528,7 @@ function update() {
         else
             HTML.hitZoneKiai.className = 'inactive';
 
-            // Is SV just backwards??
+            // Is SV just backwards?? update: it was but osu!taiko seems to have an additional modifier on some sv to ease transition so TODO look that up
 
 
         //debugger

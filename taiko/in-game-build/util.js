@@ -214,6 +214,11 @@ const Setup = {
             music: document.querySelector("#music"),
             sounds: document.querySelector("#sound-effects"),
         }
+    },
+    PreloadImages: async function (links) {
+        const buffer = new Image();
+        for (let link of links)
+            buffer.src = link;
     }
 }
 
@@ -221,20 +226,20 @@ const Setup = {
 const Links = {
     goodJudgement: [ // Used for animation
         './assets/ui/good-judgement/taiko-hit300-0.png',
-        './assets/ui//good-judgement/taiko-hit300-1.png',
-        './assets/ui//good-judgement/taiko-hit300-2.png',
-        './assets/ui//good-judgement/taiko-hit300-3.png',
-        './assets/ui//good-judgement/taiko-hit300-4.png',
-        './assets/ui//good-judgement/taiko-hit300-5.png',
-        './assets/ui//good-judgement/taiko-hit300-6.png',
-        './assets/ui//good-judgement/taiko-hit300-7.png',
-        './assets/ui//good-judgement/taiko-hit300-8.png',
-        './assets/ui//good-judgement/taiko-hit300-9.png',
-        './assets/ui//good-judgement/taiko-hit300-10.png',
-        './assets/ui//good-judgement/taiko-hit300-11.png',
-        './assets/ui//good-judgement/taiko-hit300-12.png',
-        './assets/ui//good-judgement/taiko-hit300-13.png',
-        './assets/ui//good-judgement/taiko-hit300-14.png',
+        './assets/ui/good-judgement/taiko-hit300-1.png',
+        './assets/ui/good-judgement/taiko-hit300-2.png',
+        './assets/ui/good-judgement/taiko-hit300-3.png',
+        './assets/ui/good-judgement/taiko-hit300-4.png',
+        './assets/ui/good-judgement/taiko-hit300-5.png',
+        './assets/ui/good-judgement/taiko-hit300-6.png',
+        './assets/ui/good-judgement/taiko-hit300-7.png',
+        './assets/ui/good-judgement/taiko-hit300-8.png',
+        './assets/ui/good-judgement/taiko-hit300-9.png',
+        './assets/ui/good-judgement/taiko-hit300-10.png',
+        './assets/ui/good-judgement/taiko-hit300-11.png',
+        './assets/ui/good-judgement/taiko-hit300-12.png',
+        './assets/ui/good-judgement/taiko-hit300-13.png',
+        './assets/ui/good-judgement/taiko-hit300-14.png',
     ],
     okJudgement: [ // Used for animation
         './assets/ui/ok-judgement/taiko-hit100-0.png',

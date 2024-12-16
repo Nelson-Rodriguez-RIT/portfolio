@@ -19,7 +19,7 @@ body {
 }
   
 /* 5. Improve media defaults */
-img, picture, video, canvas, svg { display: block; max-width: 100%; }
+img, picture, video, canvas, svg { display: block; max-width: 100%; object-fit: contain;}
   
 /* 6. Inherit fonts for form controls */
 input, button, textarea, select { font: inherit; }
@@ -33,10 +33,6 @@ h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
   
 /* 9. Create a root stacking context */
 #root, #__next { isolation: isolate; }
-
-
-
-
 
 
 /* Element Layout */
@@ -95,7 +91,7 @@ nav {
     justify-content: space-between;
 }
 
-.play-button {
+.play-button, .view-button {
     width: 150px;
 }
 
@@ -156,7 +152,7 @@ main, section {
 #gallery {
     grid-gap: 1rem;
 }
-.play-button {
+.play-button, .view-button {
     text-align: center;
     padding: 0.25rem;
     margin: 1rem;
@@ -219,7 +215,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
 
 nav > a, #gallery-wrapper, .gallery-project, 
 #contact-wrapper, .tags > li, .showcase-project,
-main, #showcase-wrapper, .tags, .play-button {
+main, #showcase-wrapper, .tags, .play-button, .view-button {
     border-radius: 25px;
 }
 
@@ -229,7 +225,7 @@ p, span, a {
     font-weight: 400;
     font-style: normal;
 }
-h1, h2, h3, .tags, .play-button {
+h1, h2, h3, .tags, .play-button, .view-button {
     font-family: "Fira Sans", sans-serif;
     font-weight: 600;
     font-style: normal;
@@ -258,7 +254,7 @@ a {
     text-decoration: none;
 }
 
-a:hover, .play-button:hover {
+a:hover, .play-button:hover, .view-button:hover {
     background-color: rgb(204, 204, 204);
     color: rgb(24, 24, 24);
 }
@@ -278,6 +274,10 @@ footer a:hover {
 
 .play-button {
     background-color: #358a47;
+    color: rgb(204, 204, 204);
+}
+.view-button {
+    background-color: #35738a;
     color: rgb(204, 204, 204);
 }
 
@@ -340,7 +340,7 @@ header, footer {
 
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .slides label {

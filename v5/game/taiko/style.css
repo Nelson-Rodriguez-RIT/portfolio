@@ -1,0 +1,414 @@
+@font-face {
+    font-family: "Taiko";
+    src: url("./assets/taiko.ttf");
+}
+
+.inactive {position: fixed !important; left: -9999px !important; top: -9999px !important; z-index: -9999 !important;}
+
+* {
+    background: none;
+
+    padding: 0; margin:  0;
+    box-sizing: content-box;
+    list-style-type: none;
+
+    background-size: 100% 100%;
+    border: none;
+}
+
+span          {display: inline-block;}
+body, section {position: fixed; max-height: 100vh; max-width: 100vw; height: 100vh; width: 100vw;}
+article       {position: fixed;}
+*             {font-family: "Taiko";}
+
+
+
+
+#main-menu-window   {background-image: url(./assets/main-menu/bg.png);}
+#title              {background-image: url(./assets/main-menu/main-logo.png); height: 25vh; width: 50vw; margin: 10vh 0vw 7.5vh 26.5vw;}
+
+.menu-button       {background-image: url(./assets/menu-button.png); font-size: 2.5vb; padding-left: 2.5vw; width: 30vw; height: 7vh; margin-bottom: 1vh;}
+.menu-button:hover {background-image: url(./assets/menu-button-hover.png);} /* */
+.menu-button-wrapper > svg {position: fixed; margin: 2vh 0vw 0vh 36.070vw; width: 3vb; height: 3vb;}
+
+.main-menu-button {margin-left: 35vw;}
+.settings-button  {margin-top: 2.5vh;}
+
+
+
+
+/* Main Menu */
+
+
+/* Title screen buttons*/
+#song-select-button:after       {content: "Song Select";}
+#song-select-button:hover:after {content: "Play uploaded beatmaps";}
+#settings-button:after          {content: "Settings";}
+#settings-button:hover:after    {content: "Change game settings";}
+#tutorial-button:after          {content: "Tutorial";}
+#tutorial-button:hover:after    {content: "Learn how to play";}
+
+/* Settings */
+#settings-window {
+    background-image: url(./assets/main-menu/window-bg.png); 
+    position: fixed; text-align: center;
+    top: 25vh; left: 25vw;
+    width: 50vw; height: 50vh;
+
+    padding-top: 2.5vh;
+
+    font-size: 3vb;
+}
+#settings-exit {}
+
+#set-keybind-don:hover, #set-keybind-katsu:hover,
+#set-volume:hover, #set-offset:hover, #set-import-videos:hover {cursor: pointer}
+
+#set-keybind-don       {background-image: url(./assets/main-menu/don.png); height: 10vb; width: 10vb; text-align: center;}
+#set-keybind-katsu    {background-image: url(./assets/main-menu/katsu.png); height: 10vb; width: 10vb; text-align: center;}
+#keybind-input-window {
+    position: fixed;
+    background-image: url(./assets/main-menu/keybind-bg.png); 
+    height: 10vh; width: 30vw; 
+    margin-left: 10vw; top: 31vh;
+}
+#keybind-input-type   {position: relative; height: 10vb; width: 10vb;}
+#keybind-inputs       {position: relative; font-size: 1.25vw; color: white; top: -4.5vh;}
+
+#setting-audio  {display: flex; flex-direction: column; align-items: center; margin-left: 2vw;}
+#volume-wrapper {width: 20vw; text-align: left;}
+#set-volume     {width: 2.5vw; margin-left: 6.5vw; text-align: right; font-size: 1.25vw;}
+#offset-wrapper {width: 20vw; text-align: left;}
+#set-offset     {width: 5vw; margin-left: 4.25vw; text-align: right; font-size: 1.25vw;}
+
+/* Tutorial */
+#tutorial-window {
+    background-image: url(./assets/main-menu/window-bg.png); 
+    position: fixed; text-align: center;
+    top: 25vh; left: 25vw;
+    width: 50vw; height: 50vh;
+
+    padding-top: 2.5vh;
+
+    font-size: 3vb;
+}
+#tutorial-window > p {
+    padding: 2vh 2vw;
+    height: 30vh;
+    
+    overflow: hidden;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+.tutorial-image-tiny        {width: 10vb; height: 10vb;}
+.tutorial-image-tiny-long   {width: 20vb; height: 10vb;}
+.tutorial-image-small       {width: 20vb; height: 20vb;}
+.tutorial-image-small-long  {width: 50vb; height: 20vb;}
+.tutorial-image-big-long    {width: 80vb; height: 10vb;}
+
+
+/* Extra */
+#credits {position: fixed; font-size: 2.5vb; left: 1vw; bottom: 1vh;}
+.side-menu-button-wrapper > svg {position: fixed; margin: 4.6vh 0vw 0vh 1.1vw; width: 3vb; height: 3vb;}
+
+
+
+/* Song Select */
+#song-select-window {background-image: url(./assets/song-select/bg.png); display: flex; flex-direction: row;}
+#song-select-exit {position: fixed; left: -20.5vw; bottom: 2vh; z-index: 1; text-align: right; padding-right: 10vw;}
+
+#upload-menu {
+    background-image: url(./assets/song-select/beatmap-info.png);
+    color: black;
+
+    width: 40vw;
+    height: 50vh;
+
+    border-radius: 25px;
+
+    margin: 5vh 2vw;
+    align-self: center;
+
+    font-size: 2.25vb;
+}
+#upload-menu > p {
+    text-align: center;
+    margin: 1.5vh 1.75vw 0.5vh 1.25vh;
+}
+#upload-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(0, 0, 0, 0.75);
+    border-radius: 25px;
+
+    width: 35vw;
+    height: 20vh;
+
+    
+    margin-left: 1.65vw;
+    color: white;
+    border-style: dashed;
+}
+
+a {border-bottom-style:double;}
+a:visited, a:link {color: black;}
+
+#beatmaps {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2.5vh;
+
+    max-height: 100vh;
+
+    overflow-y: scroll;
+    scrollbar-width: none;
+    margin: 0vh 0vw 0vh 2.5vw;
+}
+.beatmap {
+
+    background-image: url(./assets/song-select/beatmap.png); 
+    height: 20vh; 
+    width: 40vw;
+
+    max-height: 20vh; 
+    max-width: 38vw;
+
+    text-align: left;
+
+    background-size: 247px 100%;
+
+    transition: ease-in-out 0.25s ;
+    border-radius: 25px;
+
+    padding: 2.5vh 1vw;
+
+    text-overflow: hidden;
+
+    border-style: solid;
+    border-color: azure;
+
+    opacity: 0.65;
+}
+.beatmap:focus {
+    background-image: url(./assets/song-select/beatmap-selected.png); 
+    height: 25vh; 
+    width: 50vw;
+
+    max-height: 25vh; 
+    max-width: 50vw;
+
+
+    background-repeat: repeat-x;
+
+    background-size: calc(247px * 1.2) 100%;
+
+    /* TEMP Do this in JS instead */
+
+    opacity: 1;
+}
+
+.beatmap > img {
+    float: left;
+
+    height: 17.5vh;
+    width: 15vw;
+
+    margin-right: 1vw;
+
+    transition: ease-in-out 0.25s;
+    border-radius: 15px;
+}
+.beatmap:focus > img {height: 25vh;width: 20vw;}
+.beatmap > p {
+    overflow: hidden; 
+    text-overflow: clip; 
+    text-wrap: nowrap;
+
+    background-color: rgb(0, 0, 0, 0.75);
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 0.75vh;
+
+    padding: 2px 5px;
+    font-size: 2vb;
+}
+.beatmap:focus > p {
+}
+
+
+
+.beatmap-difficulties {
+    position: relative;
+
+    overflow-y: scroll;
+    scrollbar-width: none;
+
+    max-width: 23vw;
+    max-height: 9.5vh;
+
+    
+}
+
+.beatmap:focus > .beatmap-difficulties {
+    position: relative;
+
+    overflow-y: scroll;
+    scrollbar-width: none;
+
+    max-width: 30vw;
+    max-height: 16.75vh;
+
+    transition: ease-in-out 0.25s;
+}
+
+.beatmap-diff {
+    overflow: hidden;
+    text-overflow: clip;
+    text-wrap: nowrap;
+
+    background-color: antiquewhite;
+    margin-bottom: 0.5vh;
+    border-radius: 5px;
+
+    font-size: 2vb;
+
+
+
+    padding: 0.5vh 0.5vw;
+}
+
+.beatmap-diff:hover {
+    background-color: black;
+    color: antiquewhite;
+}
+
+
+
+
+
+/*
+beatmap
+beatmap-selected
+
+*/
+
+
+
+
+
+
+
+
+#top {
+    position: relative;
+
+    height: 30vh;
+    max-height: 30vh;
+
+    width: 200vw;
+    max-width: 200vw;
+}
+.top-bg-normal {background-image: url(./assets/bgs/top-normal.png); background-size: contain; background-repeat: repeat-x; z-index: 0;}
+#top-overlay  {position: absolute; width: inherit; height: inherit; background-image: url(./assets/bgs/top-pass.png); background-size: contain; background-repeat: repeat-x; z-index: 0;}
+
+
+#don {}
+
+
+#soul-bar        {position: fixed; top: 22.75vh; left: 47.5vw; height: 7.5vh; width: 50vw; background-image: url(./assets/ui/soul-bar.png); background-size: 100% 100%; background-repeat: no-repeat; z-index: 1;}
+#soul-completion {position: relative; left: 0; height: 7.5vh; width: 44.25vw; background-image: url(./assets/ui/soul-completion.png); background-size: 100% 100%; background-repeat: no-repeat; clip-path: rect(0 78% 100% 0); z-index: 2;} /* Change clip-path (2nd value) to set percentage soul 77.6% = completetion*/
+#soul-indicator  {position: relative; left: calc(50vw - 4.667vw - 1.13vw); top: -12vh; height: calc(1.9 * 6vh); width: 6vw; background-image: url(./assets/ui/soul-indicator.png); background-size: 100% 100%;}
+#soul-indicator-complete {position: relative; left: -2.5vw; top: -13.5vh; height: calc(1.9 * 15vh); width: 15vw; background-image: url(./assets/ui/soul-indicator-completed.png); background-size: 100% 100%; z-index: -1;}
+
+.soul-completed  {position: relative; left: 0; height: 7.5vh; width: 44.25vw; background-image: url(./assets/ui/soul-completed.png); background-size: 100% 100%; z-index: 2;}
+
+
+
+
+#middle {
+    height: 25vh;
+    max-height: 25vh;
+
+    width: 100vw;
+    max-width: 100vw;
+}
+
+#ui-bg   {position: relative; left: 0px; height: 25vh; width: 25vw; background-image: url(./assets/bgs/ui.png); background-size: 100% 100%; background-repeat: no-repeat; z-index: 4;}
+#score   {position: absolute; display: flex; flex-direction: row; justify-content: right; padding-right: 9.5vw; top: 18.5vh; right: 0; height: 5vh; width: 15vw; background-image: url(./assets/ui/score-bg.png); background-size: 100% 100%; z-index: 5;}
+#combo   {display: flex; flex-direction: row; justify-content: center; position: absolute; top: 6vh; right: 0.5vw; height: 20vh; width: 10vw; z-index: 6;}
+
+#drum    {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/drum.png); background-size: 100% 100%; z-index: 5;}
+#drum-lr {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/rim-left.png); background-size: 100% 100%; z-index: 6;}
+#drum-rr {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/rim-right.png); background-size: 100% 100%; z-index: 6;}
+#drum-lc {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/center-left.png); background-size: 100% 100%; z-index: 6;}
+#drum-rc {position: absolute; top: 3vh; right: 0.5vw; height: 20vh; width: 10vw; background-image: url(./assets/ui/center-right.png); background-size: 100% 100%; z-index: 6;}
+
+/* Hitzone and HitObject positioning is fucked and I should probably hanged for this */
+/* Future me, please do past youself justice and never touch a keyboard again */
+.hit-object-red-base {position: absolute; margin-left: calc(-12.5vh / 2 - 8.75vh - 50px); top: 5.5vh; width: 12.5vh; height: 12.5vh; background-image: url(./assets/notes/red-base.png); background-size: 100% 100%; z-index: 3;}
+.hit-object-big-red-base {position: absolute; margin-left: calc(-17.5vh / 2 - 8.75vh - 50px); top: 3.5vh; width: 17.5vh; height: 17.5vh; background-image: url(./assets/notes/big-red-base.png); background-size: 100% 100%; z-index: 3;}
+
+.hit-object-blue-base {position: absolute; margin-left: calc(-12.5vh / 2 - 8.75vh - 50px); top: 5.5vh; width: 12.5vh; height: 12.5vh; background-image: url(./assets/notes/blue-base.png); background-size: 100% 100%; z-index: 3;}
+.hit-object-big-blue-base {position: absolute; margin-left: calc(-17.5vh / 2 - 8.75vh - 50px); top: 3.5vh; width: 17.5vh; height: 17.5vh; background-image: url(./assets/notes/big-blue-base.png); background-size: 100% 100%; z-index: 3;}
+
+
+.ui-0-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 1.900vw; background-image: url(./assets/ui/num-0-score.png); background-size: 100% 100%;}
+.ui-1-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 1.564vw; background-image: url(./assets/ui/num-1-score.png); background-size: 100% 100%;}
+.ui-2-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 2.011vw; background-image: url(./assets/ui/num-2-score.png); background-size: 100% 100%;}
+.ui-3-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 1.900vw; background-image: url(./assets/ui/num-3-score.png); background-size: 100% 100%;}
+.ui-4-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 2.123vw; background-image: url(./assets/ui/num-4-score.png); background-size: 100% 100%;}
+.ui-5-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 1.900vw; background-image: url(./assets/ui/num-5-score.png); background-size: 100% 100%;}
+.ui-6-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 1.900vw; background-image: url(./assets/ui/num-6-score.png); background-size: 100% 100%;}
+.ui-7-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 2.011vw; background-image: url(./assets/ui/num-7-score.png); background-size: 100% 100%;}
+.ui-8-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 2.011vw; background-image: url(./assets/ui/num-8-score.png); background-size: 100% 100%;}
+.ui-9-score {position: relative; margin: 0 -0.15vw; left: 0; top: 0.25vh; height: 4.5vh; width: 1.900vw; background-image: url(./assets/ui/num-9-score.png); background-size: 100% 100%;}
+
+.ui-0-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.265vw; background-image: url(./assets/ui/num-0-gold.png); background-size: 100% 100%; z-index: 10;}
+.ui-1-gold {position: relative; top: -2vh; height: 8.5vh; width: 2.435vw; background-image: url(./assets/ui/num-1-gold.png); background-size: 100% 100%; z-index: 10;}
+.ui-2-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.420vw; background-image: url(./assets/ui/num-2-gold.png); background-size: 100% 100%; z-index: 10;}
+.ui-3-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.213vw; background-image: url(./assets/ui/num-3-gold.png); background-size: 100% 100%; z-index: 10;}
+.ui-4-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.524vw; background-image: url(./assets/ui/num-4-gold.png); background-size: 100% 100%; z-index: 10;}
+.ui-5-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.265vw; background-image: url(./assets/ui/num-5-gold.png); background-size: 100% 100%; z-index: 10;}
+.ui-6-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.213vw; background-image: url(./assets/ui/num-6-gold.png); background-size: 100% 100%; z-index: 10;}
+.ui-7-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.316vw; background-image: url(./assets/ui/num-7-gold.png); background-size: 100% 100%; z-index: 10;}
+.ui-8-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.316vw; background-image: url(./assets/ui/num-8-gold.png); background-size: 100% 100%; z-index: 10;}
+.ui-9-gold {position: relative; top: -2vh; height: 8.5vh; width: 3.213vw; background-image: url(./assets/ui/num-9-gold.png); background-size: 100% 100%; z-index: 10;}
+
+
+.ui-0 {position: relative; top: -2vh; height: 8.5vh; width: 3.265vw; background-image: url(./assets/ui/num-0.png); background-size: 100% 100%; z-index: 10;}
+.ui-1 {position: relative; top: -2vh; height: 8.5vh; width: 2.435vw; background-image: url(./assets/ui/num-1.png); background-size: 100% 100%; z-index: 10;}
+.ui-2 {position: relative; top: -2vh; height: 8.5vh; width: 3.420vw; background-image: url(./assets/ui/num-2.png); background-size: 100% 100%; z-index: 10;}
+.ui-3 {position: relative; top: -2vh; height: 8.5vh; width: 3.213vw; background-image: url(./assets/ui/num-3.png); background-size: 100% 100%; z-index: 10;}
+.ui-4 {position: relative; top: -2vh; height: 8.5vh; width: 3.524vw; background-image: url(./assets/ui/num-4.png); background-size: 100% 100%; z-index: 10;}
+.ui-5 {position: relative; top: -2vh; height: 8.5vh; width: 3.265vw; background-image: url(./assets/ui/num-5.png); background-size: 100% 100%; z-index: 10;}
+.ui-6 {position: relative; top: -2vh; height: 8.5vh; width: 3.213vw; background-image: url(./assets/ui/num-6.png); background-size: 100% 100%; z-index: 10;}
+.ui-7 {position: relative; top: -2vh; height: 8.5vh; width: 3.316vw; background-image: url(./assets/ui/num-7.png); background-size: 100% 100%; z-index: 10;}
+.ui-8 {position: relative; top: -2vh; height: 8.5vh; width: 3.316vw; background-image: url(./assets/ui/num-8.png); background-size: 100% 100%; z-index: 10;}
+.ui-9 {position: relative; top: -2vh; height: 8.5vh; width: 3.213vw; background-image: url(./assets/ui/num-9.png); background-size: 100% 100%; z-index: 10;}
+
+/*
+These widths need to be modified. width has to be in vw since this needs to width * (screen_height / screen_width)
+*/
+
+#game-field {position: relative; left: 25vw; top: -25vh; height: 25vh; width: 75vw; background-image: url(./assets/bgs/game-field.png); background-size: contain; background-repeat: repeat-x; z-index: 0;}
+#hit-zone   {position: relative; left: calc(100px - 17.5vh / 2); top: 3.5vh; height: 17.5vh; width: 17.5vh; background-image: url(./assets/ui/hitzone.png); background-size: 100% 100%; z-index: 2;}
+#hit-zone-kiai {position: absolute; left: calc(100px - 26vh / 2); top: -12vh; height: 35vh; width: 35vh; z-index: 3;  background-image: url(./assets/ui/hitzone-kiai-bg.png); background-size: 100% 100%; z-index: 1;}
+
+/*500px - calc(35vh * calc(1vw / 1vh)) /   calc(100px - 25vh)   -8.70vw */
+.judgement {position: absolute; left: inherit; top: inherit; height: 35vh; width: 35vh; z-index: 3; transform: translate(-100px, -12.25vh);}
+.judgement-big {position: absolute; left: inherit; top: inherit; height: 42vh; width: 42vh; z-index: 3; transform: translate(calc(-150px), -14.7vh);}
+
+#bottom {
+    height: 45vh;
+    max-height: 45vh;
+
+    width: 100vw;
+    max-width: 100vw;
+}
+
+
+
+

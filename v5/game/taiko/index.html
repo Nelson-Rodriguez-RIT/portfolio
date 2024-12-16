@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>太鼓の達人</title>
+
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/png" sizes="96x96" href="./favicon-96x96.png">
+
+    
+</head>
+<body>
+    <section id="main-menu-window">
+        <div id="title"></div>
+        <div class="menu-button-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+            <button class="menu-button main-menu-button" id="song-select-button"></button></div>
+        <div class="menu-button-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+            <button class="menu-button main-menu-button" id="settings-button"></button></div>
+        <div class="menu-button-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M80 160c0-35.3 28.7-64 64-64l32 0c35.3 0 64 28.7 64 64l0 3.6c0 21.8-11.1 42.1-29.4 53.8l-42.2 27.1c-25.2 16.2-40.4 44.1-40.4 74l0 1.4c0 17.7 14.3 32 32 32s32-14.3 32-32l0-1.4c0-8.2 4.2-15.8 11-20.2l42.2-27.1c36.6-23.6 58.8-64.1 58.8-107.7l0-3.6c0-70.7-57.3-128-128-128l-32 0C73.3 32 16 89.3 16 160c0 17.7 14.3 32 32 32s32-14.3 32-32zm80 320a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+            <button class="menu-button main-menu-button" id="tutorial-button"></button></div>
+        
+        <span id="credits">All textures belong to Bandai Namco</span>
+
+
+        <article id="settings-window" class="inactive">
+            「Keybinds」
+            <div>
+                <span id="keybind-don">J K</span>
+                <button id="set-keybind-don"></button>
+                <button id="set-keybind-katsu"></button>
+                <span id="keybind-katsu">D F</span>
+            </div>
+
+            <br>「Audio」
+            <div id="setting-audio">
+                <div id="volume-wrapper">Volume<input id="set-volume" type="text"> %</div><br>
+                <div id="offset-wrapper">Offset<input id="set-offset" type="text"> ms</div>
+            </div>
+
+            <article id="keybind-input-window" class="inactive">
+                <span id="keybind-input-type"></span>
+                <span id="keybind-inputs">Input two different keys...</span>
+            </article>
+
+            <br>「Beatmaps」
+            <div>
+                <div>Import Videos <input id="set-import-videos" type="checkbox"></div>
+            </div>
+
+            <div class="side-menu-button-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M177.5 414c-8.8 3.8-19 2-26-4.6l-144-136C2.7 268.9 0 262.6 0 256s2.7-12.9 7.5-17.4l144-136c7-6.6 17.2-8.4 26-4.6s14.5 12.5 14.5 22l0 72 288 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-288 0 0 72c0 9.6-5.7 18.2-14.5 22z"/></svg>
+                <button class="menu-button settings-button" id="settings-exit">Back</button></div>
+        </article>
+
+        <article id="tutorial-window" class="inactive">
+            <p>
+            太鼓の達人 (Taiko No Tatsujin) is a rhythm game developed by Bandai Namco originally designed for arcade machines.
+            It revolves around hitting red ドン (Don) and blue カツ (Katsu) notes as they move across the hit zone (timed to the beat of the music)
+            with keybinds that you can set up in the settings menu.
+            <br><br>
+            <img class="tutorial-image-small" src="./assets/main-menu/hitzone.png">
+            <img class="tutorial-image-small" src="./assets/main-menu/don.png">
+            <img class="tutorial-image-small" src="./assets/main-menu/katsu.png">
+            <br><br>
+            Additionally, these notes have large variants that require both of their respective buttons to be pressed for double points.
+            Beyond this, there are two special kinds of notes: drumroll and ballon notes. Drumroll notes just require you to hit as many
+            notes as possible while ballon notes require you to hit a specific amount ドン (Don) notes under a time limit. Special notes do not impact combo or your 魂 (Soul) guage.
+            <br><br>
+            <img class="tutorial-image-small" src="./assets/main-menu/drumroll.png">
+            <img class="tutorial-image-small-long" src="./assets/main-menu/ballon.png">
+            <br><br>
+            Your goal is to fill up the 魂 (Soul) guage to at least 75% before the end of the song, with each successfully hit note
+             increasing the gauge, while decreasing the gauge upon missed or poorly timed notes. On top of this, you are also
+            attempting to reach the highest score possible.
+            <br><br>
+            <img class="tutorial-image-big-long" src="./assets/main-menu/soul-guage.png">
+            <br><br>
+            The score amount gained from hit notes are tied to their timing, with better-timed hits awarding more 魂 (Soul) and points.
+            良 (Good) awards full points, 可 (Ok) awards half points, and 下可 (Bad) awards no points plus resets your combo.
+            Additionally, score gained is given a bonus upon reaching specific combo milestones (maxing out at 100 combo) and
+            during kiai times (usually the chorus or intense part of a song).
+            <br><br>
+            <img class="tutorial-image-tiny" src="./assets/main-menu/good.png">
+            <img class="tutorial-image-tiny" src="./assets/main-menu/ok.png">
+            <img class="tutorial-image-tiny-long" src="./assets/main-menu/bad.png">
+            <br><br>
+            The difficulty is on a per-map basis and often quantifying a difficulty to just a value is a bit difficult. As a result, 太鼓の達人
+            has its own system for naming difficulties. These difficulty names don't necessarily mean a map is harder than another, but
+            it's just more of an indication of what you might expect to find in terms of note density, patterns, and skillsets expected.
+            However, if you are new to 太鼓の達人 use the below guide for a general difficulty reference. Due note that difficulties that don't
+            follow the pattern below are generally very difficult (as in, above 鬼 (Oni) うら鬼 (Inner Oni)).
+            <br><br>
+            <img src="./assets/main-menu/difficultyGuide.png">
+            </p>
+            
+
+            <div class="side-menu-button-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M177.5 414c-8.8 3.8-19 2-26-4.6l-144-136C2.7 268.9 0 262.6 0 256s2.7-12.9 7.5-17.4l144-136c7-6.6 17.2-8.4 26-4.6s14.5 12.5 14.5 22l0 72 288 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-288 0 0 72c0 9.6-5.7 18.2-14.5 22z"/></svg>
+                <button class="menu-button settings-button" id="tutorial-exit">Back</button></div>
+        </article>
+    </section>
+
+    <section id="song-select-window" class="inactive">
+        <div id="upload-menu">
+            <p>
+                In order to upload new beatmaps, you will need an <a href="https://osu.ppy.sh/">osu!</a> account.
+                After fufilling the above, click on <a href="https://osu.ppy.sh/beatmapsets">Beatmaps</a> in the navigation
+                bar and use the the search bar provided to look up user generated beatmaps. 
+                <br><br>
+                Note, make sure to set the "Mode" to <a href="https://osu.ppy.sh/beatmapsets?m=1">osu!taiko</a> as converted maps from
+                other gamemodes are not supported and likely won't be functional.
+            </p>
+            <div id="upload-box" accept="application/zip">
+                <span>Drop <b>.osz</b> files here</span>
+            </div>
+        </div>
+
+        <div id="beatmaps">
+            <button class="beatmap">
+                <img>
+                <p>
+                    "_____________TITLE"<br>
+                    created by ________AUTHOR, <br>
+                     mapped by _______MAPPER 
+                </p>
+                <div class="beatmap-difficulties">
+                    <!--Attach data so onclick can just load data from itself -->
+                    <div class="beatmap-diff">「Kantan」</div>
+                    <div class="beatmap-diff">「Futsuu」</div>
+                    <div class="beatmap-diff">「Muzukashii」</div>
+                    <div class="beatmap-diff">「Oni」</div>
+                    <div class="beatmap-diff">「Inner Oni」</div>
+                </div>
+            </button>
+        </div>
+
+
+        <button class="menu-button" id="song-select-exit">Back</button>
+    </section>
+
+    <section id="game-window" class="inactive">
+        <div id="top" class="top-bg-normal">
+            <div id="top-overlay"></div>
+            <div id="don-chan"></div>
+            <div class="inactive" id="soul-bar"><div id="soul-completion"></div><div id="soul-indicator"></div></div>
+        </div>
+
+        <div id="middle">
+            <div id="ui-bg">
+                
+                <ul id="score"><li class="ui-0-score"></li><li class="ui-0-score"><li class="ui-0-score"></li><li class="ui-0-score"><li class="ui-0-score"></li><li class="ui-0-score"><li class="ui-0-score"></li><li class="ui-0-score"></li><!--Format: HTML.score.innerHTML += <li class="ui-0-score"></li>--></ul>
+
+                <div id="drum"></div>
+                
+                
+
+                
+                <div id="drum-lc" class=""></div>
+                <div id="drum-rc" class="inactive"></div>
+
+                <div id="drum-lr" class="inactive"></div>
+                <div id="drum-rr" class=""></div>
+
+                <ul id="combo"><li class="ui-0"></li><li class="ui-0-gold"></li><li class="ui-0-gold"></li></ul>
+            </div>
+
+            <ul id="game-field">
+                <span id="hit-zone-kiai"></span>
+                <ul id="hit-zone"></ul>
+            </ul>
+        </div>
+
+        <div id="bottom">
+
+        </div>
+
+        <audio id="music"></audio>
+        <ul id="sound-effects">
+
+        </ul>
+
+
+        <!--Preload some images. If I don't do this here, most of the images below will not load (for some reason, might be a banjo issue idk)-->
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-0.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-1.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-2.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-3.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-4.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-5.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-6.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-7.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-8.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-9.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-10.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-11.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-12.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-13.png' as="image">
+        <link rel="preload" href='./assets/ui/good-judgement/taiko-hit300-14.png' as="image">
+
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-0.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-1.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-2.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-3.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-4.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-5.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-6.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-7.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-8.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-9.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-10.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-11.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-12.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-13.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-judgement/taiko-hit100-14.png' as="image">
+
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-0.png' as="image">
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-1.png' as="image">
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-2.png' as="image">
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-3.png' as="image">
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-4.png' as="image">
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-5.png' as="image">
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-6.png' as="image">
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-7.png' as="image">
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-8.png' as="image">
+        <link rel="preload" href='./assets/ui/poor-judgement/poor-judgement-9.png' as="image">
+
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-0.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-1.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-2.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-3.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-4.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-5.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-6.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-7.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-8.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-9.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-10.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-11.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-12.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-13.png' as="image">
+        <link rel="preload" href='./assets/ui/good-big-judgement/taiko-hit300k-14.png' as="image">
+
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-0.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-1.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-2.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-3.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-4.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-5.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-6.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-7.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-8.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-9.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-10.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-11.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-12.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-13.png' as="image">
+        <link rel="preload" href='./assets/ui/ok-big-judgement/taiko-hit100k-14.png' as="image">
+
+
+
+        <audio preload="auto" src="./assets/audio/taiko-drum.wav"></audio>
+        <audio preload="auto" src="./assets/audio/taiko-rim.wav"></audio>
+        <audio preload="auto" src="./assets/audio/taiko-drum-heavy.wav"></audio>
+        <audio preload="auto" src="./assets/audio/taiko-rim-heavy.wav"></audio>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script type="module" src="./util.js"></script>
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

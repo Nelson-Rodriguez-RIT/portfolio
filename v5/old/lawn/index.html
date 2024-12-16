@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAWN</title>
+
+    <!--<link rel="stylesheet" href="../../css/game-room.css">-->
+    <style>
+        /* {border: 1px solid black; } /* Debug */
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+
+        /* CSS Reset */
+        /* https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+        /* 1. Use a more-intuitive box-sizing model */
+        *, *::before, *::after { box-sizing: border-box; }
+        
+        /* 2. Remove default margin */
+        * { margin: 0; list-style-type: none; }
+
+        body {
+            /* 3. Add accessible line-height */
+            line-height: 1.5;
+            /* 4. Improve text rendering */
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* 5. Improve media defaults */
+        img, picture, video, canvas, svg { display: block; max-width: 100%; }
+        
+        /* 6. Inherit fonts for form controls */
+        input, button, textarea, select { font: inherit; }
+        
+        /* 8. Improve line wrapping */
+        p { text-wrap: pretty; }
+        h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
+        
+        /* 9. Create a root stacking context */
+        #root, #__next { isolation: isolate; }
+
+
+
+        /* Element Layout */
+        header {
+            position: fixed;
+            left: 0px; top: 0px;
+
+            z-index: 99;
+
+            max-width: 100%;
+            width: 100%;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;  
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            align-content: center;
+        }
+
+
+
+
+
+        /* Element Sizing and Spacing */
+        header {
+            padding: 1rem calc(50% - 512px);
+        }
+        nav > a {
+            padding: 0.5rem 1.5rem;
+            padding-top: 0.75rem;
+            margin-left: 1rem;
+        }
+
+
+        footer > p {
+            text-align: center;
+        }
+
+
+
+
+
+        /* Element Design */
+        nav > a, #gallery-wrapper, .gallery-project, 
+        #contact-wrapper, .tags > li, .showcase-project,
+        main, #showcase-wrapper, .tags, .play-button {
+            border-radius: 25px;
+        }
+
+        p, span, a {
+            font-family: "Fira Sans", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+        h1, h2, h3, .tags, .play-button {
+            font-family: "Fira Sans", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+
+
+        body {
+            background-color: rgb(24, 24, 24);
+        }
+
+        body {
+            background-color: rgb(24, 24, 24);
+        }
+
+        h1, h2, h3 {
+            color: #97e8a9;
+        }
+        p, span, .tags {
+            color: rgb(204, 204, 204);
+        }
+        a {
+            color: #ffb0b0;
+            text-decoration: none;
+        }
+        a:hover{
+            background-color: rgb(204, 204, 204);
+            color: rgb(24, 24, 24);
+        }
+
+        nav > a  {
+            background-color: rgb(24, 24, 24);
+        }
+
+        header, footer {
+            background-color: rgb(55, 55, 55);
+        }
+
+
+
+
+
+        /* JS Related Shenanigans  */
+        main {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);  
+
+            width: 1024px;
+            height: 576px;
+            
+            user-select: none;
+        }
+
+        canvas {
+            cursor: none;
+
+            /* https://stackoverflow.com/questions/34597160/html-canvas-mouse-position-after-scale-and-translate */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);  
+
+            width: 1024px;
+            height: 576px;
+
+            /* Ensures (or tries to ensure) a pixilated look */
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+
+            
+        }
+
+        main span {
+            text-wrap: wrap;
+            word-break: break-all;
+        }
+
+        /*000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000*/
+        /* Hides canvas if screen dimensions aren't big enough. Reveals a message to inform the user */
+        @media screen and (max-width: 1024px) {
+            canvas {
+                left: -9999px;
+            }
+
+            header {
+                padding: 1rem;
+            }
+        }
+
+        @media screen and (max-height: 576px) {
+            canvas {
+                left: -9999px;
+            }
+        }
+
+
+
+        /* Mobile */
+        @media screen and (max-width: 768px) {
+            h1 {
+                position: fixed;
+                left: -9999px;
+            }
+            nav {
+                justify-content: space-between;
+
+                width: 100%;
+                height: 100%;
+                margin: 0px 1rem;
+            }
+            nav > a {
+                margin: 0px;
+            }
+        }
+
+
+        .js-chat-text {
+            user-select: text;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>L.A.W.N</h1>
+        <nav>
+            <a href="https://nellyjelly.me/index.html#desktop-wrapper">Home</a>
+            <a href="https://nellyjelly.me/index.html#gallery-wrapper">Gallery</a>
+            <a href="https://nellyjelly.me/index.html#contact-wrapper">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <canvas></canvas>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+// Server connection
+const socket = io();
+
+// Environment setup
+const canvas = document.querySelector('canvas');
+const main = document.querySelector('main');
+const ctx = canvas.getContext('2d');
+
+canvas.width = 1024;
+canvas.height = 576;
+ctx.scale(2, 2);
+
+canvas.style.cursor = "initial";
+
+// Maintains a pixalated look
+ctx.imageSmoothingEnabled = false;
+canvas.style.imageRendering = "pixelated";
+
+var MouseX = 0;
+var MouseY = 0;
+
+var Deltatime    = 0;
+let currentTime  = 0;
+let previousTime = 0;
+
+const CONFIG = {
+    localStorageIdentifier: "njr5833-lawn",
+};
+
+// Variables that need to be identical for each player within a lobby
+var Game = {
+    state: "load",
+    lobbyID: null,
+    chat: [],
+    players: []
+}
+
+const Cache = {
+    previousState: "load",
+    menu: null,
+    lobby: null,    
+}
+
+// User Setup
+var userID = null;
+var username = null;
+var isHost = false;
+
+
+
+
+function onload() {
+
+    if (!(userID = localStorage.getItem(`${CONFIG.localStorageIdentifier}-id`))) {
+        console.log(`No ID token found at "${CONFIG.localStorageIdentifier}-id"! Generating one...`);
+
+        // Generate a random 128 byte token to be used to identify this user amongst other users
+        // within their lobby and for statistics
+        userID = Math.random().toString(32).substring(2) + Math.random().toString(32).substring(2);
+
+        localStorage.setItem(`${CONFIG.localStorageIdentifier}-id`, userID);
+    }
+    console.log(`This session's token is ${userID}`);
+
+    if (!(username = localStorage.getItem(`${CONFIG.localStorageIdentifier}-username`))) {
+        username = userID;
+    }
+
+
+    socket.emit('loaded', `${username} (${userID})`);
+    console.log(`Connected to main server as ${username}`);
+
+
+    Game.state = "menu";
+    update();
+}
+
+
+function update() {
+    // Queue this function to be called again next frame
+    window.requestAnimationFrame(update);
+
+    // Update deltatime
+    currentTime = window.performance.now();
+    Deltatime = (currentTime - previousTime) / 1000; // These means that if deltatime was cumulative it would equal 1 after 1 second
+    previousTime = currentTime;
+
+    // Set background
+    ctx.fillStyle = 'rgb(36, 36, 36)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Used to deinitialize elements no longer in use at the moment
+    if (Cache.previousState != Game.state && Game.state != "debug") {
+        switch (Cache.previousState) {
+            case "menu":
+                Cache.menu.title.style.position = "fixed";
+                Cache.menu.title.style.left     = "-9999px";
+
+                Cache.menu.createLobby.style.position = "fixed";
+                Cache.menu.createLobby.style.left     = "-9999px";
+
+                Cache.menu.joinLobby.style.position = "fixed";
+                Cache.menu.joinLobby.style.left     = "-9999px";
+
+
+                Cache.menu.usernameFieldContainer.style.position = "fixed";
+                Cache.menu.usernameFieldContainer.style.left     = "-9999px";
+
+                Cache.menu.usernameText.style.position = "fixed";
+                Cache.menu.usernameText.style.left     = "-9999px";
+
+                Cache.menu.usernameInput.style.position = "fixed";
+                Cache.menu.usernameInput.style.left     = "-9999px";
+                break;
+
+            case "lobby":
+                Cache.lobby.chatText.style.position = "fixed";
+                Cache.lobby.chatText.style.left     = "-9999px";
+
+                Cache.lobby.chatInput.style.position = "fixed";
+                Cache.lobby.chatInput.style.left     = "-9999px";
+                break;
+        }
+    }
+
+    // Updates based on current state (which is controlled by server once the player is in a lobby)
+    switch (Game.state) {
+        case "menu":
+            // Create menu elements if they don't already exist
+            if (Cache.menu == null) {
+                Cache.menu = {};
+
+                // Game title
+                let menuTitle = document.createElement('h1');
+                menuTitle.innerHTML = "Title";
+                menuTitle.className = "js-menu";
+
+                menuTitle.style.position    = "relative";
+                menuTitle.style.textAlign   = "center";
+                menuTitle.style.paddingTop  = "10%"; 
+                menuTitle.style.color       = "rgb(204, 204, 204)";
+
+                Cache.menu.title = menuTitle;
+                main.appendChild(menuTitle);
+
+
+                // Stores menu buttons for easy layout configuration
+                let menuButtons = document.createElement('div');
+                menuButtons.style.position = "relative";
+                menuButtons.style.display = "flex";
+                menuButtons.style.flexDirection = "column";
+
+                Cache.menu.buttons = menuButtons;
+                main.appendChild(menuButtons);
+
+
+                // Create lobby button
+                let menuCreateLobby = document.createElement('button');
+                menuCreateLobby.innerHTML = "Create Lobby";
+                menuCreateLobby.style.margin = "2% 40%";
+                menuCreateLobby.onclick = (event) => { createLobby() };
+
+                Cache.menu.createLobby = menuCreateLobby;
+                menuButtons.appendChild(menuCreateLobby);
+
+
+                // Join lobby button
+                let menuJoinLobby = document.createElement('button');
+                menuJoinLobby.innerHTML = "Join Lobby";
+                menuJoinLobby.style.margin = "0% 40%";
+                menuJoinLobby.onclick = (event) => { loadLobby() };
+
+                Cache.menu.joinLobby = menuJoinLobby;
+                menuButtons.appendChild(menuJoinLobby);
+
+
+
+                // Username field
+                let usernameFieldContainer = document.createElement('div');
+                usernameFieldContainer.style.position = "relative";
+                usernameFieldContainer.style.display = "flex";
+                usernameFieldContainer.style.flexDirection = "column";
+                usernameFieldContainer.style.maxWidth = "150px";
+                usernameFieldContainer.style.margin = "25px auto";
+
+                Cache.menu.usernameFieldContainer = usernameFieldContainer;
+                main.appendChild(usernameFieldContainer);
+
+
+                let usernameText = document.createElement('span');
+                usernameText.style.position = "relative";
+                usernameText.style.textAlign = "center";
+                usernameText.innerHTML = "Username";
+
+                usernameFieldContainer.appendChild(usernameText);
+                Cache.menu.usernameText = usernameText;
+
+
+                let usernameInput = document.createElement('input');
+                usernameInput.value = (username) ? username : "";
+                usernameInput.style.position = "relative";
+
+                usernameFieldContainer.appendChild(usernameInput);
+                Cache.menu.usernameInput = usernameInput;
+            }
+            
+            // Initialize menu options if they haven't been already
+            if (Cache.previousState != "menu") {
+                Cache.menu.title.style.position = "relative";
+                Cache.menu.title.style.left     = "initial";
+
+                Cache.menu.createLobby.style.position = "relative";
+                Cache.menu.createLobby.style.left     = "initial";
+
+                Cache.menu.joinLobby.style.position = "relative";
+                Cache.menu.joinLobby.style.left     = "initial";
+
+
+
+                Cache.menu.usernameFieldContainer.style.position = "relative";
+                Cache.menu.usernameFieldContainer.style.left     = "initial";
+
+                Cache.menu.usernameText.style.position = "relative";
+                Cache.menu.usernameText.style.left     = "initial";
+
+                Cache.menu.usernameInput.style.position = "relative";
+                Cache.menu.usernameInput.style.left     = "initial";
+            }
+            break;
+    
+        case "lobby":
+            if (Cache.lobby == null) {
+                Cache.lobby = {};
+
+                let chatText = document.createElement('ul');
+                chatText.style.position = "relative";
+                chatText.style.left     = "10px";
+                chatText.style.top      = "10px";
+                chatText.style.height   = "494px";
+                chatText.style.width    = "600px";
+                chatText.style.color            = "white";
+                chatText.style.backgroundColor  = "rgb(24, 24, 24)";
+                chatText.style.display          = "flex";
+                chatText.style.flexDirection    = "column";
+                chatText.style.overflowY        = "scroll";
+                chatText.style.overflowX        = "hidden";
+                chatText.style.userSelect       = "auto !important"
+                chatText.style.zIndex           = "100 !important";
+                chatText.style.paddingLeft      = "5px";
+                chatText.style.userSelect = "initial";
+
+                Cache.lobby.chatText = chatText;
+                main.appendChild(chatText);
+
+
+                let chatInput = document.createElement('input');
+                chatInput.style.position = "relative";
+                chatInput.style.left    = "10px";
+                chatInput.style.top     = "20px";
+                chatInput.style.width   = "600px";
+                chatInput.style.height  = "50px";
+                chatInput.style.backgroundColor = "rgb(24, 24, 24)";
+                chatInput.style.color           = "white";
+                chatInput.style.userSelect      = "auto !important";
+                chatInput.style.zIndex          = "100 !important";
+                chatInput.type                  = "text";
+
+                Cache.lobby.chatInput = chatInput;
+                main.appendChild(chatInput);
+            }
+
+            if (Cache.previousState != "lobby") {
+                Cache.lobby.chatText.style.position = "relative";
+                Cache.lobby.chatText.style.left     = "10px";
+
+                Cache.lobby.chatInput.style.position = "relative";
+                Cache.lobby.chatInput.style.left     = "10px";
+            }
+
+            if (Cache.lobby.chatText.childElementCount > Game.chat.length)
+                Cache.lobby.chatText.innerHTML = "";
+
+            while (Cache.lobby.chatText.childElementCount < Game.chat.length) {
+                let text = document.createElement('li');
+                text.innerHTML           = `<span class="js-chat-text"><b><u>${Game.chat[Cache.lobby.chatText.childElementCount].username}</u>: </b>${Game.chat[Cache.lobby.chatText.childElementCount].message}</span>`;
+                text.style.paddingBottom = "5px";
+                text.style.textWrap      = "wrap";
+                text.style.maxWidth      = "570px";
+                text.style.userSelect = "initial";
+
+                Cache.lobby.chatText.appendChild(text);
+                Cache.lobby.chatText.scrollTop = Cache.lobby.chatText.scrollHeight
+            }
+
+
+/*             if (Game.chat.length != Cache.lobby.chatText.childElementCount) {
+                // Clear chat
+                Cache.lobby.chatText.innerHTML = "";
+
+                // Draw chat
+                for (let message of Game.chat) {
+                    let text = document.createElement('li');
+                    text.innerHTML           = `<span><b><u>${message.username}</u>: </b>${message.message}</span>`;
+                    text.style.paddingBottom = "5px";
+                    text.style.textWrap      = "wrap";
+                    text.style.maxWidth         = "270px";
+                    Cache.lobby.chatText.appendChild(text);
+                }
+
+                // Sets the scroll bar to the most recent message
+                Cache.lobby.chatText.scrollTop = Cache.lobby.chatText.scrollHeight
+            } */
+            
+
+            if (isHost) {
+                socket.emit('update lobby', {id: userID, data: Game});
+            }
+                
+            break;
+    }
+
+    Cache.previousState = Game.state;
+}
+
+
+socket.on('lobby updated', (msg) => {
+    Game = msg;
+})
+
+socket.on('player connected', (msg) => {
+    Game.players.push(msg);
+    Game.chat.push({username: "server", message: `${msg.username} has connected`})
+})
+
+socket.on('player disconnected', (msg) => {
+    console.log("player disconnected");
+
+    let disconnectedPlayer = Game.players[msg];
+    Game.players.filter((player) => player.id != disconnectedPlayer.id);
+    Game.chat.push({username: "server", message: `${disconnectedPlayer.username} has disconnected`})
+})
+
+socket.on('lobby closed', () => {
+    Game.chat.push({username: "server", message: `host has disconnected, closing lobby...`});
+})
+
+socket.on('message sent', (msg) => {
+    Game.chat.push({username: msg.username, message: msg.message})
+})
+
+
+
+
+// We only care about positions within the canvas element
+window.addEventListener('mousemove', (event) => {
+    MouseX = event.layerX;
+    MouseY = event.layerY;
+})
+
+window.addEventListener('keydown', (event) => {
+    if (event.key == "Enter") event.preventDefault();
+
+    if (Game.state == "lobby" && (event.key == "Enter" || event.key == "Return") && Cache.lobby.chatInput.value) {
+        socket.emit("send message", {id: userID, username: `${username}`, message: Cache.lobby.chatInput.value})
+        Cache.lobby.chatInput.value = '';
+    }      
+})
+
+window.addEventListener('beforeunload', (event) => {
+    socket.emit('disconnected');
+})
+
+
+
+function createLobby() {
+    socket.emit('create lobby', userID);
+    Game.state = "lobby";
+    isHost = true;
+
+    Game.chat.push({username: "server", message: `lobby hosted by ${username}`})
+
+    loadLobby();
+}
+
+function loadLobby() {
+
+    if ((username = Cache.menu.usernameInput.value) == null || username == "server" || username.trim() == "")
+        username == userID;
+
+    if (username != userID)
+        localStorage.setItem(`${CONFIG.localStorageIdentifier}-username`, username);
+
+    socket.emit('join lobby', {id: userID, username: `${username}`, lobby: "__global"});
+}
+
+
+onload();
+        </script>
+    </main>
+
+    <!-- Additional site information -->
+    <footer>
+        <p><a href="https://github.com/Nelson-Rodriguez-RIT/portfolio/v5">Site Repository</a> | Updated 11.6.2024</p>
+    </footer>
+</body>
+</html>
